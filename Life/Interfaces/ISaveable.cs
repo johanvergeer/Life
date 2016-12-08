@@ -8,16 +8,16 @@ namespace Life.Interfaces
 {
     interface ISaveable
     {
-        /*
-        * Doormiddel van deze functie kan het object worden opgeslagen
-        * @Return bool geeft aan of het opslaan gelukt is
-        */
+        /// <summary>
+        /// Doormiddel van deze functie kan het object worden opgeslagen
+        /// </summary>
+        /// <returns>Geeft aan of het opslaan gelukt is</returns>
         bool save();
 
-        /*
-        * Inladen van object
-        * @return bool Geeft aan of het laden gelukt is
-        */
+        /// <summary>
+        /// Inladen van object
+        /// </summary>
+        /// <returns>Geeft aan of het laden gelukt is</returns>
         bool load();
     }
 }

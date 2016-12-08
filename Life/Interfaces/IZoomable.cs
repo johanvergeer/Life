@@ -8,9 +8,9 @@ namespace Life.Interfaces
 {
     interface IZoomable
     {
-        /*
-        * Deze functie zorgt ervoor dat een scherm ingezoomd kan worden
-        */
+        /// <summary>
+        /// Deze functie zorgt ervoor dat een scherm ingezoomd kan worden
+        /// </summary>
         void zoom();
     }
 }

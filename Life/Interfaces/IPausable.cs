@@ -8,14 +8,14 @@ namespace Life.Interfaces
 {
     interface IPausable
     {
-        /*
-        * Functies moeten gepauzeerd worden
-        */
+        /// <summary>
+        /// Functies moeten gepauzeerd worden
+        /// </summary>
         void pause();
 
-        /*
-        * Functies moeten dus ook gestart worden
-        */
+        /// <summary>
+        /// Functies moeten dus ook gestart worden
+        /// </summary>
         void start();
     }
 }
