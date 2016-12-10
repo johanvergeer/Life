@@ -10,7 +10,7 @@ namespace Life.Interfaces
     interface ILivable
     {
         /// <summary>  
-        /// Deze functie zorgt ervoor dat de zorgt ervoor het object loopt
+        /// Deze functie zorgt ervoor dat het object loopt
         /// Lopen kan alleen horizontaal, verticaal of in een hoek van 45 graden.
         /// </summary>
         /// <param name="currentPosition">Geef de huidige positie mee</param>
@@ -18,7 +18,7 @@ namespace Life.Interfaces
         Point walk(Point currentPosition);
 
         /// <summary>
-        /// Deze functie zorgt ervoor dat de zorgt ervoor het object zwemt in water
+        /// Deze functie zorgt ervoor dat het object zwemt in water
         /// </summary>
         /// <param name="currentPosition">geeft de huidige positie mee</param>
         /// <returns>De functie geeft de nieuwe locatie terug</returns>

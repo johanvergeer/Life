@@ -9,7 +9,7 @@ namespace Life.Interfaces
     interface ISaveable
     {
         /// <summary>
-        /// Doormiddel van deze functie kan het object worden opgeslagen
+        /// Door middel van deze functie kan het object worden opgeslagen
         /// </summary>
         /// <returns>Geeft aan of het opslaan gelukt is</returns>
         bool save();
