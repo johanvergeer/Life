@@ -7,6 +7,18 @@ namespace Simulation
     interface ISimulation
     {
         /// <summary>
+        /// Layout will be added in the Initialize method
+        /// </summary>
+        Layout layout { get; }
+
+        /// <summary>
+        /// List of all the Objects in the simulation. 
+        /// 
+        /// These can only be set inside the class that implements the interface.
+        /// </summary>
+        List<SimObject> SimObjects { get; }
+
+        /// <summary>
         /// Initialize the application and set the initial values
         /// 
         /// Precondictions:

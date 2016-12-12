@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Simulation
 {
+    /// <summary>
+    /// Current status of a simulation
+    /// </summary>
     public enum SimulationStatus
     {
         New, Pauzed, Started, Stopped

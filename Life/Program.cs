@@ -9,7 +9,7 @@ namespace Life
     static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        /// The main entry point for the Life application.
         /// </summary>
         [STAThread]
         static void Main()
