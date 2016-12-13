@@ -12,7 +12,7 @@ namespace Simulation
         /// <summary>
         /// A list of all the species that can be used in simulations
         /// </summary>
-        List<Species> Species{ get; set; }
+        List<Species> Species { get; set; }
 
         /// <summary>
         /// A list of all the layouts that can be used in simulations
@@ -36,6 +36,8 @@ namespace Simulation
 
         /// <summary>
         /// Create a new species that can be used to create creatures.
+        /// Add the new species to the Species List
+        /// After the creature is created it has to be saved to the datastore.
         /// 
         /// PostConditions:
         ///     The minimumWeight is NLegs * 10
@@ -68,6 +70,7 @@ namespace Simulation
         /// </param>
         /// 
         /// <returns>The new species object</returns>
+        /// <exception cref="">Raised if the new species was not saved</exception>
         Species CreateSpecies(string Name, int Searing, int NLegs, Digestion digestion,
             int MovingThreshold, int SwimmingThreshold, int RepoductionCosts, int Stamina,
             int HerdBehaviour);
@@ -106,6 +109,18 @@ namespace Simulation
         /// <param name="simulation">ISimulation object</param>
         /// <returns>ISimulation object</returns>
         ISimulation AddSimulation(ISimulation simulation);
+
+        /// <summary>
+        /// Load a simluation file that can be used to continue the previously stored simulation
+        /// </summary>
+        /// <param name="fileName">File with the stored simulation</param>
+        /// <returns>Simulation obect</returns>
+        /// <exception cref="">Thrown when file not found</exception>
+        /// <exception cref="">
+        ///     Thrown when Simulation could not be loaded. 
+        ///     e.g. in case of a corrupt file
+        /// </exception>
+        ISimulation LoadSimulation(string fileName);
 
 
         /// <summary>

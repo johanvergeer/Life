@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Simulation.Layouts
 {
+    /// <summary>
+    /// Base class for a layout
+    /// </summary>
     class Layout
     {
 

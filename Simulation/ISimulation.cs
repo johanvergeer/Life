@@ -146,7 +146,8 @@ namespace Simulation
         SimulationStatus Stop();
 
         /// <summary>
-        /// Saves the current status of the application
+        /// Saves the current status of the simulation that can 
+        /// be used to load and continue
         /// 
         /// Preconditions:
         ///     The simulation status is set to New or Pauzed

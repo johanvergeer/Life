@@ -24,13 +24,14 @@ namespace ReportGenerator
         void CreateReport();
 
         /// <summary>
-        /// Exports a report to a file on the system
+        /// Exports a report to a file on the system that can be read in another system.
         /// </summary>
+        /// <example>PDF, Excel, etc...</example>
         /// <param name="path">The path where the report should be exported to</param>
         void Export(string path);
 
         /// <summary>
-        /// Save the report
+        /// Save the report in the native format for reloading
         /// </summary>
         void Save();
     }

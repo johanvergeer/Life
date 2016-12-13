@@ -39,6 +39,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Color.cs" />
     <Compile Include="ISimApplication.cs" />
     <Compile Include="Layouts\ILayout.cs" />
     <Compile Include="Layouts\Layout.cs" />

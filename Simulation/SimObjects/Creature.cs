@@ -8,5 +8,6 @@ namespace Simulation.SimObjects
 {
     class Creature : SimObject
     {
+        public Species species { get; set; }
     }
 }
