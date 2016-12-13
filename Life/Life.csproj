@@ -85,6 +85,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimulationReport\ReportGenerator.csproj">
+      <Project>{865d882a-043b-4b42-8b38-1960108cf9e4}</Project>
+      <Name>ReportGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Simulation\Simulation.csproj">
+      <Project>{785e68c0-6b46-4bec-a0ec-d2037d3e1e70}</Project>
+      <Name>Simulation</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
