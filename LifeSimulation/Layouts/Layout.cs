@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulationProj.SimObjects
+namespace LifeSimulation.Layouts
 {
-    public class Species
+    /// <summary>
+    /// Base class for a layout
+    /// </summary>
+    public class Layout
     {
+
     }
 }

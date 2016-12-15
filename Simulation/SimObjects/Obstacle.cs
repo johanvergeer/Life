@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simulation.SimObjects
+namespace SimulationProj.SimObjects
 {
-    class Obstacle : SimObject
+    public class Obstacle : SimObject
     {
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulationProj.SimObjects
+namespace LifeSimulation.Layouts
 {
-    public class Species
+    public class Territory
     {
+
     }
 }

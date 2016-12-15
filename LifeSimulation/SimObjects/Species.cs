@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulationProj.SimObjects
+namespace LifeSimulation.SimObjects
 {
     public class Species
     {

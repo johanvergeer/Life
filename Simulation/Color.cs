@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simulation
+namespace SimulationProj
 {
-    enum Color
+    public enum Color
     {
 
     }

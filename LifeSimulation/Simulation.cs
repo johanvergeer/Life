@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SimulationProj.Layouts;
-using SimulationProj.SimObjects;
+using LifeSimulation.Layouts;
+using LifeSimulation.SimObjects;
 
-namespace SimulationProj
+namespace LifeSimulation
 {
     public class Simulation : ISimulation
     {

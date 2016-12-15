@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simulation.Layouts
+namespace SimulationProj.Layouts
 {
     /// <summary>
     /// Base class for a layout
     /// </summary>
-    class Layout
+    public class Layout
     {
 
     }

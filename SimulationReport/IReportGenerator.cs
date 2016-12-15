@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace ReportGenerator
+namespace ReportManager
 {
-    interface IReportGenerator
+    interface IReportManager
     {
         List<IReport> Reports { get; set; }
 

@@ -9,14 +9,14 @@ namespace Life
     static class Program
     {
         /// <summary>
-        /// The main entry point for the Life application.
+        /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            Application.Run(new MainForm());
         }
     }
 }

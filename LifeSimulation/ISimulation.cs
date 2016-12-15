@@ -1,8 +1,8 @@
-﻿using SimulationProj.Layouts;
-using SimulationProj.SimObjects;
+﻿using LifeSimulation.Layouts;
+using LifeSimulation.SimObjects;
 using System.Collections.Generic;
 
-namespace SimulationProj
+namespace LifeSimulation
 {
     public interface ISimulation
     {

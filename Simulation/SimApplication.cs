@@ -8,9 +8,9 @@ using SimulationProj.SimObjects;
 
 namespace SimulationProj
 {
-    public class Simulation : ISimulation
+    public class SimApplication : ISimApplication
     {
-        public Layout layout
+        public List<Layout> layouts
         {
             get
             {
@@ -23,20 +23,7 @@ namespace SimulationProj
             }
         }
 
-        public List<SimObject> SimObjects
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            private set
-            {
-
-            }
-        }
-
-        public int Speed
+        public List<ISimulation> Simulations
         {
             get
             {
@@ -49,40 +36,55 @@ namespace SimulationProj
             }
         }
 
-        public SimulationStatus Status
+        public List<Species> Species
         {
             get
             {
                 throw new NotImplementedException();
             }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public ISimulation Initialize(Layout layout, int nElements, int? plants, int? carnivores, int? herbivores, int? omnivores, int? nonivores, int? obstacles, int? speed, List<Species> species)
+        public ISimulation AddSimulation(ISimulation simulation)
         {
             throw new NotImplementedException();
         }
 
-        public SimulationStatus Pauze()
+        public Layout CreateLayout(string Name, int GridSize)
         {
             throw new NotImplementedException();
         }
 
-        public void Save()
+        public Species CreateSpecies(string Name, int Searing, int NLegs, Digestion digestion, int MovingThreshold, int SwimmingThreshold, int RepoductionCosts, int Stamina, int HerdBehaviour)
         {
             throw new NotImplementedException();
         }
 
-        public SimulationStatus Start()
+        public void DeleteLayout(Layout layout)
         {
             throw new NotImplementedException();
         }
 
-        public void Step()
+        public void DeleteSimulation(ISimulation simulation)
         {
             throw new NotImplementedException();
         }
 
-        public SimulationStatus Stop()
+        public void DeleteSpecies(Species species)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISimulation LoadSimulation(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
         {
             throw new NotImplementedException();
         }

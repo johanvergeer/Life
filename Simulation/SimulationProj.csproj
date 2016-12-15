@@ -8,8 +8,8 @@
     <ProjectGuid>{785E68C0-6B46-4BEC-A0EC-D2037D3E1E70}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Simulation</RootNamespace>
-    <AssemblyName>Simulation</AssemblyName>
+    <RootNamespace>SimulationProj</RootNamespace>
+    <AssemblyName>SimulationProj</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
@@ -43,6 +43,7 @@
     <Compile Include="Layouts\ILayout.cs" />
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="Layouts\Territory.cs" />
+    <Compile Include="SimApplication.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="SimulationStatus.cs" />
     <Compile Include="ISimulation.cs" />
