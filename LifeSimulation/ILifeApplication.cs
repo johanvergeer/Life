@@ -7,7 +7,7 @@ namespace LifeSimulation
     /// <summary>
     /// Base interface for the simulation application
     /// </summary>
-    public interface ISimApplication
+    public interface ILifeApplication
     {
         /// <summary>
         /// A list of all the species that can be used in simulations
@@ -24,7 +24,7 @@ namespace LifeSimulation
         /// 
         /// The maximum number of applications is 4
         /// </summary>
-        List<ISimulation> Simulations { get; set; }
+        List<ILifeSimulation> Simulations { get; set; }
 
         /// <summary>
         /// Save the base settings
@@ -108,7 +108,7 @@ namespace LifeSimulation
         /// </summary>
         /// <param name="simulation">ISimulation object</param>
         /// <returns>ISimulation object</returns>
-        ISimulation AddSimulation(ISimulation simulation);
+        ILifeSimulation AddSimulation(ILifeSimulation simulation);
 
         /// <summary>
         /// Load a simluation file that can be used to continue the previously stored simulation
@@ -120,7 +120,7 @@ namespace LifeSimulation
         ///     Thrown when SimulationProj could not be loaded. 
         ///     e.g. in case of a corrupt file
         /// </exception>
-        ISimulation LoadSimulation(string fileName);
+        ILifeSimulation LoadSimulation(string fileName);
 
 
         /// <summary>
@@ -130,6 +130,6 @@ namespace LifeSimulation
         ///     The simulation must have the status Stopped
         /// </summary>
         /// <param name="simulation">The simulation that needs to be deleted</param>
-        void DeleteSimulation(ISimulation simulation);
+        void DeleteSimulation(ILifeSimulation simulation);
     }
 }

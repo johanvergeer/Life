@@ -8,7 +8,7 @@ using LifeSimulation.SimObjects;
 
 namespace LifeSimulation
 {
-    public class SimApplication : ISimApplication
+    public class LifeApplication : ILifeApplication
     {
         public List<Layout> layouts
         {
@@ -23,7 +23,7 @@ namespace LifeSimulation
             }
         }
 
-        public List<ISimulation> Simulations
+        public List<ILifeSimulation> Simulations
         {
             get
             {
@@ -49,7 +49,7 @@ namespace LifeSimulation
             }
         }
 
-        public ISimulation AddSimulation(ISimulation simulation)
+        public ILifeSimulation AddSimulation(ILifeSimulation simulation)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +69,7 @@ namespace LifeSimulation
             throw new NotImplementedException();
         }
 
-        public void DeleteSimulation(ISimulation simulation)
+        public void DeleteSimulation(ILifeSimulation simulation)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +79,7 @@ namespace LifeSimulation
             throw new NotImplementedException();
         }
 
-        public ISimulation LoadSimulation(string fileName)
+        public ILifeSimulation LoadSimulation(string fileName)
         {
             throw new NotImplementedException();
         }
