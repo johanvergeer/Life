@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportManager", "Simulation
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LifeSimulation", "LifeSimulation\LifeSimulation.csproj", "{172512E4-4BF5-48F1-9F77-85D99B6E499C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life2", "Life2\Life2.csproj", "{9555AD4A-C78A-4057-BCB9-484607C46411}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Life", "Life2\Life.csproj", "{9555AD4A-C78A-4057-BCB9-484607C46411}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
