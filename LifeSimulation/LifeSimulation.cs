@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 
 namespace LifeSimulation
 {
     public class LifeSimulation : ILifeSimulation
-
-
     {
         /// <summary>
         /// Initialize the application and set the initial values
@@ -87,6 +82,19 @@ namespace LifeSimulation
 
         }
 
+        public int Id
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public Layout layout
         {
             get
@@ -147,7 +155,12 @@ namespace LifeSimulation
             throw new NotImplementedException();
         }
 
-        public void Save()
+        public void SaveReportData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSimulation()
         {
             throw new NotImplementedException();
         }

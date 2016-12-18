@@ -7,6 +7,11 @@ namespace LifeSimulation
     public interface ILifeSimulation
     {
         /// <summary>
+        /// Unique id for a simulation
+        /// </summary>
+        int Id { get; set; }
+
+        /// <summary>
         /// Layout will be added in the Initialize method
         /// </summary>
         Layout layout { get; }
@@ -83,7 +88,18 @@ namespace LifeSimulation
         /// Postconditions:
         ///     The simulation data is saved
         /// </summary>
-        void Save();
+        void SaveSimulation();
+
+        /// <summary>
+        /// Saves the current data of the simulation for usage in reports
+        /// 
+        /// Preconditions:
+        ///     The simulation status is set to New or Pauzed
+        ///     
+        /// Postconditions:
+        ///     The report data is saved
+        /// </summary>
+        void SaveReportData();
 
         /// <summary>
         /// Make one step forward in the simulation

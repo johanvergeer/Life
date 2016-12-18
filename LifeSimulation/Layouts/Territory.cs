@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LifeSimulation.Layouts
+﻿namespace LifeSimulation.Layouts
 {
     public class Territory
     {
+        public int XPos { get; set; }
+        public int YPos { get; set; }
+        public SimObjectColor Color { get; set; }
 
+        public Territory(int xPos, int yPos)
+        {
+            Color = SimObjectColor.White;
+        }
     }
 }

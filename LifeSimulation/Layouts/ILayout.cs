@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace LifeSimulation.Layouts
 {
     public interface ILayout
     {
+        /// <summary>
+        /// Unique id for the layout
+        /// </summary>
+        int Id { get; set; }
+
+        /// <summary>
+        /// Name for the layout
+        /// </summary>
+        string Name { get; set; }
+
         /// <summary>
         /// List of all the territory objects in the layout
         /// </summary>

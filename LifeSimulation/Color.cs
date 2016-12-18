@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LifeSimulation
+﻿namespace LifeSimulation
 {
-    public enum Color
+    public enum SimObjectColor
     {
-
+        Red,
+        Yellow,
+        Brown,
+        Green,
+        Blue,
+        Black,
+        White
     }
 }

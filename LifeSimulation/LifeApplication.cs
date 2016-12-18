@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 
@@ -10,6 +7,11 @@ namespace LifeSimulation
 {
     public class LifeApplication : ILifeApplication
     {
+        public LifeApplication()
+        {
+
+        }
+
         public List<Layout> layouts
         {
             get

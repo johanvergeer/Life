@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LifeSimulation.SimObjects
+﻿namespace LifeSimulation.SimObjects
 {
     public class Obstacle : SimObject
     {
+        public Obstacle(int xPos, int yPos, SimObjectColor color) : base(xPos, yPos, color)
+        {
+
+        }
     }
 }

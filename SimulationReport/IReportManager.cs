@@ -2,16 +2,9 @@
 
 namespace ReportManager
 {
-    interface IReportManager
+    public interface IReportManager
     {
         List<IReport> Reports { get; set; }
-
-        /// <summary>
-        /// Get a report from the reports list
-        /// </summary>
-        /// <param name="reportId">Id from a report</param>
-        /// <returns></returns>
-        IReport GetReport(int reportId);
 
         /// <summary>
         /// Create a new report

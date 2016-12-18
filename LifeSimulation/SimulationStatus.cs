@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace LifeSimulation
+﻿namespace LifeSimulation
 {
     /// <summary>
     /// Current status of a simulation

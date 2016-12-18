@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LifeSimulation;
 using System.Windows.Forms;
+using UserManager;
+using ReportManager;
 
 namespace Life
 {
     public partial class MainForm : Form
     {
+        public ILifeApplication LifeApplication{ get; set; }
+        public IUserManager UserManager{ get; set; }
+        public IReportManager ReportManager{ get; set; }
+
         public MainForm()
         {
             InitializeComponent();
