@@ -7,5 +7,22 @@
         {
 
         }
+
+        /// <summary>
+        /// A plant can grow by an amount of energy
+        /// </summary>
+        /// <param name="energy">The amount of energy the plant will grow by</param>
+        public void Grow(int energy)
+        {
+
+        }
+
+        /// <summary>
+        /// The plant will grow with 1 energy
+        /// </summary>
+        public void Grow()
+        {
+
+        }
     }
 }
