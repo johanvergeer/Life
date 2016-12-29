@@ -15,5 +15,10 @@ namespace Life
         {
             InitializeComponent();
         }
+
+        private void afsluitenMainMenu_Click(object sender, System.EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

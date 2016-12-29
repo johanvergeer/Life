@@ -1,4 +1,5 @@
-﻿using LifeSimulation.Layouts;
+﻿
+using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 using System.Collections.Generic;
 

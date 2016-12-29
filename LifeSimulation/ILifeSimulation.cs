@@ -105,8 +105,8 @@ namespace LifeSimulation
         /// Make one step forward in the simulation
         /// 
         /// Preconditions:
-        ///     The simulation status is set to Pauzed or New
-        ///     The speed is set to 0
+        ///     The simulation status is set to Started
+        ///     The speed is set to more than 0
         ///     
         /// Postconditions:
         ///     The simulation has moved one step further
