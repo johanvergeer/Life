@@ -4,7 +4,7 @@
     {
         public int XPos { get; set; }
         public int YPos { get; set; }
-        public SimObjectColor Color { get; set; }
+        public SimObjectColor Color { get; set; }   
 
         public Territory(int xPos, int yPos)
         {

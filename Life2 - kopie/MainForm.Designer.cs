@@ -1,6 +1,6 @@
 ﻿namespace Life
 {
-    partial class Main
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Main";
+            this.ClientSize = new System.Drawing.Size(656, 460);
+            this.Name = "MainForm";
+            this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
     }
 }
+
