@@ -88,7 +88,7 @@ namespace LifeSimulation
         /// Postconditions:
         ///     The simulation data is saved
         /// </summary>
-        void SaveSimulation();
+        void SaveSimulation(string filename);
 
         /// <summary>
         /// Saves the current data of the simulation for usage in reports
@@ -99,7 +99,7 @@ namespace LifeSimulation
         /// Postconditions:
         ///     The report data is saved
         /// </summary>
-        void SaveReportData();
+        void SaveReportData(string filename);
 
         /// <summary>
         /// Make one step forward in the simulation

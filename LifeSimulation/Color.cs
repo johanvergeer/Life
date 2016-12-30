@@ -8,6 +8,7 @@
         Green,
         Blue,
         Black,
-        White
+        White,
+        Purple
     }
 }

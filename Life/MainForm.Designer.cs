@@ -31,6 +31,7 @@
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.bestandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.afsluitenMainMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.startSimulatieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             // bestandToolStripMenuItem
             // 
             this.bestandToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startSimulatieToolStripMenuItem,
             this.afsluitenMainMenu});
             this.bestandToolStripMenuItem.Name = "bestandToolStripMenuItem";
             this.bestandToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -58,6 +60,13 @@
             this.afsluitenMainMenu.Size = new System.Drawing.Size(152, 22);
             this.afsluitenMainMenu.Text = "Afsluiten";
             this.afsluitenMainMenu.Click += new System.EventHandler(this.afsluitenMainMenu_Click);
+            // 
+            // startSimulatieToolStripMenuItem
+            // 
+            this.startSimulatieToolStripMenuItem.Name = "startSimulatieToolStripMenuItem";
+            this.startSimulatieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startSimulatieToolStripMenuItem.Text = "Start simulatie";
+            this.startSimulatieToolStripMenuItem.Click += new System.EventHandler(this.startSimulatieToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -83,6 +92,7 @@
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem bestandToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem afsluitenMainMenu;
+        private System.Windows.Forms.ToolStripMenuItem startSimulatieToolStripMenuItem;
     }
 }
 
