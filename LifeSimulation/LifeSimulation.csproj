@@ -50,11 +50,13 @@
     <Compile Include="LifeApplication.cs" />
     <Compile Include="SimObjects\Creature.cs" />
     <Compile Include="SimObjects\Digestion.cs" />
+    <Compile Include="SimObjects\Direction.cs" />
     <Compile Include="SimObjects\Obstacle.cs" />
     <Compile Include="SimObjects\Plant.cs" />
     <Compile Include="SimObjects\SimObject.cs" />
     <Compile Include="SimObjects\Species.cs" />
     <Compile Include="LifeSimulation.cs" />
+    <Compile Include="SimulationContext.cs" />
     <Compile Include="SimulationStatus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
