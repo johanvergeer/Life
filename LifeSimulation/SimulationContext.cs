@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 
 namespace LifeSimulation
 {
-    internal class SimulationContext
+    public class SimulationContext
     {
-        private Layout Layout { get; set; }
+        public ILayout Layout { get; private set; }
         private List<SimObject> SimObjects { get; }
 
-        public SimulationContext(Layout layout)
+        public SimulationContext(ILayout layout)
         {
             Layout = layout;
             SimObjects = new List<SimObject>();
@@ -22,27 +21,25 @@ namespace LifeSimulation
         /// Add a new creature to the SimObjects list
         /// </summary>
         /// <param name="creature">Creature object</param>
-        public void AddCreature(Creature creature)
-        {
-            SimObjects.Add(creature);
-        }
+        public void AddCreature(Creature creature) => SimObjects.Add(creature);
 
         /// <summary>
         /// Add a new plant to the SimObjects list
         /// </summary>
         /// <param name="plant">Plant object</param>
-        public void AddPlant(Plant plant)
-        {
-            SimObjects.Add(plant);
-        }
+        public void AddPlant(Plant plant) => SimObjects.Add(plant);
 
         /// <summary>
         /// Add a new obstacle to the SimObjects list
         /// </summary>
         /// <param name="obstacle">Obstacle object</param>
-        public void AddObstacle(Obstacle obstacle)
+        public void AddObstacle(Obstacle obstacle) => SimObjects.Add(obstacle);
+
+        public IEnumerable<SimObject> GetAllSimObjects() => SimObjects;
+
+        public void RemoveSimObject(SimObject simObject)
         {
-            SimObjects.Add(obstacle);
+            SimObjects.Remove(simObject);
         }
 
         /// <summary>
@@ -50,10 +47,8 @@ namespace LifeSimulation
         /// </summary>
         /// <typeparam name="T">A type of SimObject</typeparam>
         /// <returns></returns>
-        public IEnumerable<TSimObject> GetAllSimObjectsOfType<TSimObject>() where TSimObject : SimObject
-        {
-            return SimObjects.OfType<TSimObject>();
-        }
+        public IEnumerable<TSimObject> GetAllSimObjectsOfType<TSimObject>() where TSimObject : SimObject 
+            => SimObjects.OfType<TSimObject>();
 
         /// <summary>
         /// Get a simObject in a certain position
@@ -61,9 +56,12 @@ namespace LifeSimulation
         /// <typeparam name="TSimObject">A type of SimObject</typeparam>
         /// <param name="xPos">The xPosition on the grid to look from</param>
         /// <param name="yPos">The yPosition on the grid to look from</param>
-        /// <param name="direction">The direction to look to</param>
+        /// <param name="direction">
+        ///     The direction to look to
+        ///     The default is None (The current location)
+        /// </param>
         /// <returns></returns>
-        public TSimObject GetSimObject<TSimObject>(int xPos, int yPos, Direction direction) where TSimObject : SimObject
+        public TSimObject GetSimObject<TSimObject>(int xPos, int yPos, Direction direction = Direction.None) where TSimObject : SimObject
         {
             GetCoordinates(ref xPos, ref yPos, direction);
 
@@ -88,6 +86,45 @@ namespace LifeSimulation
                     .Where(plant => plant != null)
                     .ToList();
         }
+
+        /// <summary>
+        /// Get creatures of a specific digestion type
+        /// </summary>
+        /// <param name="digestion">Digestion type</param>
+        /// <returns>
+        ///     List of creatures of a specific digestion type
+        ///     Null if there are no creatures of the digestion type
+        /// </returns>
+        public IEnumerable<Creature> GetCreaturesOfDigestion(Digestion digestion)
+        {
+            var creatures = GetAllSimObjectsOfType<Creature>();
+            return creatures?.Where(c => c.Species.Digestion == digestion);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="species"></param>
+        /// <returns></returns>
+        public IEnumerable<Creature> GetCreaturesOfSpecies(Species species)
+        {
+            var creatures = GetAllSimObjectsOfType<Creature>();
+            return creatures?.Where(c => c.Species == species);
+        }
+
+        public bool HasSimObjects(int xPos, int yPos)
+        {
+            return SimObjects.Any(s => s.Xpos == xPos && s.YPos == yPos);
+        }
+
+        /// <summary>
+        /// Check if the position contains an obstacle
+        /// </summary>
+        /// <param name="xPos"></param>
+        /// <param name="yPos"></param>
+        /// <returns></returns>
+        public bool HasObstacle(int xPos, int yPos) 
+            => GetAllSimObjectsOfType<Obstacle>().Any(o => o.Xpos == xPos && o.YPos == yPos);
 
         /// <summary>
         /// Get coordinates based on the current position and the direction

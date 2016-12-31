@@ -12,56 +12,24 @@ namespace LifeSimulation
 
         }
 
-        public List<Layout> layouts
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        public List<Layout> layouts { get; set; }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public List<ILifeSimulation> Simulations{get; set; }
 
-        public List<ILifeSimulation> Simulations
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public List<Species> Species
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public List<Species> Species{get; set; }
 
         public ILifeSimulation AddSimulation(ILifeSimulation simulation)
         {
-            throw new NotImplementedException();
+            Simulations.Add(simulation);
+            return simulation;
         }
 
-        public Layout CreateLayout(string Name, int GridSize)
+        public Layout CreateLayout(string name, int gridSize)
         {
             throw new NotImplementedException();
         }
 
-        public Species CreateSpecies(string Name, int Searing, int NLegs, Digestion digestion, int MovingThreshold, int SwimmingThreshold, int RepoductionCosts, int Stamina, int HerdBehaviour)
+        public Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, int swimmingThreshold, int sepoductionCosts, int stamina, int herdBehaviour)
         {
             throw new NotImplementedException();
         }

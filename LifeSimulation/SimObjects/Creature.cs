@@ -12,8 +12,8 @@ namespace LifeSimulation.SimObjects
         public int Weight { get; set; }
         public Species Species { get; set; }
 
-        public Creature(int xPos, int yPos, SimObjectColor color, int energy, int speed, int hunger,
-            int strength, int weight, Species species) : base(xPos, yPos, color)
+        public Creature(int xPos, int yPos, SimObjectColor color, SimulationContext context, int energy, int speed, int hunger,
+            int strength, int weight, Species species) : base(xPos, yPos, color, context)
         {
 
         }
@@ -27,7 +27,7 @@ namespace LifeSimulation.SimObjects
         /// <param name="simObjects">List of SimObjects in the direct environment</param>
         /// <param name="gridSizeX">X size of the grid</param>
         /// <param name="gridSizeY">Y size of the grid</param>
-        public void Act(Layout layout, List<SimObject> simObjects)
+        public void Act()
         {
 
         }

@@ -6,7 +6,7 @@
         public int YPos { get; set; }
         public SimObjectColor Color { get; set; }
 
-        public SimObject(int xPos, int yPos, SimObjectColor color)
+        public SimObject(int xPos, int yPos, SimObjectColor color, SimulationContext context)
         {
 
         }

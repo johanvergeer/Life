@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Diagnostics;
 
 namespace LifeSimulation
 {
@@ -11,14 +13,12 @@ namespace LifeSimulation
     public class LifeSimulation : ILifeSimulation
     {
         public int Id { get; set; }
-
-        public Layout layout { get; }
-
-        public List<SimObject> SimObjects { get; private set; }
-
         public int Speed { get; set; }
-
         public SimulationStatus Status { get; private set; }
+
+        private readonly SimulationContext _context;
+        private readonly int _nElements;
+        private readonly ICollection<Species> _species;
 
         /// <summary>
         /// Initialize the application and set the initial values
@@ -89,189 +89,106 @@ namespace LifeSimulation
         /// </exception>
         /// 
         /// <returns>An ISimulation object</returns>
-        public LifeSimulation(Layout layout, int nElements, int? plants, int? carnivores, int? herbivores, int? omnivores,
-            int? nonivores, int? obstacles, int? speed, List<Species> species)
+        public LifeSimulation(Layout layout, int nElements, List<Species> species, int plants = 0, int carnivores = 0, int herbivores = 0, int omnivores = 0,
+            int nonivores = 0, int obstacles = 0, int speed = 100)
         {
-            // ID Misschien hier nog implementeren?
-            this.layout = layout;
-            this.Speed = (int)speed;
-            SimObjects = new List<SimObject>();
+            _context = new SimulationContext(layout);
+            _nElements = nElements;
+            _species = species;
+            Speed = speed;
 
-            // Mooie exceptions gegen misschien
-            // Loop aantal keer voor maken 
-            if ((carnivores < 0) || (carnivores > 100)) {
+            // Mooie exceptions geven misschien
+            // Loop aantal keer voor maken
+
+            var types = new List<int>
+            {
+                plants,
+                carnivores,
+                herbivores,
+                omnivores,
+                nonivores,
+                obstacles
+            };
+
+            // Check if every type percentage is from 0 to 100
+            if (types.Any(type => type < 0 || type > 100))
                 throw new Exception();
-            }
-            if ((herbivores < 0) || (herbivores > 100))
-            {
+
+            // Check if the count of all types is equal to 100
+            if (types.Sum(x => x) != 100)
                 throw new Exception();
-            }
-            if ((omnivores < 0) || (omnivores > 100))
-            {
-                throw new Exception();
-            }
-            if ((nonivores < 0) || (nonivores > 100))
-            {
-                throw new Exception();
-            }
-            if ((plants < 0) || (plants > 100))
-            {
-                throw new Exception();
-            }
-            if ((obstacles < 0) || (obstacles > 100))
-            {
-                throw new Exception();
-            }
 
-            if ((carnivores + omnivores + nonivores + herbivores + plants + obstacles) != 100)
-            {
-                throw new Exception();
-            }
+            AddSimObjects<Obstacle>(obstacles);
+            AddSimObjects<Plant>(plants);
 
-            // Aanpassing aantal wordt altijd naar beneden afgerond i.p.v. foutmelding
-            int i = 0;
-
-            // TODO gridsize van layout ophalen deze word gebruikt voor locatie te bepalen
-            int gridX = 100;
-            int gridY = 100;
-            int posX = 0;
-            int posY = 0;
-            bool objectPlaced = false;
-            Random rnd = new Random();
-
-            for (i = 0; i < Convert.ToInt32(((nElements / 100) * obstacles)); i++)
-            {
-                objectPlaced = false;
-                // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
-                while (!objectPlaced)
-                {
-                    posX = rnd.Next(gridX, gridX);
-                    posY = rnd.Next(gridY, gridY);
-                    if ((!SimObjects.Exists(so => (so.Xpos == posX && so.YPos == posY)))
-                        && (layout.Territories.Exists(t => (t.XPos == posX && t.YPos == posY))))
-                    {
-                        SimObjects.Add(new Obstacle(posX, posY, SimObjectColor.Black));
-                        objectPlaced = true;
-                    }
-                }
-            }
-            
-            // Als 2e de planten erop zetten
-            for (i = 0; i < Convert.ToInt32(((nElements / 100) * plants)); i++)
-            {
-                objectPlaced = false;
-                // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
-                while (!objectPlaced)
-                {
-                    posX = rnd.Next(gridX, gridX);
-                    posY = rnd.Next(gridY, gridY);
-                    if ((!SimObjects.Exists(so => (so.Xpos == posX && so.YPos == posY && (so is Obstacle))))
-                        && (layout.Territories.Exists(t => (t.XPos == posX && t.YPos == posY))))
-                    {
-                        SimObjects.Add(new Plant(100, posX, posY, SimObjectColor.Green));
-                        objectPlaced = true;
-                    }
-                }
-            }
-            
-            // De species verdelen met digestion
-            List<Species> carnivoren = species.FindAll(sp => (sp.Digestion == Digestion.Carnivore));
-            List<Species> herbivoren = species.FindAll(sp => (sp.Digestion == Digestion.Herbivore));
-            List<Species> omnivoren = species.FindAll(sp => (sp.Digestion == Digestion.Omnivore));
-            List<Species> nonivoren = species.FindAll(sp => (sp.Digestion == Digestion.Nonivore));
-
-            // TODO de start waarden van de creatures bepalen zoals snelheid gewicht enz.
-            // Verdeling is afgerond
-            
-            // Carnivoren
-            foreach (Species s in carnivoren)
-            {
-                for (i = 0; i < Convert.ToInt32(((nElements / 100) * (carnivores / carnivoren.Count))); i++)
-                {
-                    // Alle carnivoren ophalen
-                    objectPlaced = false;
-                    // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
-                    while (!objectPlaced)
-                    {
-                        posX = rnd.Next(gridX, gridX);
-                        posY = rnd.Next(gridY, gridY);
-                        if ((!SimObjects.Exists(so => (so.Xpos == posX && so.YPos == posY && (so is Obstacle))))
-                            && (layout.Territories.Exists(t => (t.XPos == posX && t.YPos == posY))))
-                        {
-                            SimObjects.Add(new Creature(posX, posY, SimObjectColor.Red, 100, 0, 0, 0, 0, s));
-                            objectPlaced = true;
-                        }
-                    }
-                }
-            }
-
-            // Herbivoren
-            foreach (Species s in herbivoren)
-            {
-                for (i = 0; i < Convert.ToInt32(((nElements / 100) * (herbivores / herbivoren.Count))); i++)
-                {
-                    // Alle carnivoren ophalen
-                    objectPlaced = false;
-                    // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
-                    while (!objectPlaced)
-                    {
-                        posX = rnd.Next(gridX, gridX);
-                        posY = rnd.Next(gridY, gridY);
-                        if ((!SimObjects.Exists(so => (so.Xpos == posX && so.YPos == posY && (so is Obstacle))))
-                            && (layout.Territories.Exists(t => (t.XPos == posX && t.YPos == posY))))
-                        {
-                            SimObjects.Add(new Creature(posX, posY, SimObjectColor.Brown, 100, 0, 0, 0, 0, s));
-                            objectPlaced = true;
-                        }
-                    }
-                }
-            }
-
-            // Herbivoren
-            foreach (Species s in omnivoren)
-            {
-                for (i = 0; i < Convert.ToInt32(((nElements / 100) * (omnivores / omnivoren.Count))); i++)
-                {
-                    // Alle carnivoren ophalen
-                    objectPlaced = false;
-                    // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
-                    while (!objectPlaced)
-                    {
-                        posX = rnd.Next(gridX, gridX);
-                        posY = rnd.Next(gridY, gridY);
-                        if ((!SimObjects.Exists(so => (so.Xpos == posX && so.YPos == posY && (so is Obstacle))))
-                            && (layout.Territories.Exists(t => (t.XPos == posX && t.YPos == posY))))
-                        {
-                            SimObjects.Add(new Creature(posX, posY, SimObjectColor.Yellow, 100, 0, 0, 0, 0, s));
-                            objectPlaced = true;
-                        }
-                    }
-                }
-            }
-
-            // Nonivoren
-            foreach (Species s in nonivoren)
-            {
-                for (i = 0; i < Convert.ToInt32(((nElements / 100) * (nonivores / nonivoren.Count))); i++)
-                {
-                    // Alle carnivoren ophalen
-                    objectPlaced = false;
-                    // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
-                    while (!objectPlaced)
-                    {
-                        posX = rnd.Next(gridX, gridX);
-                        posY = rnd.Next(gridY, gridY);
-                        if ((!SimObjects.Exists(so => (so.Xpos == posX && so.YPos == posY && (so is Obstacle))))
-                            && (layout.Territories.Exists(t => (t.XPos == posX && t.YPos == posY))))
-                        {
-                            SimObjects.Add(new Creature(posX, posY, SimObjectColor.Yellow, 100, 0, 0, 0, 0, s));
-                            objectPlaced = true;
-                        }
-                    }
-                }
-            }
+            AddCreatures(Digestion.Carnivore, carnivores);
+            AddCreatures(Digestion.Herbivore, herbivores);
+            AddCreatures(Digestion.Omnivore, omnivores);
+            AddCreatures(Digestion.Nonivore, nonivores);
 
             this.Status = SimulationStatus.New;
+        }
+
+        private void AddCreatures(Digestion digestion, int percentage)
+        {
+            IEnumerable<Species> species = _species.Where(sp => sp.Digestion == digestion);
+            var speciesCount = species.Count();
+            
+            // Calculate the percentage for each species
+            double p = (double) percentage / (double) speciesCount;
+
+            foreach (var s in species)
+            {
+               AddSimObjects<Creature>(Convert.ToInt32(p), s);
+            }
+        }
+
+        /// <summary>
+        /// Add SimObjects to the context
+        /// </summary>
+        /// <typeparam name="TSimObject">Type of SimObject</typeparam>
+        /// <param name="simObjectPercentage">The percentage for the type of SimObject in the Simulation</param>
+        /// <param name="species">Only required if the SimObject is a Creature.</param>
+        /// <exception cref="">Thrown when the type is Creature, and species is null</exception>
+        private void AddSimObjects<TSimObject>(int simObjectPercentage, Species species = null) where TSimObject : SimObject
+        {
+            var simObjectType = typeof(TSimObject);
+            var gridX = _context.Layout.GridSizeX;
+            var gridY = _context.Layout.GridSizeY;
+            var random = new Random();
+
+            for (var i = 0; i < Convert.ToInt32(_nElements / 100 * simObjectPercentage); i++)
+            {
+                while (true)
+                {
+                    // Random positie blijven genereren tot dit een niet gebruikte plek is vor obstacle
+                    var posX = random.Next(0, gridX);
+                    var posY = random.Next(0, gridY);
+
+                    // Add object if it is an Obstacle
+                    if (simObjectType == typeof(Obstacle))
+                    {
+                        if (_context.HasSimObjects(posX, posY) || !_context.Layout.HasTerritory(posX, posY)) continue;
+                        _context.AddObstacle(new Obstacle(posX, posY, SimObjectColor.Black, _context));
+                        break;
+                    }
+
+                    // Check if the position is territory (not water) and does not contain an obstacle
+                    if (_context.HasObstacle(posX, posY) || !_context.Layout.HasTerritory(posX, posY)) continue;
+
+                    // Add object if it is a plant
+                    if (simObjectType == typeof(Plant))
+                    {
+                        _context.AddPlant(new Plant(100, posX, posY, SimObjectColor.Green, _context));
+                        break;
+                    }
+
+                    // Add the object if it is a creature
+                    Debug.Assert(species != null, "Species cannot be null if the SimObject type is creature");
+                    _context.AddCreature(new Creature(posX, posY, SimObjectColor.Yellow, _context, 100, 0, 0, 0, 0, species));
+                    break;
+                }
+            }
         }
 
         public SimulationStatus Pauze()
@@ -285,8 +202,8 @@ namespace LifeSimulation
             // In txt bestand de report data opslaan
             // Heel simpel de data opslaan per regel
             // BIj het inladen op dezelfde manier inladen
-            List<SimObject> creatures = SimObjects.FindAll(so => (so is Creature));
-            List<SimObject> plants = SimObjects.FindAll(so => (so is Plant));
+            var creatures = _context.GetAllSimObjectsOfType<Creature>();
+            var plants = _context.GetAllSimObjectsOfType<Plant>();
 
             int carnivores = 0;
             int herbivores = 0;
@@ -299,7 +216,7 @@ namespace LifeSimulation
             int EnergyNonivores = 0;
             int EnergyPlanten = 0;
 
-            foreach (SimObject so in creatures)
+            foreach (Creature so in creatures)
             {
                 if ((so as Creature).Species.Digestion == Digestion.Carnivore)
                 {
@@ -322,15 +239,15 @@ namespace LifeSimulation
                     EnergyNonivores += (so as Creature).Energy;
                 }
             }
-           
-            foreach (SimObject so in plants)
+
+            foreach (var so in plants)
             {
                 planten++;
-                EnergyPlanten += (so as Plant).Energy;
+                EnergyPlanten += so.Energy;
             }
-            
 
-            using (StreamWriter outputFile = new StreamWriter(filename))
+
+            using (var outputFile = new StreamWriter(filename))
             {
                 // Data opslaan per regel
                 outputFile.WriteLine(carnivores.ToString()); // Aantal carnivores
@@ -353,10 +270,10 @@ namespace LifeSimulation
                 // Aantal planten
                 outputFile.WriteLine(planten);
                 // Energie planten
-                outputFile.WriteLine(EnergyPlanten.ToString()); 
+                outputFile.WriteLine(EnergyPlanten.ToString());
 
                 // Gemiddeld energie per plant
-                outputFile.WriteLine((EnergyPlanten / planten).ToString()); 
+                outputFile.WriteLine((EnergyPlanten / planten).ToString());
             }
         }
 
@@ -381,24 +298,22 @@ namespace LifeSimulation
         {
             // Only do step when status is started
             // TODO Snelheid verwerken in de step?
-            if ((Status == SimulationStatus.Started) && (Speed > 0))
-            {
-                // Loop through SimObjects en voer de juiste functies uit
-                foreach (SimObject so in SimObjects)
+            if ((Status != SimulationStatus.Started) || (Speed <= 0)) return;
+
+            // Loop through SimObjects en voer de juiste functies uit
+            foreach (var so in _context.GetAllSimObjects())
+                if (so is Creature)
                 {
-                    if (so is Creature)
-                    {
-                        // De dieren willen actie ondernemen
-                        Creature c = (so as Creature);
-                        c.Act(layout, SimObjects);
-                    } else if (so is Plant)
-                    {
-                        // De planten willen groeien
-                        Plant p = (so as Plant);
-                        p.Grow();
-                    }
+                    // De dieren willen actie ondernemen
+                    var c = so as Creature;
+                    c.Act();
                 }
-            }
+                else if (so is Plant)
+                {
+                    // De planten willen groeien
+                    var p = so as Plant;
+                    p.Grow();
+                }
         }
 
         public SimulationStatus Stop()

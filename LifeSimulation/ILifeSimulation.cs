@@ -12,18 +12,6 @@ namespace LifeSimulation
         int Id { get; set; }
 
         /// <summary>
-        /// Layout will be added in the Initialize method
-        /// </summary>
-        Layout layout { get; }
-
-        /// <summary>
-        /// List of all the Objects in the simulation. 
-        /// 
-        /// These can only be set inside the class that implements the interface.
-        /// </summary>
-        List<SimObject> SimObjects { get; }
-
-        /// <summary>
         /// The speed of the application in simulation steps per minute. 
         /// If the speed is 0, the simulation is not moving. 
         /// 

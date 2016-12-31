@@ -72,9 +72,9 @@ namespace LifeSimulation
         /// 
         /// <returns>The new species object</returns>
         /// <exception cref="">Raised if the new species was not saved</exception>
-        Species CreateSpecies(string Name, int Searing, int NLegs, Digestion digestion,
-            int MovingThreshold, int SwimmingThreshold, int RepoductionCosts, int Stamina,
-            int HerdBehaviour);
+        Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion,
+            int movingThreshold, int swimmingThreshold, int repoductionCosts, int stamina,
+            int herdBehaviour);
 
         /// <summary>
         /// Delete a spiecies from the list
@@ -93,7 +93,7 @@ namespace LifeSimulation
         ///     The horizontal and vertical number of squares on the grid
         /// </param>
         /// <returns></returns>
-        Layout CreateLayout(string Name, int GridSize);
+        Layout CreateLayout(string name, int gridSize);
 
         /// <summary>
         /// Delete a layout from the list
