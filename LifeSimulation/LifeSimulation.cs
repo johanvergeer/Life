@@ -15,8 +15,8 @@ namespace LifeSimulation
         public int Id { get; set; }
         public int Speed { get; set; }
         public SimulationStatus Status { get; private set; }
-
-        private readonly SimulationContext _context;
+        public SimulationContext Context { get; private set; }
+        
         private readonly int _nElements;
         private readonly ICollection<Species> _species;
 
@@ -92,7 +92,7 @@ namespace LifeSimulation
         public LifeSimulation(Layout layout, int nElements, List<Species> species, int plants = 0, int carnivores = 0, int herbivores = 0, int omnivores = 0,
             int nonivores = 0, int obstacles = 0, int speed = 100)
         {
-            _context = new SimulationContext(layout);
+            Context = new SimulationContext(layout);
             _nElements = nElements;
             _species = species;
             Speed = speed;
@@ -153,8 +153,8 @@ namespace LifeSimulation
         private void AddSimObjects<TSimObject>(int simObjectPercentage, Species species = null) where TSimObject : SimObject
         {
             var simObjectType = typeof(TSimObject);
-            var gridX = _context.Layout.GridSizeX;
-            var gridY = _context.Layout.GridSizeY;
+            var gridX = Context.Layout.GridSizeX;
+            var gridY = Context.Layout.GridSizeY;
             var random = new Random();
 
             for (var i = 0; i < Convert.ToInt32(_nElements / 100 * simObjectPercentage); i++)
@@ -168,24 +168,24 @@ namespace LifeSimulation
                     // Add object if it is an Obstacle
                     if (simObjectType == typeof(Obstacle))
                     {
-                        if (_context.HasSimObjects(posX, posY) || !_context.Layout.HasTerritory(posX, posY)) continue;
-                        _context.AddObstacle(new Obstacle(posX, posY, SimObjectColor.Black, _context));
+                        if (Context.HasSimObjects(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
+                        Context.AddObstacle(new Obstacle(posX, posY, SimObjectColor.Black, Context));
                         break;
                     }
 
                     // Check if the position is territory (not water) and does not contain an obstacle
-                    if (_context.HasObstacle(posX, posY) || !_context.Layout.HasTerritory(posX, posY)) continue;
+                    if (Context.HasObstacle(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
 
                     // Add object if it is a plant
                     if (simObjectType == typeof(Plant))
                     {
-                        _context.AddPlant(new Plant(100, posX, posY, SimObjectColor.Green, _context));
+                        Context.AddPlant(new Plant(100, posX, posY, SimObjectColor.Green, Context));
                         break;
                     }
 
                     // Add the object if it is a creature
                     Debug.Assert(species != null, "Species cannot be null if the SimObject type is creature");
-                    _context.AddCreature(new Creature(posX, posY, SimObjectColor.Yellow, _context, 100, 0, 0, 0, 0, species));
+                    Context.AddCreature(new Creature(posX, posY, SimObjectColor.Yellow, Context, 100, 0, 0, 0, 0, species));
                     break;
                 }
             }
@@ -202,8 +202,8 @@ namespace LifeSimulation
             // In txt bestand de report data opslaan
             // Heel simpel de data opslaan per regel
             // BIj het inladen op dezelfde manier inladen
-            var creatures = _context.GetAllSimObjectsOfType<Creature>();
-            var plants = _context.GetAllSimObjectsOfType<Plant>();
+            var creatures = Context.GetAllSimObjectsOfType<Creature>();
+            var plants = Context.GetAllSimObjectsOfType<Plant>();
 
             int carnivores = 0;
             int herbivores = 0;
@@ -301,7 +301,7 @@ namespace LifeSimulation
             if ((Status != SimulationStatus.Started) || (Speed <= 0)) return;
 
             // Loop through SimObjects en voer de juiste functies uit
-            foreach (var so in _context.GetAllSimObjects())
+            foreach (var so in Context.GetAllSimObjects())
                 if (so is Creature)
                 {
                     // De dieren willen actie ondernemen

@@ -16,9 +16,9 @@ namespace LifeSimulation
         List<Species> Species { get; set; }
 
         /// <summary>
-        /// A list of all the layouts that can be used in simulations
+        /// A list of all the Layouts that can be used in simulations
         /// </summary>
-        List<Layout> layouts { get; set; }
+        List<Layout> Layouts { get; set; }
 
         /// <summary>
         /// All the simulations running in the application. 
@@ -30,10 +30,10 @@ namespace LifeSimulation
         /// <summary>
         /// Save the base settings
         ///     - Existing species
-        ///     - Existing layouts
+        ///     - Existing Layouts
         /// </summary>
         /// <exception>Is raised if the save action did not succeed</exception>
-        bool Save();
+        void Save(ILifeSimulation simulation);
 
         /// <summary>
         /// Create a new species that can be used to create creatures.
@@ -86,7 +86,7 @@ namespace LifeSimulation
         void DeleteSpecies(Species species);
 
         /// <summary>
-        /// Creates a layout and adds it to the layouts list
+        /// Creates a layout and adds it to the Layouts list
         /// </summary>
         /// <param name="Name">Name of the layout</param>
         /// <param name="GridSize">

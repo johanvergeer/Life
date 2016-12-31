@@ -20,6 +20,8 @@ namespace LifeSimulation
         /// </summary>
         int Speed { get; set; }
 
+        SimulationContext Context { get; }
+
         /// <summary>
         /// The status of the simulation. 
         /// This will be set with the Start, Pauze and Stop methods.

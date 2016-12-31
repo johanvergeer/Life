@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Cache;
+using System.Xml.Serialization;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 
@@ -12,7 +14,7 @@ namespace LifeSimulation
 
         }
 
-        public List<Layout> layouts { get; set; }
+        public List<Layout> Layouts { get; set; }
 
         public List<ILifeSimulation> Simulations{get; set; }
 
@@ -29,24 +31,29 @@ namespace LifeSimulation
             throw new NotImplementedException();
         }
 
-        public Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, int swimmingThreshold, int sepoductionCosts, int stamina, int herdBehaviour)
+        public Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, 
+            int swimmingThreshold, int reprooductionCosts, int stamina, int herdBehaviour)
         {
-            throw new NotImplementedException();
+            var species = new Species(name, searing, nLegs, digestion, movingThreshold, swimmingThreshold, 
+                reprooductionCosts, stamina, herdBehaviour);
+
+            Species.Add(species);
+            return species;
         }
 
         public void DeleteLayout(Layout layout)
         {
-            throw new NotImplementedException();
+            Layouts.Remove(layout);
         }
 
         public void DeleteSimulation(ILifeSimulation simulation)
         {
-            throw new NotImplementedException();
+            Simulations.Remove(simulation);
         }
 
         public void DeleteSpecies(Species species)
         {
-            throw new NotImplementedException();
+            Species.Remove(species);
         }
 
         public ILifeSimulation LoadSimulation(string fileName)
@@ -54,9 +61,14 @@ namespace LifeSimulation
             throw new NotImplementedException();
         }
 
-        public bool Save()
+        public void Save(ILifeSimulation simulation)
         {
-            throw new NotImplementedException();
+            var serializableSimulation = new SerializableSimulation(simulation.Id, simulation.Speed, simulation.Context);
+
+            var x = new XmlSerializer(serializableSimulation.GetType());
+            x.Serialize(Console.Out, serializableSimulation);
+            Console.WriteLine();
+            Console.ReadLine();
         }
     }
 }
