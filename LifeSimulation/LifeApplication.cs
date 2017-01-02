@@ -11,7 +11,10 @@ namespace LifeSimulation
     {
         public LifeApplication()
         {
-
+            // Layouts doen we tijdens het implementeren van LifeApplication 
+            Layouts = new List<Layout>();
+            Simulations = new List<ILifeSimulation>();
+            Species = new List<Species>();
         }
 
         public List<Layout> Layouts { get; set; }
@@ -28,7 +31,11 @@ namespace LifeSimulation
 
         public Layout CreateLayout(string name, int gridSize)
         {
-            throw new NotImplementedException();
+            // TODO goede ID maken
+            Layout l = new Layout(1, name, gridSize, gridSize);
+            Layouts.Add(l);
+
+            return l;
         }
 
         public Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, 

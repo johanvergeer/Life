@@ -22,23 +22,22 @@ namespace LifeSimulation.Layouts
             Name = name;
             GridSizeX = gridSizeX;
             GridSizeY = gridSizeY;
+            Territories = new List<Territory>();
         }
 
         public List<Territory> Territories { get; set; }
 
-        IEnumerable<Territory> ILayout.Territories { get; set; }
-
-        public void AddTerritory(Territory territory)
+        public void addTerritory(Territory territory)
         {
-            throw new NotImplementedException();
+            Territories.Add(territory);
         }
 
-        public void AddTerritory(int xPos, int yPos)
+        public void addTerritory(int xPos, int yPos)
         {
-            throw new NotImplementedException();
+            Territories.Add(new Territory(xPos, yPos));
         }
 
-        public bool HasTerritory(int xPos, int yPos)
+        public bool hasTerritory(int xPos, int yPos)
         {
             return Territories.Any(t => t.XPos == xPos && t.YPos == yPos);
         }

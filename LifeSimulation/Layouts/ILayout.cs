@@ -20,14 +20,14 @@ namespace LifeSimulation.Layouts
         /// <summary>
         /// List of all the territory objects in the layout
         /// </summary>
-        IEnumerable<Territory> Territories { get; set; }
+        List<Territory> Territories { get; set; }
 
         /// <summary>
         /// Add a territory to the layout.
         /// </summary>
         /// <param name="territory">Territory object</param>
         /// <exception cref="">Thrown if there already is a territory on the selected location</exception>
-        void AddTerritory(Territory territory);
+        void addTerritory(Territory territory);
 
         /// <summary>
         /// Add a territory to the layout
@@ -35,7 +35,7 @@ namespace LifeSimulation.Layouts
         /// <param name="xPos">The x position of the new territory on the layout</param>
         /// <param name="yPos">The y position of the new territory on the layout</param>
         /// <exception cref="">Thrown if there already is a territory on the selected location</exception>
-        void AddTerritory(int xPos, int yPos);
+        void addTerritory(int xPos, int yPos);
 
         /// <summary>
         /// Check if the coordinates contain territory
@@ -43,6 +43,6 @@ namespace LifeSimulation.Layouts
         /// <param name="xPos"></param>
         /// <param name="yPos"></param>
         /// <returns></returns>
-        bool HasTerritory(int xPos, int yPos);
+        bool hasTerritory(int xPos, int yPos);
     }
 }

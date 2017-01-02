@@ -28,25 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
             this.btnStartPause = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
+            this.panelBottom = new System.Windows.Forms.Panel();
+            this.simulationPanel = new System.Windows.Forms.Panel();
+            this.panelBottom.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.RoyalBlue;
-            this.panel1.Location = new System.Drawing.Point(12, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(549, 215);
-            this.panel1.TabIndex = 0;
             // 
             // btnStartPause
             // 
-            this.btnStartPause.Location = new System.Drawing.Point(12, 236);
+            this.btnStartPause.Location = new System.Drawing.Point(12, 3);
             this.btnStartPause.Name = "btnStartPause";
             this.btnStartPause.Size = new System.Drawing.Size(75, 23);
             this.btnStartPause.TabIndex = 1;
@@ -55,31 +46,53 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(93, 236);
+            this.btnStop.Location = new System.Drawing.Point(93, 3);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             // 
+            // panelBottom
+            // 
+            this.panelBottom.Controls.Add(this.btnStartPause);
+            this.panelBottom.Controls.Add(this.btnStop);
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBottom.Location = new System.Drawing.Point(0, 215);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(545, 35);
+            this.panelBottom.TabIndex = 3;
+            // 
+            // simulationPanel
+            // 
+            this.simulationPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.simulationPanel.BackColor = System.Drawing.Color.RoyalBlue;
+            this.simulationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.simulationPanel.Location = new System.Drawing.Point(0, 0);
+            this.simulationPanel.Name = "simulationPanel";
+            this.simulationPanel.Size = new System.Drawing.Size(545, 250);
+            this.simulationPanel.TabIndex = 0;
+            this.simulationPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.simulationPanel_Paint);
+            // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(573, 268);
-            this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.btnStartPause);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(545, 250);
+            this.Controls.Add(this.panelBottom);
+            this.Controls.Add(this.simulationPanel);
             this.Name = "SimulationForm";
-            this.Text = "Simulation";
+            this.Text = "Simulatie";
+            this.Resize += new System.EventHandler(this.SimulationForm_Resize);
+            this.panelBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnStartPause;
         private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Panel panelBottom;
+        private System.Windows.Forms.Panel simulationPanel;
     }
 }

@@ -21,10 +21,12 @@ namespace Life
 
             // Layouts maken
             LifeApplication.CreateLayout("Layout 1", 200);
-            LifeApplication.Layouts[0].AddTerritory(new LifeSimulation.Layouts.Territory(1, 1));
+            // Vooraf geprogrammeerde Layout inladen
+            Layout1 l1 = new Layout1(LifeApplication.Layouts[0]);
+
 
             // Species maken
-            LifeApplication.CreateSpecies("Tijgers", 10, 4, LifeSimulation.SimObjects.Digestion.Carnivore, 0, 0 ,0,0,0);
+            //LifeApplication.CreateSpecies("Tijgers", 10, 4, LifeSimulation.SimObjects.Digestion.Carnivore, 0, 0 ,0,0,0);
         }
 
         private void afsluitenMainMenu_Click(object sender, System.EventArgs e)
@@ -34,15 +36,22 @@ namespace Life
 
         private void startSimulatieToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            // TODO INITEN MET GOEDE WAARDEN
-            ILifeSimulation simulation = new LifeSimulation.LifeSimulation(LifeApplication.Layouts[0], 100, 20, 20, 20, 20, 10, 10, 5, LifeApplication.Species);
-            // Toevoegen aan mainForm
-            LifeApplication.AddSimulation(simulation);
+            SettingsForm sf = new SettingsForm();
+            sf.ShowDialog();
 
-            // Nieuw formulier maken en simulation meesturen.
-            SimulationForm sf = new SimulationForm(simulation);
-            sf.MdiParent = this;
-            sf.Show();            
+            if (sf.DialogResult == DialogResult.OK)
+            {
+
+                // TODO INITEN MET GOEDE WAARDEN
+                ILifeSimulation simulation = new LifeSimulation.LifeSimulation(LifeApplication.Layouts[0], sf.nElements, LifeApplication.Species, sf.plants, sf.carnivores, sf.herbivores, sf.omnivores, sf.nonivores, sf.obstacles, 100);
+                // Toevoegen aan mainForm
+                LifeApplication.AddSimulation(simulation);
+
+                // Nieuw formulier maken en simulation meesturen.
+                SimulationForm simForm = new SimulationForm(simulation);
+                simForm.MdiParent = this;
+                simForm.Show();
+            }  
         }
     }
 }

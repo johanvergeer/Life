@@ -168,13 +168,13 @@ namespace LifeSimulation
                     // Add object if it is an Obstacle
                     if (simObjectType == typeof(Obstacle))
                     {
-                        if (Context.HasSimObjects(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
+                        if (Context.HasSimObjects(posX, posY) || !Context.Layout.hasTerritory(posX, posY)) continue;
                         Context.AddObstacle(new Obstacle(posX, posY, Context));
                         break;
                     }
 
                     // Check if the position is territory (not water) and does not contain an obstacle
-                    if (Context.HasSimObjects<Obstacle>(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
+                    if (Context.HasSimObjects<Obstacle>(posX, posY) || !Context.Layout.hasTerritory(posX, posY)) continue;
 
                     // Add object if it is a plant
                     if (simObjectType == typeof(Plant))
@@ -305,15 +305,20 @@ namespace LifeSimulation
             foreach (var so in Context.GetAllSimObjects())
                 if (so is Creature)
                 {
-                    // De dieren willen actie ondernemen
-                    var c = so as Creature;
-                    c.Act();
+                    // Die dieren willen eerst lopen
+                    ((Creature) so).Move();
                 }
                 else if (so is Plant)
                 {
                     // De planten willen groeien
-                    var p = so as Plant;
-                    p.Grow();
+                    ((Plant)so).Grow();
+                }
+            // Na dat iedereen heeft gelopen willen de beesten nog een actie uitvoeren
+            foreach (var so in Context.GetAllSimObjects())
+                if (so is Creature)
+                {
+                    // De dieren willen actie ondernemen
+                    ((Creature)so).Move();
                 }
         }
 
