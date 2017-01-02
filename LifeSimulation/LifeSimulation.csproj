@@ -49,7 +49,6 @@
     <Compile Include="Layouts\Territory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LifeApplication.cs" />
-    <Compile Include="SerializableSimulation.cs" />
     <Compile Include="SimObjects\Creature.cs" />
     <Compile Include="SimObjects\Digestion.cs" />
     <Compile Include="SimObjects\Direction.cs" />

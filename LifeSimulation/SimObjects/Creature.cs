@@ -10,7 +10,7 @@ namespace LifeSimulation.SimObjects
     {
         private int _strength;
         private int _energy;
-        private SimulationContext context;
+        private readonly SimulationContext _context;
 
         /// <summary>
         /// The species of the creature
@@ -122,7 +122,7 @@ namespace LifeSimulation.SimObjects
             Energy = energy;
             Strength = strength;
             Direction = direction;
-            this.context = context;
+            _context = context;
         }
 
         /// <summary>
@@ -162,16 +162,14 @@ namespace LifeSimulation.SimObjects
         /// <exception cref="">Thrown if the creature in the input parameter is not of the same species</exception>
         private void Mate()
         {
-            var creature = context.GetCreatures(Species, XPos, YPos).FirstOrDefault();
-            if (creature != null)
-            {
-                var energy = GetChildValue(Energy, creature.Energy);
-                var strength = GetChildValue(Strength, creature.Strength);
+            var creature = _context.GetCreatures(Species, XPos, YPos).FirstOrDefault();
+            if (creature == null) return;
+            var energy = GetChildValue(Energy, creature.Energy);
+            var strength = GetChildValue(Strength, creature.Strength);
 
 
-                var c = new Creature(XPos, YPos, context, energy, strength, Species, GetRandomDirection()); 
-                context.AddCreature(c);  
-            }
+            var c = new Creature(XPos, YPos, _context, energy, strength, Species, GetRandomDirection()); 
+            _context.AddCreature(c);
         }
 
         private int GetChildValue(int parent1, int parent2)

@@ -15,11 +15,11 @@ namespace LifeSimulation
         public int Id { get; set; }
         public int Speed { get; set; }
         public SimulationStatus Status { get; private set; }
-        public SimulationContext Context { get; private set; }
+        public SimulationContext Context { get; }
         
         private readonly int _nElements;
         private readonly ICollection<Species> _species;
-
+        
         /// <summary>
         /// Initialize the application and set the initial values
         /// 
@@ -89,7 +89,7 @@ namespace LifeSimulation
         /// </exception>
         /// 
         /// <returns>An ISimulation object</returns>
-        public LifeSimulation(Layout layout, int nElements, List<Species> species, int plants = 0, int carnivores = 0, int herbivores = 0, int omnivores = 0,
+        public LifeSimulation(ILayout layout, int nElements, ICollection<Species> species, int plants = 0, int carnivores = 0, int herbivores = 0, int omnivores = 0,
             int nonivores = 0, int obstacles = 0, int speed = 100)
         {
             Context = new SimulationContext(layout);
@@ -126,7 +126,7 @@ namespace LifeSimulation
             AddCreatures(Digestion.Omnivore, omnivores);
             AddCreatures(Digestion.Nonivore, nonivores);
 
-            this.Status = SimulationStatus.New;
+            Status = SimulationStatus.New;
         }
 
         private void AddCreatures(Digestion digestion, int percentage)
@@ -205,45 +205,46 @@ namespace LifeSimulation
             var creatures = Context.GetSimObjects<Creature>();
             var plants = Context.GetSimObjects<Plant>();
 
-            int carnivores = 0;
-            int herbivores = 0;
-            int omnivores = 0;
-            int nonivores = 0;
-            int planten = 0;
-            int EnergyCarnivores = 0;
-            int EnergyHerbivores = 0;
-            int EnergyOmnivores = 0;
-            int EnergyNonivores = 0;
-            int EnergyPlanten = 0;
+            var carnivores = 0;
+            var herbivores = 0;
+            var omnivores = 0;
+            var nonivores = 0;
+            var planten = 0;
+            var energyCarnivores = 0;
+            var energyHerbivores = 0;
+            var energyOmnivores = 0;
+            var energyNonivores = 0;
+            var energyPlanten = 0;
 
-            foreach (Creature so in creatures)
+            foreach (var so in creatures)
             {
-                if ((so as Creature).Species.Digestion == Digestion.Carnivore)
+                switch (so.Species.Digestion)
                 {
-                    carnivores++;
-                    EnergyCarnivores += (so as Creature).Energy;
-                }
-                else if ((so as Creature).Species.Digestion == Digestion.Herbivore)
-                {
-                    herbivores++;
-                    EnergyHerbivores += (so as Creature).Energy;
-                }
-                else if ((so as Creature).Species.Digestion == Digestion.Omnivore)
-                {
-                    omnivores++;
-                    omnivores += (so as Creature).Energy;
-                }
-                else if ((so as Creature).Species.Digestion == Digestion.Nonivore)
-                {
-                    nonivores += 1;
-                    EnergyNonivores += (so as Creature).Energy;
+                    case Digestion.Carnivore:
+                        carnivores++;
+                        energyCarnivores += ((Creature) so).Energy;
+                        break;
+                    case Digestion.Herbivore:
+                        herbivores++;
+                        energyHerbivores += ((Creature) so).Energy;
+                        break;
+                    case Digestion.Omnivore:
+                        omnivores++;
+                        energyOmnivores += ((Creature) so).Energy;
+                        break;
+                    case Digestion.Nonivore:
+                        nonivores += 1;
+                        energyNonivores += ((Creature) so).Energy;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 
             foreach (var so in plants)
             {
                 planten++;
-                EnergyPlanten += so.Energy;
+                energyPlanten += so.Energy;
             }
 
 
@@ -256,24 +257,24 @@ namespace LifeSimulation
                 outputFile.WriteLine(nonivores.ToString()); // Aantal nonivores
 
                 // Energie per type
-                outputFile.WriteLine(EnergyCarnivores.ToString()); // carnivores
-                outputFile.WriteLine(EnergyHerbivores.ToString()); // herbivores
-                outputFile.WriteLine(EnergyOmnivores.ToString()); // omnivores
-                outputFile.WriteLine(EnergyNonivores.ToString()); // nonivores
+                outputFile.WriteLine(energyCarnivores.ToString()); // carnivores
+                outputFile.WriteLine(energyHerbivores.ToString()); // herbivores
+                outputFile.WriteLine(energyOmnivores.ToString()); // omnivores
+                outputFile.WriteLine(energyNonivores.ToString()); // nonivores
 
                 // Gemiddeld per type
-                outputFile.WriteLine((EnergyCarnivores / carnivores).ToString()); // carnivores
-                outputFile.WriteLine((EnergyHerbivores / herbivores).ToString()); // herbivores
-                outputFile.WriteLine((EnergyOmnivores / omnivores).ToString()); // omnivores
-                outputFile.WriteLine((EnergyNonivores / nonivores).ToString()); // nonivores
+                outputFile.WriteLine((energyCarnivores / carnivores).ToString()); // carnivores
+                outputFile.WriteLine((energyHerbivores / herbivores).ToString()); // herbivores
+                outputFile.WriteLine((energyOmnivores / omnivores).ToString()); // omnivores
+                outputFile.WriteLine((energyNonivores / nonivores).ToString()); // nonivores
 
                 // Aantal planten
                 outputFile.WriteLine(planten);
                 // Energie planten
-                outputFile.WriteLine(EnergyPlanten.ToString());
+                outputFile.WriteLine(energyPlanten.ToString());
 
                 // Gemiddeld energie per plant
-                outputFile.WriteLine((EnergyPlanten / planten).ToString());
+                outputFile.WriteLine((energyPlanten / planten).ToString());
             }
         }
 

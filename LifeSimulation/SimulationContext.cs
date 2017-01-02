@@ -37,10 +37,7 @@ namespace LifeSimulation
 
         public IEnumerable<SimObject> GetAllSimObjects() => SimObjects;
 
-        public void RemoveSimObject(SimObject simObject)
-        {
-            SimObjects.Remove(simObject);
-        }
+        public void RemoveSimObject(SimObject simObject) => SimObjects.Remove(simObject);
 
         /// <summary>
         /// get all simobjects of a certain SimObject type
