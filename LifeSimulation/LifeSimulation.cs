@@ -169,23 +169,23 @@ namespace LifeSimulation
                     if (simObjectType == typeof(Obstacle))
                     {
                         if (Context.HasSimObjects(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
-                        Context.AddObstacle(new Obstacle(posX, posY, SimObjectColor.Black, Context));
+                        Context.AddObstacle(new Obstacle(posX, posY, Context));
                         break;
                     }
 
                     // Check if the position is territory (not water) and does not contain an obstacle
-                    if (Context.HasObstacle(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
+                    if (Context.HasSimObjects<Obstacle>(posX, posY) || !Context.Layout.HasTerritory(posX, posY)) continue;
 
                     // Add object if it is a plant
                     if (simObjectType == typeof(Plant))
                     {
-                        Context.AddPlant(new Plant(100, posX, posY, SimObjectColor.Green, Context));
+                        Context.AddPlant(new Plant(100, posX, posY, Context));
                         break;
                     }
 
                     // Add the object if it is a creature
                     Debug.Assert(species != null, "Species cannot be null if the SimObject type is creature");
-                    Context.AddCreature(new Creature(posX, posY, SimObjectColor.Yellow, Context, 100, 0, 0, 0, 0, species));
+                    Context.AddCreature(new Creature(posX, posY, Context, 100, 0, species, Direction.E));
                     break;
                 }
             }
@@ -202,8 +202,8 @@ namespace LifeSimulation
             // In txt bestand de report data opslaan
             // Heel simpel de data opslaan per regel
             // BIj het inladen op dezelfde manier inladen
-            var creatures = Context.GetAllSimObjectsOfType<Creature>();
-            var plants = Context.GetAllSimObjectsOfType<Plant>();
+            var creatures = Context.GetSimObjects<Creature>();
+            var plants = Context.GetSimObjects<Plant>();
 
             int carnivores = 0;
             int herbivores = 0;

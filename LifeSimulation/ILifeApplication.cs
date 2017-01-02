@@ -1,4 +1,5 @@
 ﻿
+using System;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 using System.Collections.Generic;
@@ -28,14 +29,6 @@ namespace LifeSimulation
         List<ILifeSimulation> Simulations { get; set; }
 
         /// <summary>
-        /// Save the base settings
-        ///     - Existing species
-        ///     - Existing Layouts
-        /// </summary>
-        /// <exception>Is raised if the save action did not succeed</exception>
-        void Save(ILifeSimulation simulation);
-
-        /// <summary>
         /// Create a new species that can be used to create creatures.
         /// Add the new species to the Species List
         /// After the creature is created it has to be saved to the datastore.
@@ -44,37 +37,50 @@ namespace LifeSimulation
         ///     The minimumWeight is NLegs * 10
         /// </summary>
         /// 
-        /// <param name="Name">The name of the species.</param>
+        /// <param name="name">The name of the species.</param>
         /// 
-        /// <param name="Searing">Percentage of the stamina a creature still wants to procreate</param>
-        /// <exception cref="">Thrown when searing is smaller then 0 or bigger then 100</exception>
+        /// <param name="searing">Percentage of the stamina a creature still wants to procreate</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when searing is smaller then 0 or bigger then 100</exception>
         /// 
-        /// <param name="NLegs">The number of legs the creature will have.</param>
-        /// <exception cref="">Thrown when the number of legs is not equal</exception>
+        /// <param name="nLegs">The number of legs the creature will have.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the number of legs is not equal</exception>
         /// 
         /// <param name="digestion">A type that indicates what a creature will eat</param>
         /// 
-        /// <param name="MovingThreshold">Percentage of the stamina a creature can still move</param>
-        /// <exception cref="">Thrown when MovingThreshold is smaller then 0 or bigger then 100</exception>
+        /// <param name="movingThreshold">Percentage of the stamina a creature can still move</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when MovingThreshold is smaller then 0 or bigger then 100</exception>
         /// 
-        /// <param name="SwimmingThreshold">Percentage of the stamina a creature can still swim</param>
-        /// <exception cref="">Thrown when Swimmingthreshold is smaller then 0 or bigger then 100</exception>
+        /// <param name="swimmingThreshold">Percentage of the stamina a creature can still swim</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when Swimmingthreshold is smaller then 0 or bigger then 100</exception>
         /// 
-        /// <param name="RepoductionCosts">Percentage of the stamina that is passed on to the child while procreating</param>
-        /// <exception cref="">Thrown when ReproductionCosts is smaller then 0 or bigger then 100</exception> 
+        /// <param name="repoductionCosts">Percentage of the stamina that is passed on to the child while procreating</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when ReproductionCosts is smaller then 0 or bigger then 100</exception> 
         /// 
-        /// <param name="Stamina">Maximum amount of energy a creature can have</param>
+        /// <param name="stamina">Maximum amount of energy a creature can have</param>
         /// 
-        /// <param name="HerdBehaviour">
+        /// <param name="herdBehaviour">
         ///     Incates the distance a creature must be from a herd to be attracted to it.
         ///     If the value is set to 0, the creature will not want to be in a herd.
         /// </param>
-        /// 
+        /// <param name="maximumStrength">
+        ///     The maximum strength a creature can have. 
+        ///     This should always be less then the stamina
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Thrown when the maximumStrenght is lower then 0, or higher then the stamina
+        /// </exception>
+        /// <param name="minimumStrength">
+        ///     The minimum strength a creature can have. 
+        ///     This should always be lower then the maximumStrength
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Thrown when the minimumStrength is lower then 0, or higher then the maximumStrength
+        /// </exception>
         /// <returns>The new species object</returns>
         /// <exception cref="">Raised if the new species was not saved</exception>
         Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion,
             int movingThreshold, int swimmingThreshold, int repoductionCosts, int stamina,
-            int herdBehaviour);
+            int herdBehaviour, int maximumStrength, int minimumStrength);
 
         /// <summary>
         /// Delete a spiecies from the list

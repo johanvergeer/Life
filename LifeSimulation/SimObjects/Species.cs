@@ -11,13 +11,15 @@ namespace LifeSimulation.SimObjects
         private int _movingThreshold;
         private int _swimmingThreshold;
         private int _reproductionCosts;
+        private int _maximumStrength;
+        private int _minimumStrength;
 
         public string Name { get; set; }
 
         public int Stamina
         {
             get { return _stamina; }
-            set
+            private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _stamina = value;
@@ -27,10 +29,9 @@ namespace LifeSimulation.SimObjects
         public int NLegs
         {
             get { return _nLegs; }
-            set
+            private set
             {
-                if (value == 0 || value % 4 != 0)
-                    throw new InvalidNumberOfLegsException();
+                if (value == 0 || value % 2 != 0) throw new InvalidNumberOfLegsException(nameof(value));
                 _nLegs = value;
             }
         }
@@ -39,11 +40,8 @@ namespace LifeSimulation.SimObjects
 
         public int Searing
         {
-            get
-            {
-                return _searing;
-            }
-            set
+            get { return _searing; }
+            private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _searing = value;
@@ -53,7 +51,7 @@ namespace LifeSimulation.SimObjects
         public int MovingThreshold
         {
             get { return _movingThreshold; }
-            set
+            private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _movingThreshold = value;
@@ -63,7 +61,7 @@ namespace LifeSimulation.SimObjects
         public int SwimmingThreshold
         {
             get { return _swimmingThreshold; }
-            set
+            private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _swimmingThreshold = value;
@@ -73,7 +71,7 @@ namespace LifeSimulation.SimObjects
         public int ReproductionCosts
         {
             get { return _reproductionCosts; }
-            set
+            private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _reproductionCosts = value;
@@ -84,8 +82,58 @@ namespace LifeSimulation.SimObjects
 
         public int MinimumWeight => NLegs * 10;
 
+        public int MaximumStrength
+        {
+            get { return _maximumStrength; }
+            private set
+            {
+                if (value < 0 || value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
+                _maximumStrength = value;
+            }
+        }
+
+        public int MinimumStrength
+        {
+            get { return _minimumStrength; }
+            private set
+            {
+                if (value < 0 || value >= MaximumStrength) throw new ArgumentOutOfRangeException(nameof(value));
+                _minimumStrength = value;
+            }
+        }
+
+        /// <summary>
+        /// Maximum speed of the creature based on the number of legs. 
+        /// 
+        ///  The optimal speed is 5 grid squares per simulation step. 
+        /// For every pair of legs the creature has over 6 or below 4, the speed is delayed by one, 
+        /// with a minimum of 1 grid square per simulation step.
+        /// </summary>
+        public int MaximumSpeed {
+            get
+            {
+                const int optimalSpeed = 5;
+
+                // Calculate speed based on nLegs
+                int delay;
+                if (NLegs < 4)
+                    delay = (4 - NLegs) / 2;
+                else if (NLegs > 6)
+                    delay = (NLegs - 6) / 2;
+                else
+                    delay = 0;
+
+                var speed = optimalSpeed - delay;
+                // The minimumspeed based on nLegs = 1
+                if (speed < 1)
+                    speed = 1;
+
+                return speed;
+            }
+        }
+
         public Species(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, int swimmingThreshold,
-            int reproductionCosts, int stamina, int herdBehaviour)
+            int reproductionCosts, int stamina, int herdBehaviour, int maximumStrength, int minimumStrength)
         {
             Name = name;
             Stamina = stamina;
@@ -96,6 +144,8 @@ namespace LifeSimulation.SimObjects
             SwimmingThreshold = swimmingThreshold;
             ReproductionCosts = reproductionCosts;
             Herbehaviour = herdBehaviour;
+            MaximumStrength = maximumStrength;
+            MinimumStrength = minimumStrength;
         }
     }
 }

@@ -3,9 +3,12 @@
     public class Plant : SimObject
     {
         public int Energy { get; set; }
-        public Plant(int energy, int xPos, int yPos, SimObjectColor color, SimulationContext context) : base(xPos, yPos, color, context)
-        {
+        public SimObjectColor SimObjectColor => SimObjectColor.Green;
 
+
+        public Plant(int energy, int xPos, int yPos, SimulationContext context) : base(xPos, yPos, context)
+        {
+            
         }
 
         /// <summary>

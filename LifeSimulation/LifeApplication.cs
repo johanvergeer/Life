@@ -32,10 +32,10 @@ namespace LifeSimulation
         }
 
         public Species CreateSpecies(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, 
-            int swimmingThreshold, int reprooductionCosts, int stamina, int herdBehaviour)
+            int swimmingThreshold, int reprooductionCosts, int stamina, int herdBehaviour, int maximumStrength, int minimumStrength)
         {
             var species = new Species(name, searing, nLegs, digestion, movingThreshold, swimmingThreshold, 
-                reprooductionCosts, stamina, herdBehaviour);
+                reprooductionCosts, stamina, herdBehaviour, maximumStrength, minimumStrength);
 
             Species.Add(species);
             return species;
@@ -58,17 +58,8 @@ namespace LifeSimulation
 
         public ILifeSimulation LoadSimulation(string fileName)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Save(ILifeSimulation simulation)
-        {
-            var serializableSimulation = new SerializableSimulation(simulation.Id, simulation.Speed, simulation.Context);
-
-            var x = new XmlSerializer(serializableSimulation.GetType());
-            x.Serialize(Console.Out, serializableSimulation);
-            Console.WriteLine();
-            Console.ReadLine();
+            // TODO In overleg met Floris voor het opslaan van een simulatie
+            return null;
         }
     }
 }

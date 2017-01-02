@@ -45,29 +45,10 @@ namespace LifeSimulation
         /// <summary>
         /// get all simobjects of a certain SimObject type
         /// </summary>
-        /// <typeparam name="T">A type of SimObject</typeparam>
-        /// <returns></returns>
-        public IEnumerable<TSimObject> GetAllSimObjectsOfType<TSimObject>() where TSimObject : SimObject 
-            => SimObjects.OfType<TSimObject>();
-
-        /// <summary>
-        /// Get a simObject in a certain position
-        /// </summary>
         /// <typeparam name="TSimObject">A type of SimObject</typeparam>
-        /// <param name="xPos">The xPosition on the grid to look from</param>
-        /// <param name="yPos">The yPosition on the grid to look from</param>
-        /// <param name="direction">
-        ///     The direction to look to
-        ///     The default is None (The current location)
-        /// </param>
         /// <returns></returns>
-        public TSimObject GetSimObject<TSimObject>(int xPos, int yPos, Direction direction = Direction.None) where TSimObject : SimObject
-        {
-            GetCoordinates(ref xPos, ref yPos, direction);
-
-            var simObjects = GetAllSimObjectsOfType<TSimObject>();
-            return simObjects.FirstOrDefault(o => o.Xpos == xPos && o.YPos == yPos) ?? null;
-        }
+        public IEnumerable<TSimObject> GetSimObjects<TSimObject>() where TSimObject : SimObject
+            => SimObjects.OfType<TSimObject>();
 
         /// <summary>
         ///  Get all the plants in the direct surroundings
@@ -88,6 +69,25 @@ namespace LifeSimulation
         }
 
         /// <summary>
+        /// Get a simObject in a certain position
+        /// </summary>
+        /// <typeparam name="TSimObject">A type of SimObject</typeparam>
+        /// <param name="xPos">The xPosition on the grid to look from</param>
+        /// <param name="yPos">The yPosition on the grid to look from</param>
+        /// <param name="direction">
+        ///     The direction to look to
+        ///     The default is None (The current location)
+        /// </param>
+        /// <returns></returns>
+        public TSimObject GetSimObject<TSimObject>(int xPos, int yPos, Direction direction = Direction.None) where TSimObject : SimObject
+        {
+            GetCoordinates(ref xPos, ref yPos, direction);
+
+            var simObjects = GetSimObjects<TSimObject>();
+            return simObjects.FirstOrDefault(o => o.XPos == xPos && o.YPos == yPos) ?? null;
+        }
+
+        /// <summary>
         /// Get creatures of a specific digestion type
         /// </summary>
         /// <param name="digestion">Digestion type</param>
@@ -95,9 +95,9 @@ namespace LifeSimulation
         ///     List of creatures of a specific digestion type
         ///     Null if there are no creatures of the digestion type
         /// </returns>
-        public IEnumerable<Creature> GetCreaturesOfDigestion(Digestion digestion)
+        public IEnumerable<Creature> GetCreatures(Digestion digestion)
         {
-            var creatures = GetAllSimObjectsOfType<Creature>();
+            var creatures = GetSimObjects<Creature>();
             return creatures?.Where(c => c.Species.Digestion == digestion);
         }
 
@@ -106,25 +106,34 @@ namespace LifeSimulation
         /// </summary>
         /// <param name="species"></param>
         /// <returns></returns>
-        public IEnumerable<Creature> GetCreaturesOfSpecies(Species species)
+        public IEnumerable<Creature> GetCreatures(Species species)
         {
-            var creatures = GetAllSimObjectsOfType<Creature>();
+            var creatures = GetSimObjects<Creature>();
+            return creatures?.Where(c => c.Species == species);
+        }
+
+        public IEnumerable<Creature> GetCreatures(Species species, int xPos, int yPos)
+        {
+            var creatures = GetSimObjects<Creature>(xPos, yPos);
             return creatures?.Where(c => c.Species == species);
         }
 
         public bool HasSimObjects(int xPos, int yPos)
         {
-            return SimObjects.Any(s => s.Xpos == xPos && s.YPos == yPos);
+            return SimObjects.Any(s => s.XPos == xPos && s.YPos == yPos);
         }
 
         /// <summary>
-        /// Check if the position contains an obstacle
+        /// Check if the position contains a SimObject of a type
         /// </summary>
-        /// <param name="xPos"></param>
-        /// <param name="yPos"></param>
-        /// <returns></returns>
-        public bool HasObstacle(int xPos, int yPos) 
-            => GetAllSimObjectsOfType<Obstacle>().Any(o => o.Xpos == xPos && o.YPos == yPos);
+        /// <param name="xPos">The xPos to look on the grid</param>
+        /// <param name="yPos">The yPos to look on the grid</param>
+        /// <returns>
+        ///     True if the location contains SimObjects of the given type
+        ///     False if the location does not contain objects og the give type
+        /// </returns>
+        public bool HasSimObjects<TSimObject>(int xPos, int yPos) where TSimObject : SimObject
+            => GetSimObjects<TSimObject>().Any(o => o.XPos == xPos && o.YPos == yPos);
 
         /// <summary>
         /// Get coordinates based on the current position and the direction
@@ -165,8 +174,6 @@ namespace LifeSimulation
                 case Direction.NW:
                     xPos--;
                     yPos--;
-                    break;
-                default:
                     break;
             }
         }
