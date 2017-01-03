@@ -67,7 +67,7 @@ namespace LifeSimulation
         }
 
         /// <summary>
-        /// Get a simObject in a certain position
+        /// Get the first simObject in a certain position
         /// </summary>
         /// <typeparam name="TSimObject">A type of SimObject</typeparam>
         /// <param name="xPos">The xPosition on the grid to look from</param>
@@ -82,7 +82,7 @@ namespace LifeSimulation
             GetCoordinates(ref xPos, ref yPos, direction);
 
             var simObjects = GetSimObjects<TSimObject>();
-            return simObjects.FirstOrDefault(o => o.XPos == xPos && o.YPos == yPos) ?? null;
+            return simObjects.FirstOrDefault(o => o.XPos == xPos && o.YPos == yPos);
         }
 
         /// <summary>
@@ -116,6 +116,12 @@ namespace LifeSimulation
             return creatures?.Where(c => c.Species == species);
         }
 
+        /// <summary>
+        /// Check if the location contains any SimObjects
+        /// </summary>
+        /// <param name="xPos">The x position to look on the grid</param>
+        /// <param name="yPos">The Y position to look on the grid</param>
+        /// <returns>True if the location contains a SimObject, else False</returns>
         public bool HasSimObjects(int xPos, int yPos)
         {
             return SimObjects.Any(s => s.XPos == xPos && s.YPos == yPos);

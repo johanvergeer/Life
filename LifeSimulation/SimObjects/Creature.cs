@@ -3,6 +3,7 @@ using LifeSimulation.Layouts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LifeSimulation.Exceptions;
 
 namespace LifeSimulation.SimObjects
 {
@@ -123,6 +124,14 @@ namespace LifeSimulation.SimObjects
             Strength = strength;
             Direction = direction;
             _context = context;
+        }
+
+        protected override void CheckLocation()
+        {
+            if (Context.HasSimObjects<Obstacle>(XPos, YPos))
+                throw new InvalidLocationException();
+            if (!Context.Layout.hasTerritory(XPos, YPos))
+                throw new InvalidLocationException();
         }
 
         /// <summary>

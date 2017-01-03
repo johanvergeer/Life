@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Color.cs" />
+    <Compile Include="Exceptions\InvalidLocationException.cs" />
     <Compile Include="Exceptions\InvalidNumberOfLegsException.cs" />
     <Compile Include="ILifeApplication.cs" />
     <Compile Include="ILifeSimulation.cs" />
