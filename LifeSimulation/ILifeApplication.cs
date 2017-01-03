@@ -1,4 +1,5 @@
 ﻿
+using System;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
 using System.Collections.Generic;
@@ -91,14 +92,23 @@ namespace LifeSimulation
         void DeleteSpecies(Species species);
 
         /// <summary>
-        /// Creates a layout and adds it to the Layouts list
+        /// Creates a square layout and adds it to the Layouts list
         /// </summary>
-        /// <param name="Name">Name of the layout</param>
-        /// <param name="GridSize">
+        /// <param name="name">Name of the layout</param>
+        /// <param name="gridSize">
         ///     The horizontal and vertical number of squares on the grid
         /// </param>
         /// <returns></returns>
         Layout CreateLayout(string name, int gridSize);
+
+        /// <summary>
+        /// Creates a rectangular layout and adds it to the layouts list
+        /// </summary>
+        /// <param name="name">The name of the layout</param>
+        /// <param name="gridSizeX">The horizontal number of squares on the grid</param>
+        /// <param name="gridSizeY">The vertical number of squares on the grid</param>
+        /// <returns></returns>
+        Layout CreateLayout(string name, int gridSizeX, int gridSizeY);
 
         /// <summary>
         /// Delete a layout from the list

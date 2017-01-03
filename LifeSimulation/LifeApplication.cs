@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Cache;
 using System.Xml.Serialization;
 using LifeSimulation.Layouts;
@@ -31,8 +32,14 @@ namespace LifeSimulation
 
         public Layout CreateLayout(string name, int gridSize)
         {
-            // TODO goede ID maken
-            Layout l = new Layout(1, name, gridSize, gridSize);
+            var l = CreateLayout(name, gridSize, gridSize);
+            return l;
+        }
+
+        public Layout CreateLayout(string name, int gridSizeX, int gridSizeY )
+        {
+            var id = Layouts.Max(x => x.Id) + 1;
+            var l = new Layout(id, name, gridSizeX, gridSizeY);
             Layouts.Add(l);
 
             return l;
