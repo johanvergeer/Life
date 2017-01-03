@@ -10,6 +10,7 @@ namespace LifeSimulation
     {
         public ILayout Layout { get; private set; }
         private List<SimObject> SimObjects { get; }
+        public long SimulationStep { get; set; }
 
         public SimulationContext(ILayout layout)
         {

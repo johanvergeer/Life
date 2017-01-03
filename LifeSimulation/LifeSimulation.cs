@@ -297,6 +297,8 @@ namespace LifeSimulation
 
         public void Step()
         {
+            Context.SimulationStep++;
+
             // Only do step when status is started
             // TODO Snelheid verwerken in de step?
             if ((Status != SimulationStatus.Started) || (Speed <= 0)) return;
