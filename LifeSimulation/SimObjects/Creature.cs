@@ -1,8 +1,5 @@
 ﻿using System;
-using LifeSimulation.Layouts;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using LifeSimulation.Exceptions;
 
 namespace LifeSimulation.SimObjects
@@ -115,6 +112,9 @@ namespace LifeSimulation.SimObjects
             }
         }
 
+        /// <summary>
+        /// The direction the creature is currently moving in
+        /// </summary>
         public Direction Direction { get; set; }
 
         public Creature(int xPos, int yPos, SimulationContext context, int energy,
@@ -142,7 +142,10 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public void Act()
         {
-
+            if (Energy < Species.Searing)
+                Eat();
+            else
+                Mate();
         }
 
 
@@ -152,6 +155,18 @@ namespace LifeSimulation.SimObjects
         public void Move()
         {
 
+        }
+
+        /// <summary>
+        /// Called when a creature is eaten. 
+        /// Returns the amount of energy that the creature returns. 
+        /// 
+        /// If energy == 0 then the creature dies.
+        /// </summary>
+        /// <returns></returns>
+        public int GetEaten(int energy)
+        {
+            return 1;
         }
 
         /// <summary>
@@ -168,13 +183,21 @@ namespace LifeSimulation.SimObjects
 
         /// <summary>
         /// The creature can mate with another creature if it is of the same species
+        /// 
+        /// The child gets energy from both parents. This is ReproductionCosts of the Species. 
+        /// Both parents loose the ReproductionCosts amount of energy.
         /// </summary>
-        /// <exception cref="">Thrown if the creature in the input parameter is not of the same species</exception>
         private void Mate()
         {
             var creature = _context.GetCreatures(Species, XPos, YPos).FirstOrDefault();
             if (creature == null) return;
-            var energy = GetChildValue(Energy, creature.Energy);
+
+            // Transfer energy to the child
+            var energy = Species.ReproductionCosts * 2;
+            Energy -= Species.ReproductionCosts;
+            creature.Energy -= Species.ReproductionCosts;
+
+            // Give the child strength. Average of both parents ±10%
             var strength = GetChildValue(Strength, creature.Strength);
 
 
@@ -210,9 +233,68 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         /// <param name="simObject">Sim object that will be eaten by the creature</param>
         /// <exception cref="">Thrown if the eaten simObject does not match the creatures digestions</exception>
-        private void Eat(SimObject simObject)
+        private void Eat()
         {
+            switch (Species.Digestion)
+            {
+                case Digestion.Carnivore:
+                    EatCreature();
+                    break;
+                case Digestion.Herbivore:
+                    break;
+                case Digestion.OmnivoreCreature:
+                    break;
+                case Digestion.OmnivorePlant:
+                    
+                case Digestion.Nonivore:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
 
+        private bool EatCreature()
+        {
+            // Find the first creature that can be eaten
+            var creature = _context.GetCreatures(XPos, YPos).First(c => c.Species.Stamina > Strength);
+            if (creature == null) return false;
+
+            var transferredEnergy = Strength - creature.Species.Stamina;
+
+            if (creature.Species.Digestion == Digestion.Herbivore ||
+                creature.Species.Digestion == Digestion.Nonivore)
+            {
+                Energy += transferredEnergy;
+                creature.Energy -= transferredEnergy;
+            }
+            else
+            {
+                // If the other creature also eats creatures, 
+                // the energy will be transferred to the strongest one.
+                if (Strength > creature.Strength)
+                {
+                    Energy += transferredEnergy;
+                    creature.Energy -= Energy;
+                }
+                else
+                {
+                    Energy -= transferredEnergy;
+                    creature.Energy += transferredEnergy;
+                }
+            }
+            return true;
+        }
+
+        private bool EatPlant()
+        {
+            // Get the first plant with the most amount of Energy
+            var plant = _context.GetSimObjects<Plant>(XPos, YPos).OrderByDescending(p => p.Energy).First();
+            if (plant == null) return false;
+
+            Energy++;
+            plant.GetEaten();
+
+            return true;
         }
     }
 }

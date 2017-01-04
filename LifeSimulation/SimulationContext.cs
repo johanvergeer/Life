@@ -116,6 +116,11 @@ namespace LifeSimulation
             return creatures?.Where(c => c.Species == species);
         }
 
+        public IEnumerable<Creature> GetCreatures(int xPos, int yPos)
+        {
+            return GetSimObjects<Creature>(xPos, yPos);
+        }
+
         /// <summary>
         /// Check if the location contains any SimObjects
         /// </summary>

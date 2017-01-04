@@ -67,7 +67,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int Searing
         {
-            get { return _searing; }
+            get { return _searing / 100 * Stamina; }
             private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
@@ -80,7 +80,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int MovingThreshold
         {
-            get { return _movingThreshold; }
+            get { return _movingThreshold / 100 * Stamina; }
             private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
@@ -93,7 +93,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int SwimmingThreshold
         {
-            get { return _swimmingThreshold; }
+            get { return _swimmingThreshold / 100 * Stamina; }
             private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
@@ -107,7 +107,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int ReproductionCosts
         {
-            get { return _reproductionCosts; }
+            get { return _reproductionCosts / 100 * Stamina; }
             private set
             {
                 if (value < 0 || value >= Searing) throw new ArgumentOutOfRangeException(nameof(value));
