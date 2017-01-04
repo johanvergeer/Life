@@ -15,18 +15,32 @@ namespace LifeSimulation.SimObjects
         private int _maximumStrength;
         private int _minimumStrength;
 
+        /// <summary>
+        /// Name of the species.
+        /// This is only for recognition in the UI.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Stamina of the creature. 
+        /// This is the maximum amount of energy a creature can have. 
+        /// The minimum is 25, and the maximum is 100.
+        /// </summary>
         public int Stamina
         {
             get { return _stamina; }
             private set
             {
-                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 25 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _stamina = value;
             }
         }
 
+        /// <summary>
+        /// The number of legs for a creature
+        /// 
+        /// This needs to be an even number and >= 2
+        /// </summary>
         public int NLegs
         {
             get { return _nLegs; }
@@ -37,8 +51,20 @@ namespace LifeSimulation.SimObjects
             }
         }
 
+        /// <summary>
+        /// The Digestion of the creature.  
+        /// What the creature will eat
+        ///     - Carnivore: The creature will eat other creatures
+        ///     - Herbivore: The creature will eat plants
+        ///     - OmnivoreCreature: The creature can eat both plants and other creatures, with a preference for other creatures
+        ///     - OmnivorePlant: The creature can eat both plants and other creatures, with a preference for Plants
+        ///     - Nonivore: The creature cannot eat anything 
+        /// </summary>
         public Digestion Digestion { get; set; }
 
+        /// <summary>
+        /// Percentage of the stamina where the creature still wants to mate. 
+        /// </summary>
         public int Searing
         {
             get { return _searing; }
@@ -49,6 +75,9 @@ namespace LifeSimulation.SimObjects
             }
         }
 
+        /// <summary>
+        /// Percentage of the stamina where the creature is still able to move
+        /// </summary>
         public int MovingThreshold
         {
             get { return _movingThreshold; }
@@ -59,6 +88,9 @@ namespace LifeSimulation.SimObjects
             }
         }
 
+        /// <summary>
+        /// Percentage of the stamina where the creature wants to start swimming to get to another territory for food
+        /// </summary>
         public int SwimmingThreshold
         {
             get { return _swimmingThreshold; }
@@ -69,30 +101,50 @@ namespace LifeSimulation.SimObjects
             }
         }
 
+        /// <summary>
+        /// The percentage of stamina the parent transfers to the child
+        /// This needs to be less then Searing
+        /// </summary>
         public int ReproductionCosts
         {
             get { return _reproductionCosts; }
             private set
             {
-                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 0 || value >= Searing) throw new ArgumentOutOfRangeException(nameof(value));
                 _reproductionCosts = value;
             }
         }
 
+        /// <summary>
+        /// Radius in which the creature will be attracted to others of it's species. 
+        /// If this is 0, then the creature will not show any HerdBehavior.
+        /// </summary>
         public int Herbehaviour { get; set; }
 
+        /// <summary>
+        /// The minimum weight of the creature. 
+        /// This is NLegs * 10
+        /// </summary>
         public int MinimumWeight => NLegs * 10;
 
+        /// <summary>
+        /// The maximum strength a creature can have. 
+        /// This needs to be less then the stamina and more then the MinimumStrength.
+        /// </summary>
         public int MaximumStrength
         {
             get { return _maximumStrength; }
             private set
             {
-                if (value < 0 || value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value <= MinimumStrength || value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
                 _maximumStrength = value;
             }
         }
 
+        /// <summary>
+        /// The minimum strength a creature can have.
+        /// This needs to be more then 0.
+        /// </summary>
         public int MinimumStrength
         {
             get { return _minimumStrength; }
@@ -152,11 +204,17 @@ namespace LifeSimulation.SimObjects
         /// </param>
         /// <param name="movingThreshold">The percentage of the stamina where the creature can still move</param>
         /// <param name="swimmingThreshold">The percentage of the stamina where the creature want to swim</param>
-        /// <param name="reproductionCosts"></param>
-        /// <param name="stamina"></param>
-        /// <param name="herdBehaviour"></param>
-        /// <param name="maximumStrength"></param>
-        /// <param name="minimumStrength"></param>
+        /// <param name="reproductionCosts">
+        ///     Percentage of stamina that is transferred to the child
+        ///     This must be lower then searing
+        /// </param>
+        /// <param name="stamina">The maximum amount of energy a creature can have</param>
+        /// <param name="herdBehaviour">
+        ///     The redius in which a creature is attracted to others of it's species
+        ///     When this numnber is 0, the creature will not be attracted
+        /// </param>
+        /// <param name="maximumStrength">The maximum strength a creature can have</param>
+        /// <param name="minimumStrength">The minimum strength a creature can haves</param>
         public Species(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, int swimmingThreshold,
             int reproductionCosts, int stamina, int herdBehaviour, int maximumStrength, int minimumStrength)
         {
