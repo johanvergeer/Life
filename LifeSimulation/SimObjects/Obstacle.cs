@@ -12,6 +12,9 @@ namespace LifeSimulation.SimObjects
 
         }
 
+        /// <summary>
+        /// Check if the location is suitable for an obstacle
+        /// </summary>
         protected override void CheckLocation()
         {
             if (Context.HasSimObjects(XPos, YPos))

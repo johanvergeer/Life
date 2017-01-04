@@ -16,10 +16,10 @@ namespace LifeSimulation
         public int Speed { get; set; }
         public SimulationStatus Status { get; private set; }
         public SimulationContext Context { get; }
-        
+
         private readonly int _nElements;
         private readonly ICollection<Species> _species;
-        
+
         /// <summary>
         /// Initialize the application and set the initial values
         /// 
@@ -123,7 +123,8 @@ namespace LifeSimulation
 
             AddCreatures(Digestion.Carnivore, carnivores);
             AddCreatures(Digestion.Herbivore, herbivores);
-            AddCreatures(Digestion.Omnivore, omnivores);
+            // TODO Opdeling maken tussen verschillende soorten Omnivores
+            AddCreatures(Digestion.OmnivoreCreature, omnivores);
             AddCreatures(Digestion.Nonivore, nonivores);
 
             Status = SimulationStatus.New;
@@ -133,13 +134,13 @@ namespace LifeSimulation
         {
             IEnumerable<Species> species = _species.Where(sp => sp.Digestion == digestion);
             var speciesCount = species.Count();
-            
+
             // Calculate the percentage for each species
-            double p = (double) percentage / (double) speciesCount;
+            double p = (double)percentage / (double)speciesCount;
 
             foreach (var s in species)
             {
-               AddSimObjects<Creature>(Convert.ToInt32(p), s);
+                AddSimObjects<Creature>(Convert.ToInt32(p), s);
             }
         }
 
@@ -222,19 +223,20 @@ namespace LifeSimulation
                 {
                     case Digestion.Carnivore:
                         carnivores++;
-                        energyCarnivores += ((Creature) so).Energy;
+                        energyCarnivores += ((Creature)so).Energy;
                         break;
                     case Digestion.Herbivore:
                         herbivores++;
-                        energyHerbivores += ((Creature) so).Energy;
+                        energyHerbivores += ((Creature)so).Energy;
                         break;
-                    case Digestion.Omnivore:
+                    case Digestion.OmnivoreCreature:
+                    case Digestion.OmnivorePlant:
                         omnivores++;
-                        energyOmnivores += ((Creature) so).Energy;
+                        energyOmnivores += ((Creature)so).Energy;
                         break;
                     case Digestion.Nonivore:
                         nonivores += 1;
-                        energyNonivores += ((Creature) so).Energy;
+                        energyNonivores += ((Creature)so).Energy;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -308,7 +310,7 @@ namespace LifeSimulation
                 if (so is Creature)
                 {
                     // Die dieren willen eerst lopen
-                    ((Creature) so).Move();
+                    ((Creature)so).Move();
                 }
                 else if (so is Plant)
                 {

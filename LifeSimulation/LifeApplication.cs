@@ -38,7 +38,11 @@ namespace LifeSimulation
 
         public Layout CreateLayout(string name, int gridSizeX, int gridSizeY )
         {
-            var id = Layouts.Max(x => x.Id) + 1;
+            var id_ = (from y in Layouts
+                      select(int?)y.Id).Max();
+
+            var id = id_ ?? 0;
+
             var l = new Layout(id, name, gridSizeX, gridSizeY);
             Layouts.Add(l);
 

@@ -104,7 +104,8 @@ namespace LifeSimulation.SimObjects
                         return SimObjectColor.Red;
                     case Digestion.Herbivore:
                         return SimObjectColor.Brown;
-                    case Digestion.Omnivore:
+                    case Digestion.OmnivoreCreature:
+                    case Digestion.OmnivorePlant:
                         return SimObjectColor.Yellow;
                     case Digestion.Nonivore:
                         return SimObjectColor.Purple;
@@ -177,7 +178,7 @@ namespace LifeSimulation.SimObjects
             var strength = GetChildValue(Strength, creature.Strength);
 
 
-            var c = new Creature(XPos, YPos, _context, energy, strength, Species, GetRandomDirection()); 
+            var c = new Creature(XPos, YPos, _context, energy, strength, Species, GetRandomDirection());
             _context.AddCreature(c);
         }
 
@@ -199,7 +200,7 @@ namespace LifeSimulation.SimObjects
             var direction = Direction.None;
             while (direction == Direction.None)
             {
-                direction = (Direction) values.GetValue(random.Next(values.Length));
+                direction = (Direction)values.GetValue(random.Next(values.Length));
             }
             return direction;
         }

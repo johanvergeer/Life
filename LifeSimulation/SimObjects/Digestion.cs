@@ -4,7 +4,8 @@
     {
         Carnivore,
         Herbivore,
-        Omnivore,
+        OmnivoreCreature,
+        OmnivorePlant,
         Nonivore
     }
 }

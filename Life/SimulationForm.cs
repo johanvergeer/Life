@@ -29,8 +29,9 @@ namespace Life
             Graphics g = e.Graphics;
 
             // 1. Berekenen van hoogte / breedte van ieder blokje
-            float height = simulationPanel.Height / simulation.Context.Layout.GridSizeY;
-            float width = simulationPanel.Width / simulation.Context.Layout.GridSizeX;
+            if (simulation.Context.Layout == null) return;
+            var height = (int)Math.Floor((float)simulationPanel.Height / simulation.Context.Layout.GridSizeY);
+            var width = (int)Math.Floor((float)simulationPanel.Width / simulation.Context.Layout.GridSizeX);
 
             // 2. Alle territories tekenen
             foreach (var t in simulation.Context.Layout.Territories)
@@ -42,6 +43,11 @@ namespace Life
         }
 
         private void SimulationForm_Resize(object sender, EventArgs e)
+        {
+            //simulationPanel.Invalidate();
+        }
+
+        private void simulationPanel_SizeChanged(object sender, EventArgs e)
         {
             simulationPanel.Invalidate();
         }

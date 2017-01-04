@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using LifeSimulation.Exceptions;
 
 namespace LifeSimulation.SimObjects
@@ -132,6 +133,30 @@ namespace LifeSimulation.SimObjects
             }
         }
 
+        /// <summary>
+        /// Create a new species
+        /// </summary>
+        /// <param name="name">The name of the species</param>
+        /// <param name="searing">Percentage of stamina where the creature still wants to mate</param>
+        /// <param name="nLegs">
+        ///     The number of legs of the creature. 
+        ///     This must be an equal number, equal to or higher then 2
+        /// </param>
+        /// <param name="digestion">
+        ///     What the creature will eat
+        ///     - Carnivore: The creature will eat other creatures
+        ///     - Herbivore: The creature will eat plants
+        ///     - OmnivoreCreature: The creature can eat both plants and other creatures, with a preference for other creatures
+        ///     - OmnivorePlant: The creature can eat both plants and other creatures, with a preference for Plants
+        ///     - Nonivore: The creature cannot eat anything
+        /// </param>
+        /// <param name="movingThreshold">The percentage of the stamina where the creature can still move</param>
+        /// <param name="swimmingThreshold">The percentage of the stamina where the creature want to swim</param>
+        /// <param name="reproductionCosts"></param>
+        /// <param name="stamina"></param>
+        /// <param name="herdBehaviour"></param>
+        /// <param name="maximumStrength"></param>
+        /// <param name="minimumStrength"></param>
         public Species(string name, int searing, int nLegs, Digestion digestion, int movingThreshold, int swimmingThreshold,
             int reproductionCosts, int stamina, int herdBehaviour, int maximumStrength, int minimumStrength)
         {
