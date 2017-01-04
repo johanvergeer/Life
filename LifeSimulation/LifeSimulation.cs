@@ -123,20 +123,35 @@ namespace LifeSimulation
 
             AddCreatures(Digestion.Carnivore, carnivores);
             AddCreatures(Digestion.Herbivore, herbivores);
-            // TODO Opdeling maken tussen verschillende soorten Omnivores
             AddCreatures(Digestion.OmnivoreCreature, omnivores);
+            AddCreatures(Digestion.OmnivorePlant, omnivores);
             AddCreatures(Digestion.Nonivore, nonivores);
 
             Status = SimulationStatus.New;
         }
 
+        /// <summary>
+        /// Add the creatures of a given digestion to the SimulationContext
+        /// The species will be equally devided for the digestion
+        /// </summary>
+        /// <param name="digestion">The creatures digestion</param>
+        /// <param name="percentage">The percentage of the creature with the digestion in the simulation</param>
         private void AddCreatures(Digestion digestion, int percentage)
         {
-            IEnumerable<Species> species = _species.Where(sp => sp.Digestion == digestion);
+            var species = _species.Where(sp => sp.Digestion == digestion);
             var speciesCount = species.Count();
 
-            // Calculate the percentage for each species
-            double p = (double)percentage / (double)speciesCount;
+            double p;
+
+            if (digestion == Digestion.OmnivorePlant || digestion == Digestion.OmnivoreCreature)
+            {
+                var herbivores = _species.Where(
+                    sp => sp.Digestion == Digestion.OmnivoreCreature || sp.Digestion == Digestion.OmnivorePlant);
+                var herbivoresCount = herbivores.Count();
+                p = percentage / Math.Pow(speciesCount, 2) * herbivoresCount;
+            }
+            else
+                p = (double)percentage / (double)speciesCount;
 
             foreach (var s in species)
             {
