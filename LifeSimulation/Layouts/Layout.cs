@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LifeSimulation.SimObjects;
 
 namespace LifeSimulation.Layouts
 {
@@ -40,6 +41,12 @@ namespace LifeSimulation.Layouts
         public bool hasTerritory(int xPos, int yPos)
         {
             return Territories.Any(t => t.XPos == xPos && t.YPos == yPos);
+        }
+
+        public bool hasTerritory(int xPos, int yPos, Direction direction)
+        {
+            SimulationContext.GetCoordinates(ref xPos, ref yPos, direction);
+            return hasTerritory(xPos, yPos);
         }
     }
 }

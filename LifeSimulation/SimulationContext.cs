@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
@@ -144,13 +145,19 @@ namespace LifeSimulation
         public bool HasSimObjects<TSimObject>(int xPos, int yPos) where TSimObject : SimObject
             => GetSimObjects<TSimObject>().Any(o => o.XPos == xPos && o.YPos == yPos);
 
+        public bool HasSimObjects<TSimObject>(int xPos, int yPos, Direction direction) where TSimObject : SimObject
+        {
+            GetCoordinates(ref xPos, ref yPos, direction);
+            return HasSimObjects<TSimObject>(xPos, yPos);
+        }
+
         /// <summary>
         /// Get coordinates based on the current position and the direction
         /// </summary>
         /// <param name="xPos">reference , input current x-position, output new x-position</param>
         /// <param name="yPos">reference, input current y-position, output new y-position</param>
         /// <param name="direction">The direction for the new position</param>
-        private void GetCoordinates(ref int xPos, ref int yPos, Direction direction)
+        public static void GetCoordinates(ref int xPos, ref int yPos, Direction direction)
         {
             switch (direction)
             {
@@ -184,6 +191,8 @@ namespace LifeSimulation
                     xPos--;
                     yPos--;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
         }
     }

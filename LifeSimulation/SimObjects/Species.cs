@@ -77,26 +77,30 @@ namespace LifeSimulation.SimObjects
 
         /// <summary>
         /// Percentage of the stamina where the creature is still able to move
+        /// 
+        /// This always needs to be smaller then the SwimmingThreshold
         /// </summary>
         public int MovingThreshold
         {
             get { return _movingThreshold / 100 * Stamina; }
             private set
             {
-                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 0 || value >= SwimmingThreshold) throw new ArgumentOutOfRangeException(nameof(value));
                 _movingThreshold = value;
             }
         }
 
         /// <summary>
         /// Percentage of the stamina where the creature wants to start swimming to get to another territory for food
+        /// 
+        /// This always needs to be bigger then the MovingThreshold
         /// </summary>
         public int SwimmingThreshold
         {
             get { return _swimmingThreshold / 100 * Stamina; }
             private set
             {
-                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value <= MovingThreshold || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
                 _swimmingThreshold = value;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using LifeSimulation.SimObjects;
 
 namespace LifeSimulation.Layouts
 {
@@ -40,9 +41,18 @@ namespace LifeSimulation.Layouts
         /// <summary>
         /// Check if the coordinates contain territory
         /// </summary>
-        /// <param name="xPos"></param>
-        /// <param name="yPos"></param>
+        /// <param name="xPos">The x position to look</param>
+        /// <param name="yPos">The y position to look</param>
         /// <returns></returns>
         bool hasTerritory(int xPos, int yPos);
+
+        /// <summary>
+        /// Check if a location in a certain direction has territory
+        /// </summary>
+        /// <param name="xPos">The x position to look from</param>
+        /// <param name="yPos">The y position to look from</param>
+        /// <param name="direction">The direction to look to</param>
+        /// <returns>true if there is territory in the chosen direction, else false</returns>
+        bool hasTerritory(int xPos, int yPos, Direction direction);
     }
 }

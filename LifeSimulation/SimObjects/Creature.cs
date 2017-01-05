@@ -9,6 +9,7 @@ namespace LifeSimulation.SimObjects
         private int _strength;
         private int _energy;
         private readonly SimulationContext _context;
+        private bool _hasHitObject;
 
         /// <summary>
         /// The species of the creature
@@ -17,15 +18,20 @@ namespace LifeSimulation.SimObjects
 
         /// <summary>
         /// Energy of the creature.
-        /// This has to be more then or equal to 0 and less then or equal to the creatures stamina
+        /// The maximum amount of energy is the stamina of the species
+        /// If the energy is 0 or lower, the creature dies.
         /// </summary>
         public int Energy
         {
             get { return _energy; }
             set
             {
-                if (value < 0 || value > Species.Stamina) throw new ArgumentOutOfRangeException(nameof(value));
-                _energy = value;
+                if (value > Species.Stamina)
+                    _energy = Species.Stamina;
+                else if (value <= 0)
+                    Die();
+                else
+                    _energy = value;
             }
         }
 
@@ -127,6 +133,9 @@ namespace LifeSimulation.SimObjects
             _context = context;
         }
 
+        /// <summary>
+        /// Check if the location does not have any obstacles and it is territory (not water)
+        /// </summary>
         protected override void CheckLocation()
         {
             if (Context.HasSimObjects<Obstacle>(XPos, YPos))
@@ -151,10 +160,196 @@ namespace LifeSimulation.SimObjects
 
         /// <summary>
         /// The creature can move to a given location on the grid
+        /// 
+        /// The creature can only move if Energy > MovingThreshold
+        /// The creature will move the number of grid squares that is indicated by the speed
+        /// 
+        /// If the creature hits an obstacle in this round, it will stop immediately and lose half it's energy
+        /// If the creature is in the water at the end of the turn, it will loose the same amount of energy as it has legs.
+        /// If the creature is on land at the end of the turn, it will loose the same amount of energy as it's weight.
         /// </summary>
         public void Move()
         {
+            if (Energy < Species.MovingThreshold)
+                return;
 
+            var steps = Speed;
+            var hasHitObject = false;
+            var water = false;
+
+            while (steps != 0 && !hasHitObject)
+            {
+                hasHitObject = MoveOne(out water);
+                steps--;
+            }
+
+            if (hasHitObject)
+                Energy /= 2;
+            else if (water)
+                Energy -= Species.NLegs;
+            else
+                Energy -= Weight;
+        }
+
+        /// <summary>
+        /// Move the creature one step
+        /// </summary>
+        /// <param name="water">True if the Creature is in water.</param>
+        /// <returns>True if the creature has hit an obstacle in this round</returns>
+        private bool MoveOne(out bool water)
+        {
+            var move = false;
+            water = false;
+
+            // First make sure there is no obstacle in the path
+            if (CheckCollision())
+            {
+                if (!_hasHitObject)
+                {
+                    _hasHitObject = true;
+                    return true;
+                }
+
+                while (!move)
+                {
+                    if (CheckCollision())
+                    {
+                        Direction = GetRandomDirection();
+                        continue;
+                    }
+                    move = true;
+                    _hasHitObject = false;
+                }
+            }
+
+            // If there is territory in the next square
+            if (_context.Layout.hasTerritory(XPos, YPos, Direction))
+            {
+                MoveDirection();
+            }
+            // If there is water in the next square
+            else
+            {
+                // Check if energy is below the swimming threshold
+                if (Energy <= Species.SwimmingThreshold)
+                {
+                    MoveDirection();
+                    water = true;
+                }
+                else
+                {
+                    // If the creature does not want to swim yet, get another direction
+                    move = false;
+                    while (!move)
+                    {
+                        Direction = GetRandomDirection();
+                        if (!_context.Layout.hasTerritory(XPos, YPos, Direction) ||
+                            _context.HasSimObjects<Obstacle>(XPos, YPos, Direction)) continue;
+                        move = true;
+                        MoveDirection();
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check if there is an obstacle in the way
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckCollision()
+        {
+            return _context.HasSimObjects<Obstacle>(XPos, YPos, Direction);
+        }
+
+        /// <summary>
+        /// Move the creature in a direction
+        /// </summary>
+        private void MoveDirection()
+        {
+            switch (Direction)
+            {
+                case Direction.None:
+                    break;
+                case Direction.N:
+                    MoveUp();
+                    break;
+                case Direction.NE:
+                    MoveUp();
+                    MoveRight();
+                    break;
+                case Direction.E:
+                    MoveRight();
+                    break;
+                case Direction.SE:
+                    MoveDown();
+                    MoveRight();
+                    break;
+                case Direction.S:
+                    MoveDown();
+                    break;
+                case Direction.SW:
+                    MoveDown();
+                    MoveLeft();
+                    break;
+                case Direction.W:
+                    MoveLeft();
+                    break;
+                case Direction.NW:
+                    MoveUp();
+                    MoveLeft();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(Direction), Direction, null);
+            }
+        }
+
+        /// <summary>
+        /// Move the creature down on the grid. 
+        /// If the creature get's over the edge, send it to the other side of the grid.
+        /// </summary>
+        private void MoveDown()
+        {
+            if (YPos != _context.Layout.GridSizeY)
+                YPos++;
+            else
+                YPos = 0;
+        }
+
+        /// <summary>
+        /// Move the creature up on the grid. 
+        /// If the creature get's over the edge, send it to the other side of the grid.
+        /// </summary>
+        private void MoveUp()
+        {
+            if (YPos != 0)
+                YPos--;
+            else
+                YPos = _context.Layout.GridSizeY;
+        }
+
+        /// <summary>
+        /// Move the creature left on the grid. 
+        /// If the creature get's over the edge, send it to the other side of the grid.
+        /// </summary>
+        private void MoveLeft()
+        {
+            if (XPos != 0)
+                XPos--;
+            else
+                XPos = _context.Layout.GridSizeX;
+        }
+
+        /// <summary>
+        /// Move the creature right on the grid. 
+        /// If the creature get's over the edge, send it to the other side of the grid.
+        /// </summary>
+        private void MoveRight()
+        {
+            if (XPos != _context.Layout.GridSizeX)
+                XPos++;
+            else
+                XPos = 0;
         }
 
         /// <summary>
@@ -166,19 +361,17 @@ namespace LifeSimulation.SimObjects
         /// <returns></returns>
         public int GetEaten(int energy)
         {
-            return 1;
+            if (energy >= Energy) return Energy;
+            Energy -= energy;
+            return energy;
         }
 
         /// <summary>
-        /// Used to check if a creature collides every time it moves to another piece of the grid.
+        /// Remove the creature from the context
         /// </summary>
-        /// <returns>
-        /// true if the creature can continue
-        /// false if the creature has to pick another direction
-        /// </returns>
-        private bool CheckCollision()
+        private void Die()
         {
-            return true;
+            _context.RemoveSimObject(this);
         }
 
         /// <summary>
@@ -205,6 +398,12 @@ namespace LifeSimulation.SimObjects
             _context.AddCreature(c);
         }
 
+        /// <summary>
+        /// Get the average values of both parents with a random ±10%
+        /// </summary>
+        /// <param name="parent1">First parent of the child</param>
+        /// <param name="parent2">Second parent of the child</param>
+        /// <returns></returns>
         private int GetChildValue(int parent1, int parent2)
         {
             var e1 = parent1;
@@ -215,7 +414,11 @@ namespace LifeSimulation.SimObjects
             return (e1 + e2) / 2 + Math.Abs(e1 - e2) * (r.Next(-1, 1) / 10);
         }
 
-        private Direction GetRandomDirection()
+        /// <summary>
+        /// Get a random direction for the creature
+        /// </summary>
+        /// <returns>A direction</returns>
+        private static Direction GetRandomDirection()
         {
             var values = Enum.GetValues(typeof(Direction));
             var random = new Random();
@@ -231,7 +434,6 @@ namespace LifeSimulation.SimObjects
         /// <summary>
         /// The creature can eat another sim object, based on the digestion
         /// </summary>
-        /// <param name="simObject">Sim object that will be eaten by the creature</param>
         /// <exception cref="">Thrown if the eaten simObject does not match the creatures digestions</exception>
         private void Eat()
         {
@@ -241,11 +443,16 @@ namespace LifeSimulation.SimObjects
                     EatCreature();
                     break;
                 case Digestion.Herbivore:
+                    EatPlant();
                     break;
                 case Digestion.OmnivoreCreature:
+                    if (!EatCreature())
+                        EatPlant();
                     break;
                 case Digestion.OmnivorePlant:
-                    
+                    if (!EatPlant())
+                        EatCreature();
+                    break;
                 case Digestion.Nonivore:
                     break;
                 default:
@@ -259,13 +466,19 @@ namespace LifeSimulation.SimObjects
             var creature = _context.GetCreatures(XPos, YPos).First(c => c.Species.Stamina > Strength);
             if (creature == null) return false;
 
-            var transferredEnergy = Strength - creature.Species.Stamina;
+            // Get the difference between the Strenght and the stamina of both creatures
+            var diffStrengthStamina = Math.Abs(Strength - creature.Species.Stamina);
 
+            // If the Hunger is smaller then diffStrengthStamina, then the amount of transferred energy is
+            // limited by Hunger
+            var transferredEnergy = Math.Min(diffStrengthStamina, Hunger);
+
+            // If the target creature does not eat other creatures
             if (creature.Species.Digestion == Digestion.Herbivore ||
                 creature.Species.Digestion == Digestion.Nonivore)
             {
+                transferredEnergy = creature.GetEaten(transferredEnergy);
                 Energy += transferredEnergy;
-                creature.Energy -= transferredEnergy;
             }
             else
             {
@@ -273,12 +486,12 @@ namespace LifeSimulation.SimObjects
                 // the energy will be transferred to the strongest one.
                 if (Strength > creature.Strength)
                 {
+                    transferredEnergy = creature.GetEaten(transferredEnergy);
                     Energy += transferredEnergy;
-                    creature.Energy -= Energy;
                 }
                 else
                 {
-                    Energy -= transferredEnergy;
+                    transferredEnergy = GetEaten(transferredEnergy);
                     creature.Energy += transferredEnergy;
                 }
             }
