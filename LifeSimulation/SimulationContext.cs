@@ -37,6 +37,10 @@ namespace LifeSimulation
         /// <param name="obstacle">Obstacle object</param>
         public void AddObstacle(Obstacle obstacle) => SimObjects.Add(obstacle);
 
+        /// <summary>
+        /// Get all the Simobjects in the SimObjects List
+        /// </summary>
+        /// <returns>An IEnumerable of all the SimObjects</returns>
         public IEnumerable<SimObject> GetAllSimObjects() => SimObjects;
 
         public void RemoveSimObject(SimObject simObject) => SimObjects.Remove(simObject);

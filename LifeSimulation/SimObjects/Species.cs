@@ -67,7 +67,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int Searing
         {
-            get { return _searing / 100 * Stamina; }
+            get { return GetStaminaPercentage(_searing); }
             private set
             {
                 if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
@@ -82,10 +82,12 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int MovingThreshold
         {
-            get { return _movingThreshold / 100 * Stamina; }
+            get { return GetStaminaPercentage(_movingThreshold); }
             private set
             {
-                if (value < 0 || value >= SwimmingThreshold) throw new ArgumentOutOfRangeException(nameof(value));
+                if (SwimmingThreshold != 0)
+                    if (value >= SwimmingThreshold) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value));
                 _movingThreshold = value;
             }
         }
@@ -97,7 +99,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int SwimmingThreshold
         {
-            get { return _swimmingThreshold / 100 * Stamina; }
+            get { return GetStaminaPercentage(_swimmingThreshold); }
             private set
             {
                 if (value <= MovingThreshold || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
@@ -111,7 +113,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public int ReproductionCosts
         {
-            get { return _reproductionCosts / 100 * Stamina; }
+            get { return GetStaminaPercentage(_reproductionCosts); }
             private set
             {
                 if (value < 0 || value >= Searing) throw new ArgumentOutOfRangeException(nameof(value));
@@ -140,7 +142,9 @@ namespace LifeSimulation.SimObjects
             get { return _maximumStrength; }
             private set
             {
-                if (value <= MinimumStrength || value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
+                if (MinimumStrength != 0)
+                    if (value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value <= 0 || value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
                 _maximumStrength = value;
             }
         }
@@ -188,6 +192,8 @@ namespace LifeSimulation.SimObjects
                 return speed;
             }
         }
+
+        private int GetStaminaPercentage(int value) => Convert.ToInt32(Math.Round((float) value / 100 * Stamina));
 
         /// <summary>
         /// Create a new species

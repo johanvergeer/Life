@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimObjects\CreatureTests.cs" />
+    <Compile Include="SimulationContextTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LifeSimulation\LifeSimulation.csproj">
