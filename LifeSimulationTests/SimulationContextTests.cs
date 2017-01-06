@@ -16,18 +16,28 @@ namespace LifeSimulation.Tests
         private Layout _layout;
         private SimulationContext _context;
         private Species _species;
-        private Creature _creature1;
 
         [TestInitialize]
         public void SimulationContextTestInitialize()
         {
             _layout = new Layout(1, "Layout 1", 100, 100);
-            _layout.addTerritory(50, 50);
-            _layout.addTerritory(50, 51);
-            _layout.addTerritory(50, 52);
+            for (var i = 50; i <= 100; i++)
+            {
+                for (var j = 1; j <= 100; j++)
+                {
+                    _layout.addTerritory(i, j);
+                }
+            }
             _context = new SimulationContext(_layout);
 
             _species = new Species("Dog", 15, 4, Digestion.Carnivore, 20, 60, 10, 100, 0, 95, 20);
+            _context.AddCreature(new Creature(51, 56, _context, 70, 80, _species, Direction.E));
+            _context.AddCreature(new Creature(70, 82, _context, 70, 80, _species, Direction.E));
+            _context.AddCreature(new Creature(83, 85, _context, 70, 80, _species, Direction.E));
+            _context.AddPlant(50, 51, 56);
+            _context.AddPlant(60, 84, 63);
+            _context.AddObstacle(84, 64);
+            _context.AddObstacle(100, 100);
         }
 
         [TestMethod()]
@@ -43,20 +53,12 @@ namespace LifeSimulation.Tests
             Assert.IsTrue(_context.GetAllSimObjects().Any(c => c.YPos == 50 && c.XPos == 50));
         }
 
-        // A creature cannot be put on top of an obstacle
-
-        // A creature cannot be put directly in the water
-
         [TestMethod()]
         public void AddPlantTest()
         {
             _context.AddPlant(new Plant(90, 50, 51, _context));
             Assert.IsTrue(_context.GetAllSimObjects().Any(c => c.YPos == 51 && c.XPos == 50));
         }
-
-        // A plant cannot be put on top of an obstacle
-
-        // A plant cannot be put in the water
 
         [TestMethod()]
         public void AddObstacleTest()
@@ -65,88 +67,151 @@ namespace LifeSimulation.Tests
             Assert.IsTrue(_context.GetAllSimObjects().Any(c => c.YPos == 52 && c.XPos == 50));
         }
 
-        // Obstacle cannot be put on plant
-
-        // Obstacle cannot be put on creature
-
-        // Obstacle cannot be put in the water
-
         [TestMethod()]
         public void GetAllSimObjectsTest()
         {
-            Assert.Fail();
+            var so = _context.GetAllSimObjects();
+            Assert.IsTrue(so.Count() == 7);
         }
 
         [TestMethod()]
         public void RemoveSimObjectTest()
         {
-            Assert.Fail();
+            var so = _context.GetAllSimObjects().First();
+            _context.RemoveSimObject(so);
+            Assert.IsTrue(_context.GetAllSimObjects().Count() == 6);
         }
 
         [TestMethod()]
         public void GetSimObjectsTest()
         {
-            Assert.Fail();
+            Assert.AreEqual(_context.GetSimObjects<Plant>().Count(), 2);
+            Assert.AreEqual(_context.GetSimObjects<Creature>().Count(), 3);
+            Assert.AreEqual(_context.GetSimObjects<Obstacle>().Count(), 2);
         }
 
         [TestMethod()]
         public void GetSimObjectsTest1()
         {
-            Assert.Fail();
+            Assert.AreEqual(_context.GetSimObjects<Creature>(51, 56).Count(), 1);
         }
 
         [TestMethod()]
         public void GetSimObjectTest()
         {
-            Assert.Fail();
+            var so = _context.GetSimObject<Creature>(51, 57, Direction.N);
+            Assert.IsInstanceOfType(so, typeof(Creature));
         }
 
         [TestMethod()]
         public void GetCreaturesTest()
         {
-            Assert.Fail();
+            var c = _context.GetCreatures(Digestion.Carnivore);
+            Assert.AreEqual(c.Count(), 3);
         }
 
         [TestMethod()]
         public void GetCreaturesTest1()
         {
-            Assert.Fail();
+            var c = _context.GetCreatures(_species);
+            Assert.AreEqual(c.Count(), 3);
         }
 
         [TestMethod()]
         public void GetCreaturesTest2()
         {
-            Assert.Fail();
+            var c = _context.GetCreatures(_species, 51, 56);
+            Assert.AreEqual(c.Count(), 1);
+
+            var d = _context.GetCreatures(_species, 50, 50);
+            Assert.AreEqual(d.Count(), 0);
+
+
         }
 
         [TestMethod()]
         public void GetCreaturesTest3()
         {
-            Assert.Fail();
+            var c = _context.GetCreatures(51, 56);
+            Assert.AreEqual(c.Count(), 1);
+
+            var d = _context.GetCreatures(50, 50);
+            Assert.AreEqual(d.Count(), 0);
         }
 
         [TestMethod()]
         public void HasSimObjectsTest()
         {
-            Assert.Fail();
+            Assert.IsTrue(_context.HasSimObjects(51, 56));
+            Assert.IsFalse(_context.HasSimObjects(50, 50));
         }
 
         [TestMethod()]
         public void HasSimObjectsTest1()
         {
-            Assert.Fail();
+            Assert.IsTrue(_context.HasSimObjects<Creature>(51, 56));
+            Assert.IsFalse(_context.HasSimObjects<Creature>(50, 50));
         }
 
         [TestMethod()]
         public void HasSimObjectsTest2()
         {
-            Assert.Fail();
+            Assert.IsTrue(_context.HasSimObjects<Creature>(50, 56, Direction.E));
+            Assert.IsFalse(_context.HasSimObjects<Creature>(50, 56, Direction.W));
         }
 
         [TestMethod()]
         public void GetCoordinatesTest()
         {
-            Assert.Fail();
+            var x = 10;
+            var y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.N);
+            Assert.AreEqual(y, 9);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.NE);
+            Assert.AreEqual(x, 11);
+            Assert.AreEqual(y, 9);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.E);
+            Assert.AreEqual(x, 11);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.SE);
+            Assert.AreEqual(x, 11);
+            Assert.AreEqual(y, 11);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.S);
+            Assert.AreEqual(y, 11);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.SW);
+            Assert.AreEqual(x, 9);
+            Assert.AreEqual(y, 11);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.W);
+            Assert.AreEqual(x, 9);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.NW);
+            Assert.AreEqual(x, 9);
+            Assert.AreEqual(y, 9);
+
+            x = 10;
+            y = 10;
+            SimulationContext.GetCoordinates(ref x, ref y, Direction.None);
+            Assert.AreEqual(x, 10);
+            Assert.AreEqual(y, 10);
         }
     }
 }

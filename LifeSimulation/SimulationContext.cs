@@ -31,11 +31,21 @@ namespace LifeSimulation
         /// <param name="plant">Plant object</param>
         public void AddPlant(Plant plant) => SimObjects.Add(plant);
 
+        public void AddPlant(int energy, int xPos, int yPos)
+        {
+            SimObjects.Add(new Plant(energy, xPos, yPos, this));
+        }
+
         /// <summary>
         /// Add a new obstacle to the SimObjects list
         /// </summary>
         /// <param name="obstacle">Obstacle object</param>
         public void AddObstacle(Obstacle obstacle) => SimObjects.Add(obstacle);
+
+        public void AddObstacle(int xPos, int yPos)
+        {
+            SimObjects.Add(new Obstacle(xPos, yPos, this));
+        }
 
         /// <summary>
         /// Get all the Simobjects in the SimObjects List
