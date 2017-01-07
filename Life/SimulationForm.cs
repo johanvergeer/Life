@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LifeSimulation.SimObjects;
 
 namespace Life
 {
@@ -57,7 +58,7 @@ namespace Life
             rectangles.Clear();
 
             // 3. Alle obstacles tekenen
-            foreach (var o in simulation.Context.GetSimObjects<LifeSimulation.SimObjects.Obstacle>().ToList())
+            foreach (var o in simulation.Context.GetSimObjects<Obstacle>().ToList())
             {
                 int xPos = ((o.XPos) * width) - width;
                 int yPos = ((o.YPos) * height) - height;
@@ -71,7 +72,7 @@ namespace Life
             rectangles.Clear();
 
             // 4. Alle sim objects
-            foreach (var o in simulation.Context.GetSimObjects<LifeSimulation.SimObjects.Plant>().ToList())
+            foreach (var o in simulation.Context.GetSimObjects<Plant>().ToList())
             {
                 int xPos = ((o.XPos) * width) - width;
                 int yPos = ((o.YPos) * height) - height;
@@ -85,7 +86,7 @@ namespace Life
             rectangles.Clear();
 
             // 3. Alle beesten tekenen
-            foreach (var o in simulation.Context.GetSimObjects<LifeSimulation.SimObjects.Creature>().ToList())
+            foreach (var o in simulation.Context.GetSimObjects<Creature>().ToList())
             {
                 int xPos = ((o.XPos) * width) - width;
                 int yPos = ((o.YPos) * height) - height;

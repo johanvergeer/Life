@@ -71,6 +71,7 @@
             this.simulationPanel.BackColor = System.Drawing.Color.RoyalBlue;
             this.simulationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.simulationPanel.Location = new System.Drawing.Point(0, 0);
+            this.simulationPanel.MinimumSize = new System.Drawing.Size(200, 200);
             this.simulationPanel.Name = "simulationPanel";
             this.simulationPanel.Size = new System.Drawing.Size(545, 215);
             this.simulationPanel.TabIndex = 4;
@@ -84,6 +85,7 @@
             this.ClientSize = new System.Drawing.Size(545, 250);
             this.Controls.Add(this.simulationPanel);
             this.Controls.Add(this.panelBottom);
+            this.MinimumSize = new System.Drawing.Size(200, 235);
             this.Name = "SimulationForm";
             this.Text = "Simulatie";
             this.Resize += new System.EventHandler(this.SimulationForm_Resize);
