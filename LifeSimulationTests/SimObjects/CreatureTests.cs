@@ -2,6 +2,7 @@
 using LifeSimulation.SimObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace LifeSimulation.SimObjects.Tests
             _context.AddPlant(60, 84, 63);
             _context.AddObstacle(84, 64);
             _context.AddObstacle(100, 100);
+            _context.AddObstacle(83, 86);
         }
 
         [TestMethod()]
@@ -90,6 +92,20 @@ namespace LifeSimulation.SimObjects.Tests
 
             // Het aanal moe dan ook minder zijn dus
             Assert.IsTrue(_context.GetAllSimObjects().Count() == (creatureCount -1));
+        }
+
+        [TestMethod()]
+        public void MoveTest2()
+        {
+            // Test beest obstakel Colssion
+            // Beest verliest helft van zijn energy
+            Direction d1 = _creature3.Direction;
+            var energy = _creature3.Energy;
+            _creature3.Move();
+            Assert.IsTrue(_creature3.Energy == (energy/2));
+            // Na botsen tegen opstakel gaat hij bij de volgende move van richting veranderen
+            _creature3.Move();
+            Assert.AreNotEqual(d1, _creature3.Direction);
         }
 
         [TestMethod()]
