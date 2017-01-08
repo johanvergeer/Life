@@ -71,7 +71,6 @@ namespace LifeSimulation.SimObjects.Tests
         [TestMethod()]
         public void MoveTest()
         {
-            int XPos = _creature1.XPos;
             int YPos = _creature1.YPos;
             int energy = _creature1.Energy;
             // Creature laten lopen (nnaar he noorden
@@ -83,19 +82,46 @@ namespace LifeSimulation.SimObjects.Tests
             // Energy moetlager zijn
             
             Assert.AreEqual(_creature1.Energy, energy);
-            
+
+            var creatureCount = _context.GetAllSimObjects().Count();
             _creature1.Move();
-            energy = energy - _creature1.Weight;
             YPos = YPos - _creature1.Speed;
             Assert.AreEqual(_creature1.YPos, YPos);
-            
-            // Creatures energy is te laag en gaat dus dood! TEST UITVOEREN
+
+            // Het aanal moe dan ook minder zijn dus
+            Assert.IsTrue(_context.GetAllSimObjects().Count() == (creatureCount -1));
         }
 
         [TestMethod()]
         public void ActTest()
         {
-            Assert.Fail();
+            // Act kan of mate of 01
+            var creatureCount = _context.GetAllSimObjects().Count();
+
+            // We doen als eerst act! De beesten staan zo geinitialiseerd dat ze bij elkaar staan.
+            // We verwachten dus dat ze gaan paren dit doen we tot ze onder Searing leven komen
+            while (_creature2.Energy > _creature2.Species.Searing)
+            {
+                Assert.IsTrue(_creature2.Energy > _creature2.Species.Searing);
+                _creature2.Act();
+                // Er is nu dus een nieuw beest bijgekomen
+                creatureCount++;
+                Assert.AreEqual(creatureCount, _context.GetAllSimObjects().Count());
+            }
+
+            // Nu zijn we bij het punt dat het beest zou willen eten
+            var energy = _creature2.Energy;
+            _creature2.Act();
+            // Na het eten heeft het beest dus meer energy
+            Assert.IsTrue(_creature2.Energy > energy);
+
+            // Na een keer eten heeft hij weer zin om te paren dus paart hij nu weer
+            _creature2.Act();
+            // creature 2 zou het andere creature op hebben gegeten i.v.m. de energie niveaus in de vorige cyclus
+            // Nu paart hij weer dus blijft het aantal gelijk omdat we bij het opvragen van energy pas het beest dood laten gaan
+            Assert.AreEqual(creatureCount, _context.GetAllSimObjects().Count());
+
+            // Zo gaat het cirkeltje rond
         }
     }
 }
