@@ -11,10 +11,6 @@ namespace LifeSimulation
     /// </summary>
     public interface ILifeApplication
     {
-        /// <summary>
-        /// A list of all the species that can be used in simulations
-        /// </summary>
-        List<Species> Species { get; set; }
 
         /// <summary>
         /// A list of all the Layouts that can be used in simulations
@@ -92,6 +88,19 @@ namespace LifeSimulation
         void DeleteSpecies(Species species);
 
         /// <summary>
+        /// Save the species to a file
+        /// </summary>
+        /// <param name="fileName">Path and name of the XML file</param>
+        /// <returns>True if the species are saved to a file, else falsez</returns>
+        bool SaveSpecies(string fileName);
+
+        /// <summary>
+        /// Get a readonly list of all the species
+        /// </summary>
+        /// <returns>Readonly list of all the species</returns>
+        ICollection<Species> GetSpecies();
+
+            /// <summary>
         /// Creates a square layout and adds it to the Layouts list
         /// </summary>
         /// <param name="name">Name of the layout</param>
