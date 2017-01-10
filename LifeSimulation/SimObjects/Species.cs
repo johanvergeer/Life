@@ -1,37 +1,50 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 using LifeSimulation.Exceptions;
 
 namespace LifeSimulation.SimObjects
 {
+    [DataContractAttribute(Name = "Species", Namespace = "http://www.life.com")]
     public class Species
     {
+        [DataMember]
         private int _nLegs;
+        [DataMember]
         private int _stamina;
+        [DataMember]
         private int _searing;
+        [DataMember]
         private int _movingThreshold;
+        [DataMember]
         private int _swimmingThreshold;
+        [DataMember]
         private int _reproductionCosts;
+        [DataMember]
         private int _maximumStrength;
+        [DataMember]
         private int _minimumStrength;
 
         /// <summary>
         /// Name of the species.
         /// This is only for recognition in the UI.
         /// </summary>
-        public string Name { get; set; }
+        [DataMember(Name = "Name", Order = 1)]
+        public string Name { get; private set; }
 
         /// <summary>
         /// Stamina of the creature. 
         /// This is the maximum amount of energy a creature can have. 
         /// The minimum is 25, and the maximum is 100.
         /// </summary>
+
         public int Stamina
         {
             get { return _stamina; }
             private set
             {
-                if (value < 25 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 25 || value > 100) throw new ArgumentOutOfRangeException(
+                    $"Stamina must be between 25 and 100");
                 _stamina = value;
             }
         }
@@ -46,7 +59,7 @@ namespace LifeSimulation.SimObjects
             get { return _nLegs; }
             private set
             {
-                if (value == 0 || value % 2 != 0) throw new InvalidNumberOfLegsException(nameof(value));
+                if (value == 0 || value % 2 != 0) throw new InvalidNumberOfLegsException("The number of legs must be more then 0 and an equal number");
                 _nLegs = value;
             }
         }
@@ -60,7 +73,8 @@ namespace LifeSimulation.SimObjects
         ///     - OmnivorePlant: The creature can eat both plants and other creatures, with a preference for Plants
         ///     - Nonivore: The creature cannot eat anything 
         /// </summary>
-        public Digestion Digestion { get; set; }
+        [DataMember]
+        public Digestion Digestion { get; private set; }
 
         /// <summary>
         /// Percentage of the stamina where the creature still wants to mate. 
@@ -70,7 +84,8 @@ namespace LifeSimulation.SimObjects
             get { return GetStaminaPercentage(_searing); }
             private set
             {
-                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(
+                    $"Searing must have a value between 0 and 100");
                 _searing = value;
             }
         }
@@ -86,8 +101,9 @@ namespace LifeSimulation.SimObjects
             private set
             {
                 if (SwimmingThreshold != 0)
-                    if (value >= SwimmingThreshold) throw new ArgumentOutOfRangeException(nameof(value));
-                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value));
+                    if (value >= SwimmingThreshold) throw new ArgumentOutOfRangeException(
+                        $"MovingThreshold must be greater then SwimmingThreshold");
+                if (value <= 0) throw new ArgumentOutOfRangeException($"MovingThreshold must be greater then 0");
                 _movingThreshold = value;
             }
         }
@@ -102,7 +118,8 @@ namespace LifeSimulation.SimObjects
             get { return GetStaminaPercentage(_swimmingThreshold); }
             private set
             {
-                if (value <= MovingThreshold || value > 100) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value <= MovingThreshold || value > 100) throw new ArgumentOutOfRangeException(
+                    $"SwimmingThreshold must be greater then MovingThreshopld and smaller then 100");
                 _swimmingThreshold = value;
             }
         }
@@ -116,7 +133,8 @@ namespace LifeSimulation.SimObjects
             get { return GetStaminaPercentage(_reproductionCosts); }
             private set
             {
-                if (value < 0 || value >= Searing) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 0 || value >= Searing) throw new ArgumentOutOfRangeException(
+                    $"ReproductionCosts must be greater then 0 and lower then Searing");
                 _reproductionCosts = value;
             }
         }
@@ -125,7 +143,7 @@ namespace LifeSimulation.SimObjects
         /// Radius in which the creature will be attracted to others of it's species. 
         /// If this is 0, then the creature will not show any HerdBehavior.
         /// </summary>
-        public int Herbehaviour { get; set; }
+        public int Herbehaviour { get; private set; }
 
         /// <summary>
         /// The minimum weight of the creature. 
@@ -143,8 +161,10 @@ namespace LifeSimulation.SimObjects
             private set
             {
                 if (MinimumStrength != 0)
-                    if (value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
-                if (value <= 0 || value >= Stamina) throw new ArgumentOutOfRangeException(nameof(value));
+                    if (value >= Stamina) throw new ArgumentOutOfRangeException(
+                        $"Maximumstrength must be smaller then Stamina");
+                if (value <= 0 || value >= Stamina) throw new ArgumentOutOfRangeException(
+                    $"Maximumstrength must be smaller then Stamina");
                 _maximumStrength = value;
             }
         }
@@ -158,7 +178,8 @@ namespace LifeSimulation.SimObjects
             get { return _minimumStrength; }
             private set
             {
-                if (value < 0 || value >= MaximumStrength) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value < 0 || value >= MaximumStrength) throw new ArgumentOutOfRangeException(
+                    $"MinimumStrength must be lower than MaximumStrength");
                 _minimumStrength = value;
             }
         }
@@ -194,6 +215,11 @@ namespace LifeSimulation.SimObjects
         }
 
         private int GetStaminaPercentage(int value) => Convert.ToInt32(Math.Round((float) value / 100 * Stamina));
+
+        public Species()
+        {
+            
+        }
 
         /// <summary>
         /// Create a new species

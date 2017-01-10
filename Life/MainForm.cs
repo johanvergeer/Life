@@ -45,7 +45,9 @@ namespace Life
 
             if (sf.DialogResult == DialogResult.OK)
             {
-                ILifeSimulation simulation = new LifeSimulation.LifeSimulation(LifeApplication.Layouts[0], sf.nElements, LifeApplication.Species, sf.plants, sf.carnivores, sf.herbivores, sf.omnivores, sf.nonivores, sf.obstacles, 100);
+
+                // TODO INITEN MET GOEDE WAARDEN
+                ILifeSimulation simulation = new LifeSimulation.LifeSimulation(LifeApplication.Layouts[0], sf.nElements, LifeApplication.GetSpecies(), sf.plants, sf.carnivores, sf.herbivores, sf.omnivores, sf.nonivores, sf.obstacles, 100);
                 // Toevoegen aan mainForm
                 LifeApplication.AddSimulation(simulation);
 
