@@ -24,15 +24,7 @@ namespace LifeSimulation.SimObjects
         public int Energy
         {
             get { return _energy; }
-            set
-            {
-                if (value > Species.Stamina)
-                    _energy = Species.Stamina;
-                else if (value <= 0)
-                    Die();
-                else
-                    _energy = value;
-            }
+            set { _energy = value > Species.Stamina ? Species.Stamina : value; }
         }
 
         /// <summary>
@@ -107,9 +99,11 @@ namespace LifeSimulation.SimObjects
                         return SimObjectColor.Red;
                     case Digestion.Herbivore:
                         return SimObjectColor.Brown;
+
                     case Digestion.OmnivoreCreature:
                     case Digestion.OmnivorePlant:
                         return SimObjectColor.Yellow;
+
                     case Digestion.Nonivore:
                         return SimObjectColor.Purple;
                     default:
@@ -364,14 +358,6 @@ namespace LifeSimulation.SimObjects
             if (energy >= Energy) return Energy;
             Energy -= energy;
             return energy;
-        }
-
-        /// <summary>
-        /// Remove the creature from the context
-        /// </summary>
-        private void Die()
-        {
-            _context.RemoveSimObject(this);
         }
 
         /// <summary>

@@ -100,6 +100,8 @@ namespace LifeSimulation
             return simObjects.FirstOrDefault(o => o.XPos == xPos && o.YPos == yPos);
         }
 
+        public IEnumerable<Creature> GetCreatures() => GetSimObjects<Creature>();
+
         /// <summary>
         /// Get creatures of a specific digestion type
         /// </summary>
@@ -137,6 +139,14 @@ namespace LifeSimulation
         }
 
         /// <summary>
+        /// Get all the dead creatures in the context. 
+        /// 
+        /// A creature is dead when the energy is equal to or lower then 0.
+        /// </summary>
+        /// <returns>List of all the dead creatures in the context</returns>
+        public IEnumerable<Creature> GetDeadCreatures() => GetCreatures().Where(c => c.Energy <= 0);
+
+        /// <summary>
         /// Check if the location contains any SimObjects
         /// </summary>
         /// <param name="xPos">The x position to look on the grid</param>
@@ -163,6 +173,17 @@ namespace LifeSimulation
         {
             GetCoordinates(ref xPos, ref yPos, direction);
             return HasSimObjects<TSimObject>(xPos, yPos);
+        }
+
+        /// <summary>
+        /// Delete all the dead creatures from the context
+        /// </summary>
+        public void RemoveDeadCreatures()
+        {
+            foreach (var deadCreature in GetDeadCreatures())
+            {
+                SimObjects.Remove(deadCreature);
+            }
         }
 
         /// <summary>
