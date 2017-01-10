@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using UserManager;
 using ReportManager;
+using LifeSimulation.SimObjects;
 
 namespace Life
 {
@@ -24,9 +25,12 @@ namespace Life
             // Vooraf geprogrammeerde Layout inladen
             Layout1 l1 = new Layout1(LifeApplication.Layouts[0]);
 
-
             // Species maken
-            //LifeApplication.CreateSpecies("Tijgers", 10, 4, LifeSimulation.SimObjects.Digestion.Carnivore, 0, 0 ,0,0,0);
+            LifeApplication.CreateSpecies("Dog", 15, 4, Digestion.OmnivorePlant, 20, 60, 10, 100, 0, 95, 20);
+            LifeApplication.CreateSpecies("Kat", 15, 4, Digestion.Carnivore, 20, 60, 10, 100, 0, 95, 20);
+            LifeApplication.CreateSpecies("Giraffe", 15, 4, Digestion.Herbivore, 20, 60, 10, 100, 0, 95, 20);
+            LifeApplication.CreateSpecies("Niksnut", 15, 4, Digestion.Nonivore, 20, 60, 10, 100, 0, 95, 20);
+            LifeApplication.CreateSpecies("Mens", 15, 4, Digestion.OmnivoreCreature, 20, 60, 10, 100, 0, 95, 20);
         }
 
         private void afsluitenMainMenu_Click(object sender, System.EventArgs e)

@@ -97,11 +97,12 @@ namespace Life
 
             if (rectangles.Count > 0)
                 g.FillRectangles(b, rectangles.ToArray());
-
         }
 
         private void btnStartPause_Click(object sender, EventArgs e)
         {
+            SetSimulationData();
+
             if (simulation.Status == LifeSimulation.SimulationStatus.Started)
             {
                 simulation.Pauze();
@@ -119,6 +120,15 @@ namespace Life
         {
             simulation.Stop();
             btnStartPause.Visible = false;
+        }
+
+        public void SetSimulationData()
+        {
+            lblCarnivoren.Text = simulation.Carnivores.ToString() + " / " + simulation.EnergyCarnivores + " / " + (simulation.EnergyCarnivores / simulation.Carnivores).ToString();
+            lblHerbivoren.Text = simulation.Herbivores.ToString() + " / " + simulation.EnergyHerbivores + " / " + (simulation.EnergyHerbivores / simulation.Herbivores).ToString();
+            lblNonivoren.Text = simulation.Nonivores.ToString() + " / " + simulation.EnergyNonivores + " / " + (simulation.EnergyNonivores / simulation.Nonivores).ToString();
+            lblOmnivoren.Text = simulation.Omnivores.ToString() + " / " + simulation.EnergyOmnivores + " / " + (simulation.EnergyOmnivores / simulation.Omnivores).ToString();
+            lblPlanten.Text = simulation.Planten.ToString() + " / " + simulation.EnergyPlanten + " / " + (simulation.EnergyPlanten / simulation.Planten).ToString();
         }
     }
 }
