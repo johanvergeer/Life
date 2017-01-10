@@ -25,7 +25,7 @@ namespace Life
 
             timer = new System.Timers.Timer();
             timer.Interval = 5000; 
-            timer.AutoReset = true;
+            timer.AutoReset = false;
             timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
 
             SetSimulationData();
@@ -33,6 +33,8 @@ namespace Life
 
         private void timer_Elapsed(object sender, EventArgs e)
         {
+            simulation.Step();
+
             SetSimulationData();
             simulationPanel.Invalidate();
             lblCarnivoren.Invalidate();
@@ -43,7 +45,7 @@ namespace Life
 
             Application.DoEvents();
 
-            simulation.Step();
+            timer.Start();
         }
 
         private void SimulationForm_Resize(object sender, EventArgs e)
