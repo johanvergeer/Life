@@ -17,6 +17,18 @@ namespace LifeSimulation
         public SimulationStatus Status { get; private set; }
         public SimulationContext Context { get; }
 
+        // REPORT DATA
+        public int Carnivores { get; private set; }
+        public int Omnivores { get; private set; }
+        public int Nonivores { get; private set; }
+        public int Herbivores { get; private set; }
+        public int Planten { get; private set; }
+        public int EnergyCarnivores { get; private set; }
+        public int EnergyHerbivores { get; private set; }
+        public int EnergyOmnivores { get; private set; }
+        public int EnergyNonivores { get; private set; }
+        public int EnergyPlanten { get; private set;  }
+
         private readonly int _nElements;
         private readonly ICollection<Species> _species;
 
@@ -128,6 +140,8 @@ namespace LifeSimulation
             AddCreatures(Digestion.Nonivore, nonivores);
 
             Status = SimulationStatus.New;
+
+            RefreshReportData();
         }
 
         /// <summary>
@@ -145,10 +159,10 @@ namespace LifeSimulation
 
             if (digestion == Digestion.OmnivorePlant || digestion == Digestion.OmnivoreCreature)
             {
-                var herbivores = _species.Where(
+                var omnivores = _species.Where(
                     sp => sp.Digestion == Digestion.OmnivoreCreature || sp.Digestion == Digestion.OmnivorePlant);
-                var herbivoresCount = herbivores.Count();
-                p = percentage / Math.Pow(speciesCount, 2) * herbivoresCount;
+                var omnivoreCount = omnivores.Count();
+                p = percentage / Math.Pow(speciesCount, 2) / omnivoreCount;
             }
             else
                 p = (double)percentage / (double)speciesCount;
@@ -201,7 +215,8 @@ namespace LifeSimulation
 
                     // Add the object if it is a creature
                     Debug.Assert(species != null, "Species cannot be null if the SimObject type is creature");
-                    Context.AddCreature(new Creature(posX, posY, Context, 100, 0, species, Direction.E));
+                    var str = random.Next(species.MinimumStrength, species.MaximumStrength);
+                    Context.AddCreature(new Creature(posX, posY, Context, 100, str, species, Direction.E));
                     break;
                 }
             }
@@ -213,7 +228,7 @@ namespace LifeSimulation
             return Status;
         }
 
-        public void SaveReportData(string filename)
+        public void RefreshReportData()
         {
             // In txt bestand de report data opslaan
             // Heel simpel de data opslaan per regel
@@ -221,37 +236,37 @@ namespace LifeSimulation
             var creatures = Context.GetSimObjects<Creature>();
             var plants = Context.GetSimObjects<Plant>();
 
-            var carnivores = 0;
-            var herbivores = 0;
-            var omnivores = 0;
-            var nonivores = 0;
-            var planten = 0;
-            var energyCarnivores = 0;
-            var energyHerbivores = 0;
-            var energyOmnivores = 0;
-            var energyNonivores = 0;
-            var energyPlanten = 0;
+            Carnivores = 0;
+            EnergyCarnivores = 0;
+            Herbivores = 0;
+            EnergyHerbivores = 0;
+            Omnivores = 0;
+            EnergyOmnivores = 0;
+            Nonivores = 0;
+            EnergyNonivores = 0;
+            Planten = 0;
+            EnergyPlanten = 0;
 
             foreach (var so in creatures)
             {
                 switch (so.Species.Digestion)
                 {
                     case Digestion.Carnivore:
-                        carnivores++;
-                        energyCarnivores += ((Creature)so).Energy;
+                        Carnivores++;
+                        EnergyCarnivores += ((Creature)so).Energy;
                         break;
                     case Digestion.Herbivore:
-                        herbivores++;
-                        energyHerbivores += ((Creature)so).Energy;
+                        Herbivores++;
+                        EnergyHerbivores += ((Creature)so).Energy;
                         break;
                     case Digestion.OmnivoreCreature:
                     case Digestion.OmnivorePlant:
-                        omnivores++;
-                        energyOmnivores += ((Creature)so).Energy;
+                        Omnivores++;
+                        EnergyOmnivores += ((Creature)so).Energy;
                         break;
                     case Digestion.Nonivore:
-                        nonivores += 1;
-                        energyNonivores += ((Creature)so).Energy;
+                        Nonivores += 1;
+                        EnergyNonivores += ((Creature)so).Energy;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -260,38 +275,42 @@ namespace LifeSimulation
 
             foreach (var so in plants)
             {
-                planten++;
-                energyPlanten += so.Energy;
+                Planten++;
+                EnergyPlanten += so.Energy;
             }
+        }
 
+        public void SaveReportData(string filename)
+        {
+            RefreshReportData();
 
             using (var outputFile = new StreamWriter(filename))
             {
                 // Data opslaan per regel
-                outputFile.WriteLine(carnivores.ToString()); // Aantal carnivores
-                outputFile.WriteLine(herbivores.ToString()); // Aantal herbivores
-                outputFile.WriteLine(omnivores.ToString()); // Aantal omnivores
-                outputFile.WriteLine(nonivores.ToString()); // Aantal nonivores
+                outputFile.WriteLine(Carnivores.ToString()); // Aantal carnivores
+                outputFile.WriteLine(Herbivores.ToString()); // Aantal herbivores
+                outputFile.WriteLine(Omnivores.ToString()); // Aantal omnivores
+                outputFile.WriteLine(Nonivores.ToString()); // Aantal nonivores
 
                 // Energie per type
-                outputFile.WriteLine(energyCarnivores.ToString()); // carnivores
-                outputFile.WriteLine(energyHerbivores.ToString()); // herbivores
-                outputFile.WriteLine(energyOmnivores.ToString()); // omnivores
-                outputFile.WriteLine(energyNonivores.ToString()); // nonivores
+                outputFile.WriteLine(EnergyCarnivores.ToString()); // carnivores
+                outputFile.WriteLine(EnergyHerbivores.ToString()); // herbivores
+                outputFile.WriteLine(EnergyOmnivores.ToString()); // omnivores
+                outputFile.WriteLine(EnergyNonivores.ToString()); // nonivores
 
                 // Gemiddeld per type
-                outputFile.WriteLine((energyCarnivores / carnivores).ToString()); // carnivores
-                outputFile.WriteLine((energyHerbivores / herbivores).ToString()); // herbivores
-                outputFile.WriteLine((energyOmnivores / omnivores).ToString()); // omnivores
-                outputFile.WriteLine((energyNonivores / nonivores).ToString()); // nonivores
+                outputFile.WriteLine((EnergyCarnivores / Carnivores).ToString()); // carnivores
+                outputFile.WriteLine((EnergyHerbivores / Herbivores).ToString()); // herbivores
+                outputFile.WriteLine((EnergyOmnivores / Omnivores).ToString()); // omnivores
+                outputFile.WriteLine((EnergyNonivores / Nonivores).ToString()); // nonivores
 
                 // Aantal planten
-                outputFile.WriteLine(planten);
+                outputFile.WriteLine(Planten);
                 // Energie planten
-                outputFile.WriteLine(energyPlanten.ToString());
+                outputFile.WriteLine(EnergyPlanten.ToString());
 
                 // Gemiddeld energie per plant
-                outputFile.WriteLine((energyPlanten / planten).ToString());
+                outputFile.WriteLine((EnergyPlanten / Planten).ToString());
             }
         }
 
@@ -339,6 +358,8 @@ namespace LifeSimulation
                     // De dieren willen actie ondernemen
                     ((Creature)so).Move();
                 }
+
+            RefreshReportData();
         }
 
         public SimulationStatus Stop()

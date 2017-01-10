@@ -20,6 +20,18 @@ namespace LifeSimulation
         /// </summary>
         int Speed { get; set; }
 
+        // REPORT DATA
+        int Carnivores { get; }
+        int Omnivores { get; }
+        int Nonivores { get; }
+        int Herbivores { get; }
+        int Planten { get; }
+        int EnergyCarnivores { get; }
+        int EnergyHerbivores { get;}
+        int EnergyOmnivores { get; }
+        int EnergyNonivores { get; }
+        int EnergyPlanten { get; }
+
         SimulationContext Context { get; }
 
         /// <summary>
@@ -79,6 +91,17 @@ namespace LifeSimulation
         ///     The simulation data is saved
         /// </summary>
         void SaveSimulation(string filename);
+
+        /// <summary>
+        /// Recalculates current objects
+        /// 
+        /// Preconditions:
+        ///     The simulation status is set to New or Pauzed
+        ///     
+        /// Postconditions:
+        ///     Fields are changed
+        /// </summary>
+        void RefreshReportData();
 
         /// <summary>
         /// Saves the current data of the simulation for usage in reports
