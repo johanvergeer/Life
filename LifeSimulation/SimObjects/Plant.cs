@@ -41,7 +41,7 @@ namespace LifeSimulation.SimObjects
         /// A plant can grow by an amount of energy
         /// </summary>
         /// <param name="energy">The amount of energy the plant will grow by</param>
-        public void Grow(int energy)
+        private void Grow(int energy)
         {
             Energy += energy;
         }

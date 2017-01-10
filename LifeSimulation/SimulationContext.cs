@@ -180,6 +180,8 @@ namespace LifeSimulation
         /// </summary>
         public void RemoveDeadCreatures()
         {
+            var dc = GetDeadCreatures();
+            if (!dc.Any()) return;
             foreach (var deadCreature in GetDeadCreatures())
             {
                 SimObjects.Remove(deadCreature);
