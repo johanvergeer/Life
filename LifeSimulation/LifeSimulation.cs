@@ -334,13 +334,13 @@ namespace LifeSimulation
         public void Step()
         {
             Context.SimulationStep++;
-
+            
             // Only do step when status is started
             // TODO Snelheid verwerken in de step?
             if ((Status != SimulationStatus.Started) || (Speed <= 0)) return;
 
             // Loop through SimObjects en voer de juiste functies uit
-            foreach (var so in Context.GetAllSimObjects())
+            foreach (var so in Context.GetAllSimObjects()) { 
                 if (so is Creature)
                     // Die dieren willen eerst lopen
                     ((Creature) so).Move();
@@ -350,9 +350,12 @@ namespace LifeSimulation
 
             // Na dat iedereen heeft gelopen willen de beesten nog een actie uitvoeren
             foreach (var so in Context.GetAllSimObjects())
+            {
                 if (so is Creature)
                     // De dieren willen actie ondernemen
                     ((Creature) so).Act();
+
+            Context.RemoveDeadCreatures();
 
             RefreshReportData();
         }

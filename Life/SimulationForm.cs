@@ -5,7 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using LifeSimulation.SimObjects;
 
@@ -14,10 +16,36 @@ namespace Life
     public partial class SimulationForm : Form
     {
         LifeSimulation.ILifeSimulation simulation;
+        private System.Timers.Timer timer;
+
         public SimulationForm(LifeSimulation.ILifeSimulation sim)
         {
             InitializeComponent();
             simulation = sim;
+
+            timer = new System.Timers.Timer();
+            timer.Interval = 5000; 
+            timer.AutoReset = false;
+            timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+
+            SetSimulationData();
+        }
+
+        private void timer_Elapsed(object sender, EventArgs e)
+        {
+            simulation.Step();
+
+            SetSimulationData();
+            simulationPanel.Invalidate();
+            lblCarnivoren.Invalidate();
+            lblHerbivoren.Invalidate();
+            lblNonivoren.Invalidate();
+            lblOmnivoren.Invalidate();
+            lblPlanten.Invalidate();
+
+            Application.DoEvents();
+
+            timer.Start();
         }
 
         private void SimulationForm_Resize(object sender, EventArgs e)
@@ -101,18 +129,18 @@ namespace Life
 
         private void btnStartPause_Click(object sender, EventArgs e)
         {
-            SetSimulationData();
-
             if (simulation.Status == LifeSimulation.SimulationStatus.Started)
             {
                 simulation.Pauze();
                 btnStartPause.Text = "Start";
+                timer.Stop();
             }
             else if ((simulation.Status == LifeSimulation.SimulationStatus.Pauzed)
                 || (simulation.Status == LifeSimulation.SimulationStatus.New))
             {
                 simulation.Start();
                 btnStartPause.Text = "Pauze";
+                timer.Start();
             }
         }
 
@@ -120,15 +148,16 @@ namespace Life
         {
             simulation.Stop();
             btnStartPause.Visible = false;
+            timer.Stop();
         }
 
         public void SetSimulationData()
         {
-            lblCarnivoren.Text = simulation.Carnivores.ToString() + " / " + simulation.EnergyCarnivores + " / " + (simulation.EnergyCarnivores / simulation.Carnivores).ToString();
-            lblHerbivoren.Text = simulation.Herbivores.ToString() + " / " + simulation.EnergyHerbivores + " / " + (simulation.EnergyHerbivores / simulation.Herbivores).ToString();
-            lblNonivoren.Text = simulation.Nonivores.ToString() + " / " + simulation.EnergyNonivores + " / " + (simulation.EnergyNonivores / simulation.Nonivores).ToString();
-            lblOmnivoren.Text = simulation.Omnivores.ToString() + " / " + simulation.EnergyOmnivores + " / " + (simulation.EnergyOmnivores / simulation.Omnivores).ToString();
-            lblPlanten.Text = simulation.Planten.ToString() + " / " + simulation.EnergyPlanten + " / " + (simulation.EnergyPlanten / simulation.Planten).ToString();
+            lblCarnivoren.Text = simulation.EnergyCarnivores.ToString(); //+ " / " + simulation.EnergyCarnivores + " / " + (simulation.EnergyCarnivores / simulation.Carnivores).ToString();
+            lblHerbivoren.Text = simulation.Herbivores.ToString(); //+ " / " + simulation.EnergyHerbivores + " / " + (simulation.EnergyHerbivores / simulation.Herbivores).ToString();
+            lblNonivoren.Text = simulation.Nonivores.ToString(); //+ " / " + simulation.EnergyNonivores + " / " + (simulation.EnergyNonivores / simulation.Nonivores).ToString();
+            lblOmnivoren.Text = simulation.Omnivores.ToString();// + " / " + simulation.EnergyOmnivores + " / " + (simulation.EnergyOmnivores / simulation.Omnivores).ToString();
+            lblPlanten.Text = simulation.Planten.ToString(); //+ " / " + simulation.EnergyPlanten + " / " + (simulation.EnergyPlanten / simulation.Planten).ToString();
         }
     }
 }
