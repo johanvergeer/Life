@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using LifeSimulation.Layouts;
@@ -10,7 +11,7 @@ namespace LifeSimulation
     public class SimulationContext
     {
         public ILayout Layout { get; private set; }
-        private List<SimObject> SimObjects { get; }
+        private IList<SimObject> SimObjects { get; }
         public long SimulationStep { get; set; }
 
         public SimulationContext(ILayout layout)
@@ -51,7 +52,7 @@ namespace LifeSimulation
         /// Get all the Simobjects in the SimObjects List
         /// </summary>
         /// <returns>An IEnumerable of all the SimObjects</returns>
-        public IEnumerable<SimObject> GetAllSimObjects() => SimObjects;
+        public ReadOnlyCollection<SimObject> GetAllSimObjects() => new ReadOnlyCollection<SimObject>(SimObjects);
 
         public void RemoveSimObject(SimObject simObject) => SimObjects.Remove(simObject);
 
@@ -60,8 +61,11 @@ namespace LifeSimulation
         /// </summary>
         /// <typeparam name="TSimObject">A type of SimObject</typeparam>
         /// <returns></returns>
-        public IEnumerable<TSimObject> GetSimObjects<TSimObject>() where TSimObject : SimObject
-            => SimObjects.OfType<TSimObject>();
+        public ReadOnlyCollection<TSimObject> GetSimObjects<TSimObject>() where TSimObject : SimObject
+        {
+            var so = SimObjects.OfType<TSimObject>().ToList();
+            return new ReadOnlyCollection<TSimObject>(so);
+        }
 
         /// <summary>
         ///  Get all the plants in the direct surroundings
@@ -71,14 +75,14 @@ namespace LifeSimulation
         /// <param name="xPos">The xPosition on the grid to look from</param>
         /// <param name="yPos">The yPosition on the grid to look from</param>
         /// <returns></returns>
-        public IEnumerable<TSimObject> GetSimObjects<TSimObject>(int xPos, int yPos) where TSimObject : SimObject
+        public ReadOnlyCollection<TSimObject> GetSimObjects<TSimObject>(int xPos, int yPos) where TSimObject : SimObject
         {
             var values = Enum.GetValues(typeof(Direction));
             return
                 values.Cast<Direction>()
                     .Select(direction => GetSimObject<TSimObject>(xPos, yPos, direction))
                     .Where(plant => plant != null)
-                    .ToList();
+                    .ToList().AsReadOnly();
         }
 
         /// <summary>
@@ -100,7 +104,7 @@ namespace LifeSimulation
             return simObjects.FirstOrDefault(o => o.XPos == xPos && o.YPos == yPos);
         }
 
-        public IEnumerable<Creature> GetCreatures() => GetSimObjects<Creature>();
+        public ReadOnlyCollection<Creature> GetCreatures() => GetSimObjects<Creature>(); 
 
         /// <summary>
         /// Get creatures of a specific digestion type
@@ -110,10 +114,10 @@ namespace LifeSimulation
         ///     List of creatures of a specific digestion type
         ///     Null if there are no creatures of the digestion type
         /// </returns>
-        public IEnumerable<Creature> GetCreatures(Digestion digestion)
+        public ReadOnlyCollection<Creature> GetCreatures(Digestion digestion)
         {
-            var creatures = GetSimObjects<Creature>();
-            return creatures?.Where(c => c.Species.Digestion == digestion);
+            var creatures = GetCreatures().Where(c => c.Species.Digestion == digestion).ToList().AsReadOnly();
+            return creatures;
         }
 
         /// <summary>
@@ -121,22 +125,20 @@ namespace LifeSimulation
         /// </summary>
         /// <param name="species"></param>
         /// <returns></returns>
-        public IEnumerable<Creature> GetCreatures(Species species)
+        public ReadOnlyCollection<Creature> GetCreatures(Species species)
         {
             var creatures = GetSimObjects<Creature>();
-            return creatures?.Where(c => c.Species == species);
+            return creatures?.Where(c => c.Species == species).ToList().AsReadOnly();
         }
 
-        public IEnumerable<Creature> GetCreatures(Species species, int xPos, int yPos)
+        public ReadOnlyCollection<Creature> GetCreatures(Species species, int xPos, int yPos)
         {
             var creatures = GetSimObjects<Creature>(xPos, yPos);
-            return creatures?.Where(c => c.Species == species);
+            return creatures?.Where(c => c.Species == species).ToList().AsReadOnly();
         }
 
-        public IEnumerable<Creature> GetCreatures(int xPos, int yPos)
-        {
-            return GetSimObjects<Creature>(xPos, yPos);
-        }
+        public ReadOnlyCollection<Creature> GetCreatures(int xPos, int yPos) 
+            => GetSimObjects<Creature>(xPos, yPos);
 
         /// <summary>
         /// Get all the dead creatures in the context. 
@@ -144,7 +146,8 @@ namespace LifeSimulation
         /// A creature is dead when the energy is equal to or lower then 0.
         /// </summary>
         /// <returns>List of all the dead creatures in the context</returns>
-        public IEnumerable<Creature> GetDeadCreatures() => GetCreatures().Where(c => c.Energy <= 0);
+        public ReadOnlyCollection<Creature> GetDeadCreatures() 
+            => GetCreatures().Where(c => c.Energy <= 0).ToList().AsReadOnly();
 
         /// <summary>
         /// Check if the location contains any SimObjects

@@ -342,22 +342,17 @@ namespace LifeSimulation
             // Loop through SimObjects en voer de juiste functies uit
             foreach (var so in Context.GetAllSimObjects())
                 if (so is Creature)
-                {
                     // Die dieren willen eerst lopen
-                    ((Creature)so).Move();
-                }
+                    ((Creature) so).Move();
                 else if (so is Plant)
-                {
                     // De planten willen groeien
-                    ((Plant)so).Grow();
-                }
+                    ((Plant) so).Act();
+
             // Na dat iedereen heeft gelopen willen de beesten nog een actie uitvoeren
             foreach (var so in Context.GetAllSimObjects())
                 if (so is Creature)
-                {
                     // De dieren willen actie ondernemen
-                    ((Creature)so).Move();
-                }
+                    ((Creature) so).Act();
 
             RefreshReportData();
         }

@@ -49,7 +49,7 @@ namespace LifeSimulation.SimObjects
         /// <summary>
         /// The plant will grow with 1 energy
         /// </summary>
-        public void Grow()
+        private void Grow()
         {
             Energy++;
         }
@@ -67,6 +67,7 @@ namespace LifeSimulation.SimObjects
 
             Energy--;
             if (Energy <= 0)
+                // A plant can loose all energy 10 times before it actually dies.
                 CountToDeath--;
             if (CountToDeath <= 0)
                 Die();
