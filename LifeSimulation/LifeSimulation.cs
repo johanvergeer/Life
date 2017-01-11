@@ -27,7 +27,7 @@ namespace LifeSimulation
         public int EnergyHerbivores { get; private set; }
         public int EnergyOmnivores { get; private set; }
         public int EnergyNonivores { get; private set; }
-        public int EnergyPlanten { get; private set;  }
+        public int EnergyPlanten { get; private set; }
 
         private readonly int _nElements;
         private readonly ICollection<Species> _species;
@@ -101,7 +101,8 @@ namespace LifeSimulation
         /// </exception>
         /// 
         /// <returns>An ISimulation object</returns>
-        public LifeSimulation(ILayout layout, int nElements, ICollection<Species> species, int plants = 0, int carnivores = 0, int herbivores = 0, int omnivores = 0,
+        public LifeSimulation(ILayout layout, int nElements, ICollection<Species> species, int plants = 0,
+            int carnivores = 0, int herbivores = 0, int omnivores = 0,
             int nonivores = 0, int obstacles = 0, int speed = 100)
         {
             Context = new SimulationContext(layout);
@@ -180,7 +181,8 @@ namespace LifeSimulation
         /// <param name="simObjectPercentage">The percentage for the type of SimObject in the Simulation</param>
         /// <param name="species">Only required if the SimObject is a Creature.</param>
         /// <exception cref="">Thrown when the type is Creature, and species is null</exception>
-        private void AddSimObjects<TSimObject>(int simObjectPercentage, Species species = null) where TSimObject : SimObject
+        private void AddSimObjects<TSimObject>(int simObjectPercentage, Species species = null)
+            where TSimObject : SimObject
         {
             var simObjectType = typeof(TSimObject);
             var gridX = Context.Layout.GridSizeX;
@@ -204,7 +206,8 @@ namespace LifeSimulation
                     }
 
                     // Check if the position is territory (not water) and does not contain an obstacle
-                    if (Context.HasSimObjects<Obstacle>(posX, posY) || !Context.Layout.hasTerritory(posX, posY)) continue;
+                    if (Context.HasSimObjects<Obstacle>(posX, posY) || !Context.Layout.hasTerritory(posX, posY))
+                        continue;
 
                     // Add object if it is a plant
                     if (simObjectType == typeof(Plant))
@@ -334,31 +337,36 @@ namespace LifeSimulation
         public void Step()
         {
             Context.SimulationStep++;
-            
+
             // Only do step when status is started
             // TODO Snelheid verwerken in de step?
             if ((Status != SimulationStatus.Started) || (Speed <= 0)) return;
 
             // Loop through SimObjects en voer de juiste functies uit
-            foreach (var so in Context.GetAllSimObjects()) { 
-                if (so is Creature)
-                    // Die dieren willen eerst lopen
-                    ((Creature) so).Move();
-                else if (so is Plant)
-                    // De planten willen groeien
-                    ((Plant) so).Act();
-
-            // Na dat iedereen heeft gelopen willen de beesten nog een actie uitvoeren
             foreach (var so in Context.GetAllSimObjects())
             {
-                if (so is Creature)
-                    // De dieren willen actie ondernemen
-                    ((Creature) so).Act();
+                var creature = so as Creature;
+                if (creature != null)
+                    // Die dieren willen eerst lopen
+                    creature.Act();
+                else
+                {
+                    var plant = so as Plant;
+                    plant?.Act();
+                }
+            }
+
+            // Na dat iedereen heeft gelopen willen de beesten nog een actie uitvoeren
+            foreach (var c in Context.GetAllSimObjects())
+            {
+                var creature = c as Creature;
+                creature?.Move();
+            }
 
             Context.RemoveDeadCreatures();
-
             RefreshReportData();
         }
+
 
         public SimulationStatus Stop()
         {

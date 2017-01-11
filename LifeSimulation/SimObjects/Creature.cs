@@ -24,7 +24,12 @@ namespace LifeSimulation.SimObjects
         public int Energy
         {
             get { return _energy; }
-            set { _energy = value > Species.Stamina ? Species.Stamina : value; }
+            set
+            {
+                _energy = value > Species.Stamina ? Species.Stamina : value;
+                // Set IsAlive to false when the energy is 0 or lower
+                IsAlive = _energy > 0;
+            }
         }
 
         /// <summary>
@@ -117,6 +122,8 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public Direction Direction { get; set; }
 
+        public bool IsAlive { get; private set; }
+
         public Creature(int xPos, int yPos, SimulationContext context, int energy,
             int strength, Species species, Direction direction) : base(xPos, yPos, context)
         {
@@ -125,6 +132,7 @@ namespace LifeSimulation.SimObjects
             Strength = strength;
             Direction = direction;
             _context = context;
+            IsAlive = true;
         }
 
         /// <summary>

@@ -1,14 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
 using LifeSimulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LifeSimulation.Layouts;
 using LifeSimulation.SimObjects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LifeSimulation.Tests
+namespace LifeSimulationTests
 {
     [TestClass()]
     public class SimulationContextTests

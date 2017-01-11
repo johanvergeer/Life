@@ -103,7 +103,12 @@ namespace LifeSimulation
             return simObjects.FirstOrDefault(o => o.XPos == xPos && o.YPos == yPos);
         }
 
-        public ReadOnlyCollection<Creature> GetCreatures() => GetSimObjects<Creature>(); 
+        /// <summary>
+        /// Get a ReadOnlyCollection of all creatures that are alive
+        /// </summary>
+        /// <returns>ReadOnlyCollection of alive creatures</returns>
+        public ReadOnlyCollection<Creature> GetCreatures()
+            => GetSimObjects<Creature>().Where(c => c.IsAlive).ToList().AsReadOnly();
 
         /// <summary>
         /// Get creatures of a specific digestion type
@@ -125,28 +130,22 @@ namespace LifeSimulation
         /// <param name="species"></param>
         /// <returns></returns>
         public ReadOnlyCollection<Creature> GetCreatures(Species species)
-        {
-            var creatures = GetSimObjects<Creature>();
-            return creatures?.Where(c => c.Species == species).ToList().AsReadOnly();
-        }
+            => GetCreatures().Where(c => c.Species == species).ToList().AsReadOnly();
+
+        public ReadOnlyCollection<Creature> GetCreatures(int xPos, int yPos)
+            => GetSimObjects<Creature>(xPos, yPos).Where(c => c.IsAlive).ToList().AsReadOnly();
 
         public ReadOnlyCollection<Creature> GetCreatures(Species species, int xPos, int yPos)
-        {
-            var creatures = GetSimObjects<Creature>(xPos, yPos);
-            return creatures?.Where(c => c.Species == species).ToList().AsReadOnly();
-        }
-
-        public ReadOnlyCollection<Creature> GetCreatures(int xPos, int yPos) 
-            => GetSimObjects<Creature>(xPos, yPos);
-
+            => GetCreatures(xPos, yPos).Where(c => c.Species == species && c.IsAlive).ToList().AsReadOnly();
+        
         /// <summary>
         /// Get all the dead creatures in the context. 
         /// 
         /// A creature is dead when the energy is equal to or lower then 0.
         /// </summary>
         /// <returns>List of all the dead creatures in the context</returns>
-        public ReadOnlyCollection<Creature> GetDeadCreatures() 
-            => GetCreatures().Where(c => c.Energy <= 0).ToList().AsReadOnly();
+        public ReadOnlyCollection<Creature> GetDeadCreatures()
+           => SimObjects.OfType<Creature>().Where(c => c.IsAlive == false).ToList().AsReadOnly();
 
         /// <summary>
         /// Check if the location contains any SimObjects
