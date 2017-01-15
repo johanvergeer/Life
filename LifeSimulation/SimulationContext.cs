@@ -11,12 +11,15 @@ namespace LifeSimulation
     {
         public ILayout Layout { get; private set; }
         private IList<SimObject> SimObjects { get; }
+
+        private IList<SimObject> NewSimObjects { get; }
         public long SimulationStep { get; set; }
 
         public SimulationContext(ILayout layout)
         {
             Layout = layout;
             SimObjects = new List<SimObject>();
+            NewSimObjects = new List<SimObject>();
         }
 
         /// <summary>
@@ -24,6 +27,12 @@ namespace LifeSimulation
         /// </summary>
         /// <param name="creature">Creature object</param>
         public void AddCreature(Creature creature) => SimObjects.Add(creature);
+
+        /// <summary>
+        /// Add a new creature to the NewSimObjects list
+        /// </summary>
+        /// <param name="creature">Creature object</param>
+        public void AddNewCreature(Creature creature) => NewSimObjects.Add(creature);
 
         /// <summary>
         /// Add a new plant to the SimObjects list
@@ -176,10 +185,25 @@ namespace LifeSimulation
             return HasSimObjects<TSimObject>(xPos, yPos);
         }
 
+        public void UpdateContext()
+        {
+            AddNewCreatures();
+            RemoveDeadCreatures();
+        }
+
+        private void AddNewCreatures()
+        {
+            foreach (var newSimObject in NewSimObjects)
+            {
+                SimObjects.Add(newSimObject);
+            }
+            NewSimObjects.Clear();
+        }
+
         /// <summary>
         /// Delete all the dead creatures from the context
         /// </summary>
-        public void RemoveDeadCreatures()
+        private void RemoveDeadCreatures()
         {
             var dc = GetDeadCreatures();
             if (!dc.Any()) return;

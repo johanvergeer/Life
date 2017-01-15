@@ -342,28 +342,29 @@ namespace LifeSimulation
             // TODO Snelheid verwerken in de step?
             if ((Status != SimulationStatus.Started) || (Speed <= 0)) return;
 
+            var SimObjects = Context.GetAllSimObjects();
             // Loop through SimObjects en voer de juiste functies uit
-            foreach (var so in Context.GetAllSimObjects())
+
+            for (int i = SimObjects.Count() - 1; i >= 0; i--)
             {
-                var creature = so as Creature;
+                var creature = SimObjects[i] as Creature;
                 if (creature != null)
                     // Die dieren willen eerst lopen
                     creature.Act();
                 else
                 {
-                    var plant = so as Plant;
+                    var plant = SimObjects[i] as Plant;
                     plant?.Act();
                 }
             }
 
             // Na dat iedereen heeft gelopen willen de beesten nog een actie uitvoeren
-            foreach (var c in Context.GetAllSimObjects())
+            foreach (var c in Context.GetCreatures())
             {
-                var creature = c as Creature;
-                creature?.Move();
+                c?.Move();
             }
 
-            Context.RemoveDeadCreatures();
+            Context.UpdateContext();
             RefreshReportData();
         }
 

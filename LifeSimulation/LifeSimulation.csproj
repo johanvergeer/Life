@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,11 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Color.cs" />
     <Compile Include="Exceptions\InvalidLocationException.cs" />
     <Compile Include="Exceptions\InvalidNumberOfLegsException.cs" />
     <Compile Include="ILifeApplication.cs" />
     <Compile Include="ILifeSimulation.cs" />
+    <Compile Include="ISimObject.cs" />
     <Compile Include="Layouts\ILayout.cs" />
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="Layouts\Territory.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
-using LifeSimulation.Exceptions;
 
 namespace LifeSimulation.SimObjects
 {
@@ -94,28 +94,28 @@ namespace LifeSimulation.SimObjects
         /// Omnivore: Yellow
         /// Nonivore: Purple
         /// </summary>
-        public SimObjectColor SimObjectColor
-        {
-            get
-            {
-                switch (Species.Digestion)
-                {
-                    case Digestion.Carnivore:
-                        return SimObjectColor.Red;
-                    case Digestion.Herbivore:
-                        return SimObjectColor.Brown;
+        //public new Color Color
+        //{
+        //    get
+        //    {
+        //        switch (Species.Digestion)
+        //        {
+        //            case Digestion.Carnivore:
+        //                return Color.Red;
+        //            case Digestion.Herbivore:
+        //                return Color.Brown;
 
-                    case Digestion.OmnivoreCreature:
-                    case Digestion.OmnivorePlant:
-                        return SimObjectColor.Yellow;
+        //            case Digestion.OmnivoreCreature:
+        //            case Digestion.OmnivorePlant:
+        //                return Color.Yellow;
 
-                    case Digestion.Nonivore:
-                        return SimObjectColor.Purple;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
+        //            case Digestion.Nonivore:
+        //                return Color.Purple;
+        //            default:
+        //                throw new ArgumentOutOfRangeException();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// The direction the creature is currently moving in
@@ -133,17 +133,25 @@ namespace LifeSimulation.SimObjects
             Direction = direction;
             _context = context;
             IsAlive = true;
-        }
 
-        /// <summary>
-        /// Check if the location does not have any obstacles and it is territory (not water)
-        /// </summary>
-        protected override void CheckLocation()
-        {
-            if (Context.HasSimObjects<Obstacle>(XPos, YPos))
-                throw new InvalidLocationException();
-            if (!Context.Layout.hasTerritory(XPos, YPos))
-                throw new InvalidLocationException();
+            switch (species.Digestion)
+            {
+                case Digestion.Carnivore:
+                    Color = Color.Red;
+                    break;
+                case Digestion.Herbivore:
+                    Color = Color.Brown;
+                    break;
+                case Digestion.OmnivoreCreature:
+                case Digestion.OmnivorePlant:
+                    Color = Color.Yellow;
+                    break;
+                case Digestion.Nonivore:
+                    Color = Color.Purple;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         /// <summary>
@@ -155,7 +163,7 @@ namespace LifeSimulation.SimObjects
         {
             if (Energy < Species.Searing)
                 Eat();
-            else
+            else if (_context.Layout.hasTerritory(XPos, YPos))
                 Mate();
         }
 
@@ -179,7 +187,7 @@ namespace LifeSimulation.SimObjects
             var hasHitObject = false;
             var water = false;
 
-            while (steps != 0 && !hasHitObject)
+            while (steps > 0 && !hasHitObject)
             {
                 hasHitObject = MoveOne(out water);
                 steps--;
@@ -232,8 +240,15 @@ namespace LifeSimulation.SimObjects
             // If there is water in the next square
             else
             {
+                // Check if the creature already is in the water
+                if (!_context.Layout.hasTerritory(XPos, YPos))
+                {
+                    water = true;
+                    if (Energy >= Species.MovingThreshold)
+                        MoveDirection();
+                }
                 // Check if energy is below the swimming threshold
-                if (Energy <= Species.SwimmingThreshold)
+                else if (Energy <= Species.SwimmingThreshold)
                 {
                     MoveDirection();
                     water = true;
@@ -389,7 +404,7 @@ namespace LifeSimulation.SimObjects
 
 
             var c = new Creature(XPos, YPos, _context, energy, strength, Species, GetRandomDirection());
-            _context.AddCreature(c);
+            _context.AddNewCreature(c);
         }
 
         /// <summary>
@@ -457,7 +472,7 @@ namespace LifeSimulation.SimObjects
         private bool EatCreature()
         {
             // Find the first creature that can be eaten
-            var creature = _context.GetCreatures(XPos, YPos).First(c => c.Species.Stamina > Strength);
+            var creature = _context.GetCreatures(XPos, YPos).FirstOrDefault(c => c.Species.Stamina > Strength) ?? null;
             if (creature == null) return false;
 
             // Get the difference between the Strenght and the stamina of both creatures
@@ -495,7 +510,7 @@ namespace LifeSimulation.SimObjects
         private bool EatPlant()
         {
             // Get the first plant with the most amount of Energy
-            var plant = _context.GetSimObjects<Plant>(XPos, YPos).OrderByDescending(p => p.Energy).First();
+            var plant = _context.GetSimObjects<Plant>(XPos, YPos).OrderByDescending(p => p.Energy).FirstOrDefault() ?? null;
             if (plant == null) return false;
 
             Energy++;

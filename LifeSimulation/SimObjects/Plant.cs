@@ -1,11 +1,10 @@
-﻿using LifeSimulation.Exceptions;
+﻿using System.Drawing;
 
 namespace LifeSimulation.SimObjects
 {
     public class Plant : SimObject
     {
         public int Energy { get; set; }
-        public SimObjectColor SimObjectColor => SimObjectColor.Green;
         public bool IsDead { get; set; }
 
         private long SimulationStepDeath { get; set; }
@@ -15,6 +14,7 @@ namespace LifeSimulation.SimObjects
         {
             Energy = energy;
             CountToDeath = 10;
+            Color = Color.Green;
         }
 
         /// <summary>
@@ -82,19 +82,6 @@ namespace LifeSimulation.SimObjects
         {
             SimulationStepDeath = Context.SimulationStep;
             IsDead = true;
-        }
-
-        /// <summary>
-        /// Check if the location is suitable for a plant
-        /// </summary>
-        protected sealed override void CheckLocation()
-        {
-            // Check if there already is an obstacle on the location
-            if (Context.GetSimObject<Obstacle>(XPos, YPos) != null)
-                throw new InvalidLocationException();
-
-            if (!Context.Layout.hasTerritory(XPos, YPos))
-                throw new InvalidLocationException();
         }
     }
 }
