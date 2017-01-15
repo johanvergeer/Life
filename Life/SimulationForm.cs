@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using LifeSimulation.SimObjects;
 using LifeSimulation;
@@ -31,20 +32,19 @@ namespace Life
 
             timer.Elapsed += timer_Elapsed;
 
-            SetSimulationData();
         }
 
         private void timer_Elapsed(object sender, EventArgs e)
         {
             simulation.Step();
 
-            SetSimulationData();
             simulationPanel.Invalidate();
             lblCarnivoren.Invalidate();
             lblHerbivoren.Invalidate();
             lblNonivoren.Invalidate();
             lblOmnivoren.Invalidate();
             lblPlanten.Invalidate();
+            SetSimulationData();
 
             Application.DoEvents();
 
@@ -127,16 +127,13 @@ namespace Life
 
         public void SetSimulationData()
         {
-            //lblCarnivoren.Text = simulation.EnergyCarnivores.ToString(); //+ " / " + simulation.EnergyCarnivores + " / " + (simulation.EnergyCarnivores / simulation.Carnivores).ToString();
-            //lblHerbivoren.Text = simulation.Herbivores.ToString(); //+ " / " + simulation.EnergyHerbivores + " / " + (simulation.EnergyHerbivores / simulation.Herbivores).ToString();
-            //lblNonivoren.Text = simulation.Nonivores.ToString(); //+ " / " + simulation.EnergyNonivores + " / " + (simulation.EnergyNonivores / simulation.Nonivores).ToString();
-            //lblOmnivoren.Text = simulation.Omnivores.ToString();// + " / " + simulation.EnergyOmnivores + " / " + (simulation.EnergyOmnivores / simulation.Omnivores).ToString();
-            //lblPlanten.Text = simulation.Planten.ToString(); //+ " / " + simulation.EnergyPlanten + " / " + (simulation.EnergyPlanten / simulation.Planten).ToString();
-        }
+            //var context = simulation.Context;
 
-        private void SimulationForm_Load(object sender, EventArgs e)
-        {
-
+            //lblCarnivoren.Text = context.CarnivoresCount.ToString();
+            //lblHerbivoren.Text = context.HerbivoresCount.ToString();
+            //lblOmnivoren.Text = context.OmnivoresCount.ToString();
+            //lblNonivoren.Text = context.NonivoresCount.ToString();
+            //lblPlanten.Text = context.PlantsCount.ToString();
         }
     }
 }

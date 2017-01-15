@@ -15,6 +15,28 @@ namespace LifeSimulation
         private IList<SimObject> NewSimObjects { get; }
         public long SimulationStep { get; set; }
 
+        public int PlantsCount => GetSimObjects<Plant>().Count;
+        public int CarnivoresCount => GetCreatures(Digestion.Carnivore).Count;
+        public int HerbivoresCount => GetCreatures(Digestion.Herbivore).Count;
+        public int OmnivoresCount
+            => GetCreatures(Digestion.OmnivoreCreature).Count 
+            + GetCreatures(Digestion.OmnivoreCreature).Count;
+        public int NonivoresCount => GetCreatures(Digestion.Nonivore).Count;
+
+        public int PlantsTotalEnergy => GetSimObjects<Plant>().Sum(p => p.Energy);
+        public int CarnivoresTotalEnergy => GetCreatures(Digestion.Carnivore).Sum(c => c.Energy);
+        public int HerbivoresTotalEnergy => GetCreatures(Digestion.Herbivore).Sum(h => h.Energy);
+        public int OmnivoresTotalEnergy
+            => GetCreatures(Digestion.OmnivoreCreature).Sum(o => o.Energy)
+            + GetCreatures(Digestion.OmnivoreCreature).Sum(o => o.Energy);
+        public int NonivoresTotalEnergy => GetCreatures(Digestion.Nonivore).Sum(n => n.Energy);
+
+        public int PlantsAverageEnergy => PlantsTotalEnergy / PlantsCount;
+        public int CarnivoresAverageEnergy => CarnivoresTotalEnergy / CarnivoresCount;
+        public int HerbivoresAverageEnergy => HerbivoresAverageEnergy / HerbivoresCount;
+        public int OmnivoresAverageEnergy => OmnivoresTotalEnergy / OmnivoresCount;
+        public int NonivoresAverageEnergy => NonivoresTotalEnergy / NonivoresCount;
+
         public SimulationContext(ILayout layout)
         {
             Layout = layout;

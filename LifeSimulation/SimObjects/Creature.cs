@@ -180,9 +180,6 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         public void Move()
         {
-            if (Energy < Species.MovingThreshold)
-                return;
-
             var steps = Speed;
             var hasHitObject = false;
             var water = false;

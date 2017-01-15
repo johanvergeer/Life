@@ -222,7 +222,6 @@
             this.MinimumSize = new System.Drawing.Size(200, 235);
             this.Name = "SimulationForm";
             this.Text = "Simulatie";
-            this.Load += new System.EventHandler(this.SimulationForm_Load);
             this.Resize += new System.EventHandler(this.SimulationForm_Resize);
             this.panelBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.simulationPanel)).EndInit();
