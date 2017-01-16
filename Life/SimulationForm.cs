@@ -39,15 +39,14 @@ namespace Life
             simulation.Step();
 
             simulationPanel.Invalidate();
-            lblCarnivoren.Invalidate();
-            lblHerbivoren.Invalidate();
-            lblNonivoren.Invalidate();
-            lblOmnivoren.Invalidate();
-            lblPlanten.Invalidate();
-            SetSimulationData();
+            var context = simulation.Context;
 
-            Application.DoEvents();
-
+            lblCarnivoren.Invoke((MethodInvoker)(() => lblCarnivoren.Text = context.CarnivoresCount.ToString()));
+            lblHerbivoren.Invoke((MethodInvoker)(() => lblHerbivoren.Text = context.HerbivoresCount.ToString()));
+            lblOmnivoren.Invoke((MethodInvoker)(() => lblOmnivoren.Text = context.OmnivoresCount.ToString()));
+            lblNonivoren.Invoke((MethodInvoker)(() => lblNonivoren.Text = context.NonivoresCount.ToString()));
+            lblPlanten.Invoke((MethodInvoker)(() => lblPlanten.Text = context.PlantsCount.ToString()));
+        
             timer.Start();
         }
 
@@ -123,17 +122,6 @@ namespace Life
             simulation.Stop();
             btnStartPause.Visible = false;
             timer.Stop();
-        }
-
-        public void SetSimulationData()
-        {
-            //var context = simulation.Context;
-
-            //lblCarnivoren.Text = context.CarnivoresCount.ToString();
-            //lblHerbivoren.Text = context.HerbivoresCount.ToString();
-            //lblOmnivoren.Text = context.OmnivoresCount.ToString();
-            //lblNonivoren.Text = context.NonivoresCount.ToString();
-            //lblPlanten.Text = context.PlantsCount.ToString();
         }
     }
 }
