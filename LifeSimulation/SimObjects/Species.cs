@@ -42,7 +42,7 @@ namespace LifeSimulation.SimObjects
             get { return _stamina; }
             private set
             {
-                if (value < 25 || value > 100) throw new ArgumentOutOfRangeException(
+                if (value < 250 || value > 1000) throw new ArgumentOutOfRangeException(
                     $"Stamina must be between 25 and 100");
                 _stamina = value;
             }
@@ -83,7 +83,7 @@ namespace LifeSimulation.SimObjects
             get { return GetStaminaPercentage(_searing); }
             private set
             {
-                if (value < 0 || value > 100) throw new ArgumentOutOfRangeException(
+                if (value < 0 || value > 1000) throw new ArgumentOutOfRangeException(
                     $"Searing must have a value between 0 and 100");
                 _searing = value;
             }
@@ -117,7 +117,7 @@ namespace LifeSimulation.SimObjects
             get { return GetStaminaPercentage(_swimmingThreshold); }
             private set
             {
-                if (value <= MovingThreshold || value > 100) throw new ArgumentOutOfRangeException(
+                if (value <= MovingThreshold || value > 1000) throw new ArgumentOutOfRangeException(
                     $"SwimmingThreshold must be greater then MovingThreshopld and smaller then 100");
                 _swimmingThreshold = value;
             }
@@ -148,7 +148,7 @@ namespace LifeSimulation.SimObjects
         /// The minimum weight of the creature. 
         /// This is NLegs * 10
         /// </summary>
-        public int MinimumWeight => NLegs * 10;
+        public int MinimumWeight => NLegs * 100;
 
         /// <summary>
         /// The maximum strength a creature can have. 
@@ -213,7 +213,7 @@ namespace LifeSimulation.SimObjects
             }
         }
 
-        private int GetStaminaPercentage(int value) => Convert.ToInt32(Math.Round((float) value / 100 * Stamina));
+        private int GetStaminaPercentage(int value) => Convert.ToInt32(Math.Round((float) value / 1000 * Stamina));
 
         public Species()
         {

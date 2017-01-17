@@ -16,27 +16,5 @@ namespace LifeSimulation.SimObjects
             XPos = xPos;
             YPos = yPos;
         }
-
-        ///// <summary>
-        ///// Check if the SimObject can be located on the x and y position
-        ///// </summary>
-        ///// <exception cref="InvalidLocationException">In the location of the SimObject is invalid</exception>
-        //protected bool CheckLocation()
-        //{
-        //    if (this is Obstacle)
-        //    {
-        //        if (Context.HasSimObjects(XPos, YPos))
-        //            return false;
-        //    }
-        //    else
-        //    {
-        //        if (Context.HasSimObjects<Obstacle>(XPos, YPos))
-        //            return false;
-        //    }
-        //    if (!Context.Layout.hasTerritory(XPos, YPos))
-        //        return false;
-
-        //    return true;
-        //}
     }
 }

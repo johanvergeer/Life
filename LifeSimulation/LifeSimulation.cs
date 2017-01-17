@@ -212,14 +212,14 @@ namespace LifeSimulation
                     // Add object if it is a plant
                     if (simObjectType == typeof(Plant))
                     {
-                        Context.AddPlant(new Plant(100, posX, posY, Context));
+                        Context.AddPlant(new Plant(1000, posX, posY, Context));
                         break;
                     }
 
                     // Add the object if it is a creature
                     Debug.Assert(species != null, "Species cannot be null if the SimObject type is creature");
                     var str = random.Next(species.MinimumStrength, species.MaximumStrength);
-                    Context.AddCreature(new Creature(posX, posY, Context, 100, str, species, Direction.E));
+                    Context.AddCreature(new Creature(posX, posY, Context, 1000, str, species, Direction.E));
                     break;
                 }
             }
