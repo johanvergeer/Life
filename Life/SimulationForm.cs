@@ -42,11 +42,27 @@ namespace Life
             var context = simulation.Context;
 
             lblCarnivoren.Invoke((MethodInvoker)(() => lblCarnivoren.Text = context.CarnivoresCount.ToString()));
+            lblCarnivoresEnergyTotal.Invoke((MethodInvoker)(() => lblCarnivoresEnergyTotal.Text = context.CarnivoresTotalEnergy.ToString()));
+            lblCarnivoresEnergyAvg.Invoke((MethodInvoker)(() => lblCarnivoresEnergyAvg.Text = context.CarnivoresAverageEnergy.ToString()));
+            
             lblHerbivoren.Invoke((MethodInvoker)(() => lblHerbivoren.Text = context.HerbivoresCount.ToString()));
+            lblHerbivoresEnergyTotal.Invoke((MethodInvoker)(() => lblHerbivoresEnergyTotal.Text = context.HerbivoresTotalEnergy.ToString()));
+            lblHerbivoresEnergyAvg.Invoke((MethodInvoker)(() => lblHerbivoresEnergyAvg.Text = context.HerbivoresAverageEnergy.ToString()));
+
             lblOmnivoren.Invoke((MethodInvoker)(() => lblOmnivoren.Text = context.OmnivoresCount.ToString()));
+            lblOmnivoresEnergyTotal.Invoke((MethodInvoker)(() => lblOmnivoresEnergyTotal.Text = context.OmnivoresTotalEnergy.ToString()));
+            lblOmnivoresEnergyAvg.Invoke((MethodInvoker)(() => lblOmnivoresEnergyAvg.Text = context.OmnivoresAverageEnergy.ToString()));
+
             lblNonivoren.Invoke((MethodInvoker)(() => lblNonivoren.Text = context.NonivoresCount.ToString()));
+            lblNonivoresEnergyTotal.Invoke((MethodInvoker)(() => lblNonivoresEnergyTotal.Text = context.NonivoresTotalEnergy.ToString()));
+            lblNonivoresEnergyAvg.Invoke((MethodInvoker)(() => lblNonivoresEnergyAvg.Text = context.NonivoresAverageEnergy.ToString()));
+
             lblPlanten.Invoke((MethodInvoker)(() => lblPlanten.Text = context.PlantsCount.ToString()));
-        
+            lblPlantsEnergyTotal.Invoke((MethodInvoker)(() => lblPlantsEnergyTotal.Text = context.PlantsTotalEnergy.ToString()));
+            lblPlantsEnergyAvg.Invoke((MethodInvoker)(() => lblPlantsEnergyAvg.Text = context.PlantsAverageEnergy.ToString()));
+
+
+
             timer.Start();
         }
 
@@ -122,6 +138,11 @@ namespace Life
             simulation.Stop();
             btnStartPause.Visible = false;
             timer.Stop();
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
