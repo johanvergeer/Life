@@ -19,7 +19,7 @@ namespace LifeSimulation
         public int CarnivoresCount => GetCreatures(Digestion.Carnivore).Count;
         public int HerbivoresCount => GetCreatures(Digestion.Herbivore).Count;
         public int OmnivoresCount
-            => GetCreatures(Digestion.OmnivoreCreature).Count 
+            => GetCreatures(Digestion.OmnivoreCreature).Count
             + GetCreatures(Digestion.OmnivoreCreature).Count;
         public int NonivoresCount => GetCreatures(Digestion.Nonivore).Count;
 
@@ -31,11 +31,11 @@ namespace LifeSimulation
             + GetCreatures(Digestion.OmnivoreCreature).Sum(o => o.Energy);
         public int NonivoresTotalEnergy => GetCreatures(Digestion.Nonivore).Sum(n => n.Energy);
 
-        public int PlantsAverageEnergy => PlantsTotalEnergy / PlantsCount;
-        public int CarnivoresAverageEnergy => CarnivoresTotalEnergy / CarnivoresCount;
-        public int HerbivoresAverageEnergy => HerbivoresAverageEnergy / HerbivoresCount;
-        public int OmnivoresAverageEnergy => OmnivoresTotalEnergy / OmnivoresCount;
-        public int NonivoresAverageEnergy => NonivoresTotalEnergy / NonivoresCount;
+        public int PlantsAverageEnergy => PlantsCount > 0 ? PlantsTotalEnergy / PlantsCount : 0;
+        public int CarnivoresAverageEnergy => CarnivoresCount > 0 ? CarnivoresTotalEnergy / CarnivoresCount : 0;
+        public int HerbivoresAverageEnergy => HerbivoresCount > 0 ? HerbivoresTotalEnergy / HerbivoresCount : 0;
+        public int OmnivoresAverageEnergy => OmnivoresCount > 0 ? OmnivoresTotalEnergy / OmnivoresCount : 0;
+        public int NonivoresAverageEnergy => NonivoresCount > 0 ? NonivoresTotalEnergy / NonivoresCount : 0;
 
         public SimulationContext(ILayout layout)
         {
@@ -166,9 +166,19 @@ namespace LifeSimulation
         public ReadOnlyCollection<Creature> GetCreatures(int xPos, int yPos)
             => GetSimObjects<Creature>(xPos, yPos).Where(c => c.IsAlive).ToList().AsReadOnly();
 
+        /// <summary>
+        /// Get all creatures except for the one in the creature parameter
+        /// </summary>
+        /// <param name="xPos">X position of the creature</param>
+        /// <param name="yPos">Y position of the creature</param>
+        /// <param name="creature">Creature that should be excluded from the returned collection</param>
+        /// <returns></returns>
+        public ReadOnlyCollection<Creature> GetCreatures(int xPos, int yPos, Creature creature)
+            => GetSimObjects<Creature>(xPos, yPos).Where(c => c.IsAlive & !ReferenceEquals(c, creature)).ToList().AsReadOnly();
+
         public ReadOnlyCollection<Creature> GetCreatures(Species species, int xPos, int yPos)
             => GetCreatures(xPos, yPos).Where(c => c.Species == species && c.IsAlive).ToList().AsReadOnly();
-        
+
         /// <summary>
         /// Get all the dead creatures in the context. 
         /// 

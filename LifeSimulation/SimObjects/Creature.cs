@@ -88,36 +88,6 @@ namespace LifeSimulation.SimObjects
         }
 
         /// <summary>
-        /// Color of the creature.
-        /// Carnivore: Red
-        /// Herbivore: Brown
-        /// Omnivore: Yellow
-        /// Nonivore: Purple
-        /// </summary>
-        //public new Color Color
-        //{
-        //    get
-        //    {
-        //        switch (Species.Digestion)
-        //        {
-        //            case Digestion.Carnivore:
-        //                return Color.Red;
-        //            case Digestion.Herbivore:
-        //                return Color.Brown;
-
-        //            case Digestion.OmnivoreCreature:
-        //            case Digestion.OmnivorePlant:
-        //                return Color.Yellow;
-
-        //            case Digestion.Nonivore:
-        //                return Color.Purple;
-        //            default:
-        //                throw new ArgumentOutOfRangeException();
-        //        }
-        //    }
-        //}
-
-        /// <summary>
         /// The direction the creature is currently moving in
         /// </summary>
         public Direction Direction { get; set; }
@@ -469,7 +439,7 @@ namespace LifeSimulation.SimObjects
         private bool EatCreature()
         {
             // Find the first creature that can be eaten
-            var creature = _context.GetCreatures(XPos, YPos).FirstOrDefault(c => c.Species.Stamina > Strength) ?? null;
+            var creature = _context.GetCreatures(XPos, YPos, this).FirstOrDefault(c => c.Species.Stamina > Strength) ?? null;
             if (creature == null) return false;
 
             // Get the difference between the Strenght and the stamina of both creatures
