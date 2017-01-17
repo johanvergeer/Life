@@ -179,9 +179,8 @@
             this.lblCarnivoren.Location = new System.Drawing.Point(474, 36);
             this.lblCarnivoren.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCarnivoren.Name = "lblCarnivoren";
-            this.lblCarnivoren.Size = new System.Drawing.Size(66, 17);
+            this.lblCarnivoren.Size = new System.Drawing.Size(0, 17);
             this.lblCarnivoren.TabIndex = 11;
-            this.lblCarnivoren.Text = "InfoLabel";
             // 
             // lblHerbivoren
             // 
@@ -190,9 +189,8 @@
             this.lblHerbivoren.Location = new System.Drawing.Point(474, 64);
             this.lblHerbivoren.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHerbivoren.Name = "lblHerbivoren";
-            this.lblHerbivoren.Size = new System.Drawing.Size(66, 17);
+            this.lblHerbivoren.Size = new System.Drawing.Size(0, 17);
             this.lblHerbivoren.TabIndex = 12;
-            this.lblHerbivoren.Text = "InfoLabel";
             // 
             // lblNonivoren
             // 
@@ -201,9 +199,8 @@
             this.lblNonivoren.Location = new System.Drawing.Point(474, 92);
             this.lblNonivoren.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNonivoren.Name = "lblNonivoren";
-            this.lblNonivoren.Size = new System.Drawing.Size(66, 17);
+            this.lblNonivoren.Size = new System.Drawing.Size(0, 17);
             this.lblNonivoren.TabIndex = 13;
-            this.lblNonivoren.Text = "InfoLabel";
             // 
             // lblOmnivoren
             // 
@@ -212,9 +209,8 @@
             this.lblOmnivoren.Location = new System.Drawing.Point(474, 123);
             this.lblOmnivoren.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOmnivoren.Name = "lblOmnivoren";
-            this.lblOmnivoren.Size = new System.Drawing.Size(66, 17);
+            this.lblOmnivoren.Size = new System.Drawing.Size(0, 17);
             this.lblOmnivoren.TabIndex = 14;
-            this.lblOmnivoren.Text = "InfoLabel";
             // 
             // lblPlanten
             // 
@@ -223,9 +219,8 @@
             this.lblPlanten.Location = new System.Drawing.Point(474, 154);
             this.lblPlanten.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPlanten.Name = "lblPlanten";
-            this.lblPlanten.Size = new System.Drawing.Size(66, 17);
+            this.lblPlanten.Size = new System.Drawing.Size(0, 17);
             this.lblPlanten.TabIndex = 15;
-            this.lblPlanten.Text = "InfoLabel";
             // 
             // lblCarnivoresEnergyTotal
             // 
@@ -234,9 +229,8 @@
             this.lblCarnivoresEnergyTotal.Location = new System.Drawing.Point(548, 36);
             this.lblCarnivoresEnergyTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCarnivoresEnergyTotal.Name = "lblCarnivoresEnergyTotal";
-            this.lblCarnivoresEnergyTotal.Size = new System.Drawing.Size(66, 17);
+            this.lblCarnivoresEnergyTotal.Size = new System.Drawing.Size(0, 17);
             this.lblCarnivoresEnergyTotal.TabIndex = 16;
-            this.lblCarnivoresEnergyTotal.Text = "InfoLabel";
             // 
             // lblHerbivoresEnergyTotal
             // 
@@ -245,9 +239,8 @@
             this.lblHerbivoresEnergyTotal.Location = new System.Drawing.Point(548, 64);
             this.lblHerbivoresEnergyTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHerbivoresEnergyTotal.Name = "lblHerbivoresEnergyTotal";
-            this.lblHerbivoresEnergyTotal.Size = new System.Drawing.Size(66, 17);
+            this.lblHerbivoresEnergyTotal.Size = new System.Drawing.Size(0, 17);
             this.lblHerbivoresEnergyTotal.TabIndex = 17;
-            this.lblHerbivoresEnergyTotal.Text = "InfoLabel";
             // 
             // lblNonivoresEnergyTotal
             // 
@@ -256,9 +249,8 @@
             this.lblNonivoresEnergyTotal.Location = new System.Drawing.Point(548, 92);
             this.lblNonivoresEnergyTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNonivoresEnergyTotal.Name = "lblNonivoresEnergyTotal";
-            this.lblNonivoresEnergyTotal.Size = new System.Drawing.Size(66, 17);
+            this.lblNonivoresEnergyTotal.Size = new System.Drawing.Size(0, 17);
             this.lblNonivoresEnergyTotal.TabIndex = 18;
-            this.lblNonivoresEnergyTotal.Text = "InfoLabel";
             // 
             // lblOmnivoresEnergyTotal
             // 
@@ -267,9 +259,8 @@
             this.lblOmnivoresEnergyTotal.Location = new System.Drawing.Point(548, 123);
             this.lblOmnivoresEnergyTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOmnivoresEnergyTotal.Name = "lblOmnivoresEnergyTotal";
-            this.lblOmnivoresEnergyTotal.Size = new System.Drawing.Size(66, 17);
+            this.lblOmnivoresEnergyTotal.Size = new System.Drawing.Size(0, 17);
             this.lblOmnivoresEnergyTotal.TabIndex = 19;
-            this.lblOmnivoresEnergyTotal.Text = "InfoLabel";
             // 
             // lblPlantsEnergyTotal
             // 
@@ -278,9 +269,8 @@
             this.lblPlantsEnergyTotal.Location = new System.Drawing.Point(548, 154);
             this.lblPlantsEnergyTotal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPlantsEnergyTotal.Name = "lblPlantsEnergyTotal";
-            this.lblPlantsEnergyTotal.Size = new System.Drawing.Size(66, 17);
+            this.lblPlantsEnergyTotal.Size = new System.Drawing.Size(0, 17);
             this.lblPlantsEnergyTotal.TabIndex = 20;
-            this.lblPlantsEnergyTotal.Text = "InfoLabel";
             // 
             // lblPlantsEnergyAvg
             // 
@@ -289,9 +279,8 @@
             this.lblPlantsEnergyAvg.Location = new System.Drawing.Point(622, 154);
             this.lblPlantsEnergyAvg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPlantsEnergyAvg.Name = "lblPlantsEnergyAvg";
-            this.lblPlantsEnergyAvg.Size = new System.Drawing.Size(66, 17);
+            this.lblPlantsEnergyAvg.Size = new System.Drawing.Size(0, 17);
             this.lblPlantsEnergyAvg.TabIndex = 25;
-            this.lblPlantsEnergyAvg.Text = "InfoLabel";
             // 
             // lblOmnivoresEnergyAvg
             // 
@@ -300,9 +289,8 @@
             this.lblOmnivoresEnergyAvg.Location = new System.Drawing.Point(622, 123);
             this.lblOmnivoresEnergyAvg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOmnivoresEnergyAvg.Name = "lblOmnivoresEnergyAvg";
-            this.lblOmnivoresEnergyAvg.Size = new System.Drawing.Size(66, 17);
+            this.lblOmnivoresEnergyAvg.Size = new System.Drawing.Size(0, 17);
             this.lblOmnivoresEnergyAvg.TabIndex = 24;
-            this.lblOmnivoresEnergyAvg.Text = "InfoLabel";
             // 
             // lblNonivoresEnergyAvg
             // 
@@ -311,9 +299,8 @@
             this.lblNonivoresEnergyAvg.Location = new System.Drawing.Point(622, 92);
             this.lblNonivoresEnergyAvg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNonivoresEnergyAvg.Name = "lblNonivoresEnergyAvg";
-            this.lblNonivoresEnergyAvg.Size = new System.Drawing.Size(66, 17);
+            this.lblNonivoresEnergyAvg.Size = new System.Drawing.Size(0, 17);
             this.lblNonivoresEnergyAvg.TabIndex = 23;
-            this.lblNonivoresEnergyAvg.Text = "InfoLabel";
             // 
             // lblHerbivoresEnergyAvg
             // 
@@ -322,9 +309,8 @@
             this.lblHerbivoresEnergyAvg.Location = new System.Drawing.Point(622, 64);
             this.lblHerbivoresEnergyAvg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHerbivoresEnergyAvg.Name = "lblHerbivoresEnergyAvg";
-            this.lblHerbivoresEnergyAvg.Size = new System.Drawing.Size(66, 17);
+            this.lblHerbivoresEnergyAvg.Size = new System.Drawing.Size(0, 17);
             this.lblHerbivoresEnergyAvg.TabIndex = 22;
-            this.lblHerbivoresEnergyAvg.Text = "InfoLabel";
             // 
             // lblCarnivoresEnergyAvg
             // 
@@ -333,9 +319,8 @@
             this.lblCarnivoresEnergyAvg.Location = new System.Drawing.Point(622, 36);
             this.lblCarnivoresEnergyAvg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCarnivoresEnergyAvg.Name = "lblCarnivoresEnergyAvg";
-            this.lblCarnivoresEnergyAvg.Size = new System.Drawing.Size(66, 17);
+            this.lblCarnivoresEnergyAvg.Size = new System.Drawing.Size(0, 17);
             this.lblCarnivoresEnergyAvg.TabIndex = 21;
-            this.lblCarnivoresEnergyAvg.Text = "InfoLabel";
             // 
             // SimulationForm
             // 
