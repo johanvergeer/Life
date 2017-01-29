@@ -179,6 +179,9 @@ namespace LifeSimulation
         public ReadOnlyCollection<Creature> GetCreatures(Species species, int xPos, int yPos)
             => GetCreatures(xPos, yPos).Where(c => c.Species == species && c.IsAlive).ToList().AsReadOnly();
 
+        public ReadOnlyCollection<Creature> GetCreatures(Species species, int xPos, int yPos, Creature creature)
+            => GetCreatures(xPos, yPos).Where(c => c.Species == species && c.IsAlive && !ReferenceEquals(c, creature)).ToList().AsReadOnly();
+
         /// <summary>
         /// Get all the dead creatures in the context. 
         /// 

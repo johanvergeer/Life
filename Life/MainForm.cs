@@ -26,11 +26,11 @@ namespace Life
             Layout1 l1 = new Layout1(LifeApplication.Layouts[0]);
 
             // Species maken
-            LifeApplication.CreateSpecies("Dog", 300, 4, Digestion.OmnivorePlant, 10, 100, 100, 1000, 0, 950, 200);
-            LifeApplication.CreateSpecies("Kat", 300, 4, Digestion.Carnivore, 10, 100, 100, 1000, 0, 950, 200);
-            LifeApplication.CreateSpecies("Giraffe", 300, 4, Digestion.Herbivore, 10, 100, 100, 1000, 0, 950, 200);
-            LifeApplication.CreateSpecies("Niksnut", 300, 4, Digestion.Nonivore, 10, 100, 100, 1000, 0, 950, 200);
-            LifeApplication.CreateSpecies("Mens", 300, 4, Digestion.OmnivoreCreature, 10, 100, 100, 1000, 0, 950, 200);
+            LifeApplication.CreateSpecies("Dog", 800, 4, Digestion.OmnivorePlant, 10, 100, 100, 1000, 0, 950, 200);
+            LifeApplication.CreateSpecies("Kat", 800, 4, Digestion.Carnivore, 10, 100, 100, 1000, 0, 950, 200);
+            LifeApplication.CreateSpecies("Giraffe", 800, 4, Digestion.Herbivore, 10, 100, 100, 1000, 0, 950, 200);
+            LifeApplication.CreateSpecies("Niksnut", 800, 4, Digestion.Nonivore, 10, 100, 100, 1000, 0, 950, 200);
+            LifeApplication.CreateSpecies("Mens", 800, 4, Digestion.OmnivoreCreature, 10, 100, 100, 1000, 0, 950, 200);
         }
 
         private void afsluitenMainMenu_Click(object sender, System.EventArgs e)

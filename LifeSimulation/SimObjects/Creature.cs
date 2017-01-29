@@ -358,7 +358,7 @@ namespace LifeSimulation.SimObjects
         /// </summary>
         private void Mate()
         {
-            var creature = _context.GetCreatures(Species, XPos, YPos).FirstOrDefault();
+            var creature = _context.GetCreatures(Species, XPos, YPos, this).FirstOrDefault();
             if (creature == null) return;
 
             // Transfer energy to the child

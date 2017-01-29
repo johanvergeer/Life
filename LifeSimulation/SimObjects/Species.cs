@@ -148,7 +148,7 @@ namespace LifeSimulation.SimObjects
         /// The minimum weight of the creature. 
         /// This is NLegs * 10
         /// </summary>
-        public int MinimumWeight => NLegs * 100;
+        public int MinimumWeight => NLegs * 10;
 
         /// <summary>
         /// The maximum strength a creature can have. 
